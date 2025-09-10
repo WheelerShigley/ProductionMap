@@ -1,10 +1,7 @@
 package map;
 
-import machines.Machine;
-import recipes.Recipe;
 import recipes.Recipes;
 
-import javax.crypto.Mac;
 import java.util.List;
 
 public class Maps {
@@ -12,6 +9,10 @@ public class Maps {
         private MachineNode head;
         @Override
         public MachineNode getHead() {
+            if(head == null) {
+                constructMap();
+            }
+
             return head;
         }
 

@@ -28,7 +28,7 @@ public class MachineNode {
                 .append( itemStack.quantity() ).append(' ')
                 .append( itemStack.item().toString() )
             ;
-            if( index < recipe.inputs().size()-1 ) {
+            if( index < items.size()-1 ) {
                 ItemStackListStringBuilder.append(" + ");
             }
         }
