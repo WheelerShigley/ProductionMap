@@ -1,6 +1,6 @@
 package machines;
 
-public enum Circuit {
+public enum MachineConfiguration {
     None,
 
     ProgrammedCircuitOne,
@@ -51,5 +51,9 @@ public enum Circuit {
     ProgrammedBioCircuitTwentyOne,
     ProgrammedBioCircuitTwentyTwo,
     ProgrammedBioCircuitTwentyThree,
-    ProgrammedBioCircuitTwentyFour
+    ProgrammedBioCircuitTwentyFour,
+
+    MoldBall,
+
+    ExtrudeShapeRod
 }
