@@ -1,10 +1,10 @@
 package machines;
 
 public record Machine(String namespace, String identifier) {
-    Machine(String namespace, String identifier) {
+    public Machine(String namespace, String identifier) {
         this.namespace = namespace;
         this.identifier = identifier;
-        MachinesRegistry.registerMachine(this, true);
+        MachinesRegistry.registerMachine(this, false);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package map;
 
+import items.ItemStack;
 import recipes.Recipe;
 
 import java.util.List;
@@ -15,5 +16,33 @@ public class MachineNode {
     public MachineNode(Recipe recipe, List<MachineNode> sources) {
         this.recipe = recipe;
         this.sources = sources;
+    }
+
+    private String ItemStackListToString(List<ItemStack> items) {
+        StringBuilder ItemStackListStringBuilder = new StringBuilder();
+
+        ItemStack itemStack;
+        for(int index = 0; index < items.size(); index++) {
+            itemStack = items.get(index);
+            ItemStackListStringBuilder
+                .append( itemStack.quantity() ).append(' ')
+                .append( itemStack.item().toString() )
+            ;
+            if( index < recipe.inputs().size()-1 ) {
+                ItemStackListStringBuilder.append(" + ");
+            }
+        }
+
+        return ItemStackListStringBuilder.toString();
+    }
+
+    public String toString() {
+        StringBuilder nodeStringBuilder = new StringBuilder();
+
+        String inputs  = ItemStackListToString( recipe.inputs()  );
+        String outputs = ItemStackListToString( recipe.outputs() );
+
+        nodeStringBuilder.append(inputs).append(" = ").append(outputs);
+        return nodeStringBuilder.toString();
     }
 }

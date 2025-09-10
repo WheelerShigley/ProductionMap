@@ -1,3 +1,3 @@
 package items;
 
-public record ItemStack(Item item, int quantity) {}
+public record ItemStack(Item item, double quantity) {}

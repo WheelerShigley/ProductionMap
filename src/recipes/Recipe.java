@@ -1,13 +1,15 @@
 package recipes;
 
 import items.ItemStack;
+import machines.Circuit;
 import machines.Machine;
 
 import java.util.List;
 
 public record Recipe(
     Machine machine,
+    Circuit circuit,
     List<ItemStack> inputs,
     List<ItemStack> outputs,
-    float time_seconds
+    double time_seconds
 ) {}
