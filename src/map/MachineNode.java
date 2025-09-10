@@ -8,6 +8,7 @@ import java.util.List;
 public class MachineNode {
     Recipe recipe;
     List<MachineNode> sources;
+    public double calculated_uptime = -1.0f;
 
     public MachineNode(Recipe recipe) {
         this.recipe = recipe;
@@ -18,6 +19,10 @@ public class MachineNode {
         this.sources = sources;
     }
 
+    public void setUptime(double uptime) {
+        this.calculated_uptime = uptime;
+    }
+
     private String ItemStackListToString(List<ItemStack> items) {
         StringBuilder ItemStackListStringBuilder = new StringBuilder();
 
@@ -25,7 +30,7 @@ public class MachineNode {
         for(int index = 0; index < items.size(); index++) {
             itemStack = items.get(index);
             ItemStackListStringBuilder
-                .append( itemStack.quantity() ).append(' ')
+                .append( Math.round( 10000.0*itemStack.quantity() )/10000.0 ).append(' ')
                 .append( itemStack.item().toString() )
             ;
             if( index < items.size()-1 ) {
@@ -36,6 +41,7 @@ public class MachineNode {
         return ItemStackListStringBuilder.toString();
     }
 
+    @Override
     public String toString() {
         StringBuilder nodeStringBuilder = new StringBuilder();
 

@@ -134,6 +134,7 @@ public class Maps {
                         Recipes.STEEL_INGOT,
                         List.of(WROUGHT_IRON_DUST, OXYGEN_GAS)
                     );
+                    STEEL_INGOT.setUptime(1.0); //Expected Limiting Factor
                     STEEL_ROD = new MachineNode(
                         Recipes.STEEL_ROD,
                         List.of(STEEL_INGOT)

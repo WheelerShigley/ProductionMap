@@ -417,17 +417,17 @@ public class Recipes {
     }
     public static final Recipe STEEL_INGOT; static {
         STEEL_INGOT = new Recipe(
-                Machines.ELECTRIC_BLAST_FURNACE_MV_NICU,
-                MachineConfiguration.ProgrammedCircuitEleven,
-                List.of(
-                        new ItemStack(Items.WROUGHT_IRON_DUST, 1),
-                        new ItemStack(Items.OXYGEN_GAS, 1)
-                ),
-                List.of(
-                        new ItemStack(Items.STEEL_ROD, 2),
-                        new ItemStack(Items.ASHES, 1.0/9.0)
-                ),
-                5.6
+            Machines.ELECTRIC_BLAST_FURNACE_MV_NICU,
+            MachineConfiguration.ProgrammedCircuitEleven,
+            List.of(
+                new ItemStack(Items.WROUGHT_IRON_DUST, 1),
+                new ItemStack(Items.OXYGEN_GAS, 1)
+            ),
+            List.of(
+                new ItemStack(Items.STEEL_INGOT, 1),
+                new ItemStack(Items.ASHES, 1.0/9.0)
+            ),
+            5
         );
     }
     public static final Recipe STEEL_ROD; static {
@@ -469,7 +469,7 @@ public class Recipes {
                 List.of(
                         new ItemStack(Items.VACUUM_TUBE, 4)
                 ),
-                Double.MIN_VALUE
+                8
         );
     }
     public static final Recipe WOOD_PLANK; static {
