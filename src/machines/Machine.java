@@ -1,0 +1,5 @@
+package machines;
+
+interface Machine {
+
+}

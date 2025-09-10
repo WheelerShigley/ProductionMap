@@ -1,0 +1,5 @@
+package items;
+
+interface Item {
+
+}
