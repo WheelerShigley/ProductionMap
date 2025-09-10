@@ -1,4 +1,3 @@
-import map.Map;
 import map.MapHelper;
 import map.Maps;
 
