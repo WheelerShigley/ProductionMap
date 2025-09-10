@@ -1,5 +1,0 @@
-package machines;
-
-interface Recipe {
-
-}

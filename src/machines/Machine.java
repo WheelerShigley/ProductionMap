@@ -1,6 +1,6 @@
 package machines;
 
-record Machine(String namespace, String identifier) {
+public record Machine(String namespace, String identifier) {
     Machine(String namespace, String identifier) {
         this.namespace = namespace;
         this.identifier = identifier;
