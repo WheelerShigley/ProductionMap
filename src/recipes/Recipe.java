@@ -5,8 +5,9 @@ import machines.Machine;
 
 import java.util.List;
 
-record Recipe(
+public record Recipe(
     Machine machine,
     List<ItemStack> inputs,
-    List<ItemStack> outputs
+    List<ItemStack> outputs,
+    float time_seconds
 ) {}

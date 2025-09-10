@@ -1,5 +1,6 @@
 package map;
 
-public class Map {
-
+public interface Map {
+    MachineNode getHead();
+    void constructMap();
 }
