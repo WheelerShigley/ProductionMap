@@ -92,7 +92,7 @@ public class Recipes {
     public static final Recipe COPPER_FOIL; static {
         COPPER_FOIL = new Recipe(
                 Machines.BASIC_BENDING_MACHINE,
-                MachineConfiguration.ProgrammedBioCircuitTen,
+                MachineConfiguration.ProgrammedCircuitTen,
                 List.of(
                         new ItemStack(Items.COPPER_INGOT, 1)
                 ),
@@ -105,7 +105,7 @@ public class Recipes {
     public static final Recipe COPPER_INGOT; static {
         COPPER_INGOT = new Recipe(
                 Machines.PLAYER,
-                MachineConfiguration.ProgrammedBioCircuitTen,
+                MachineConfiguration.None,
                 List.of(
                         new ItemStack(Items.MANUAL, 1)
                 ),
@@ -148,7 +148,7 @@ public class Recipes {
     public static final Recipe FINE_COPPER_WIRE; static {
         FINE_COPPER_WIRE = new Recipe(
                 Machines.BASIC_WIREMILL,
-                MachineConfiguration.ProgrammedBioCircuitThree,
+                MachineConfiguration.ProgrammedCircuitThree,
                 List.of(
                         new ItemStack(Items.COPPER_INGOT, 1)
                 ),
@@ -279,7 +279,7 @@ public class Recipes {
     public static final Recipe ONE_COPPER_WIRE; static {
         ONE_COPPER_WIRE = new Recipe(
                 Machines.BASIC_WIREMILL,
-                MachineConfiguration.ProgrammedBioCircuitOne,
+                MachineConfiguration.ProgrammedCircuitOne,
                 List.of(
                         new ItemStack(Items.COPPER_INGOT, 1)
                 ),
@@ -292,7 +292,7 @@ public class Recipes {
     public static final Recipe ONE_RED_ALLOY_WIRE; static {
         ONE_RED_ALLOY_WIRE = new Recipe(
                 Machines.BASIC_WIREMILL,
-                MachineConfiguration.ProgrammedBioCircuitOne,
+                MachineConfiguration.ProgrammedCircuitOne,
                 List.of(
                         new ItemStack(Items.RED_ALLOY_INGOT, 1)
                 ),
@@ -360,7 +360,7 @@ public class Recipes {
     public static final Recipe RED_ALLOY_INGOT; static {
         RED_ALLOY_INGOT = new Recipe(
                 Machines.BASIC_ALLOY_SMELTER,
-                MachineConfiguration.ProgrammedBioCircuitOne,
+                MachineConfiguration.None,
                 List.of(
                         new ItemStack(Items.COPPER_INGOT, 1),
                         new ItemStack(Items.REDSTONE_DUST, 4)
@@ -389,7 +389,7 @@ public class Recipes {
     public static final Recipe RESISTOR; static {
         RESISTOR = new Recipe(
                 Machines.BASIC_CIRCUIT_ASSEMBLER,
-                MachineConfiguration.ProgrammedBioCircuitThree,
+                MachineConfiguration.ProgrammedCircuitThree,
                 List.of(
                         new ItemStack(Items.COAL_DUST, 1),
                         new ItemStack(Items.FINE_COPPER_WIRE, 4),

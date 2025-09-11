@@ -2,6 +2,8 @@ package map;
 
 import items.Item;
 import items.ItemStack;
+import machines.MachineConfiguration;
+import machines.MachineConfigurationHelper;
 import machines.Machines;
 import recipes.Recipe;
 
@@ -17,7 +19,15 @@ public class MapHelper {
         nodeBuilder.append("└ ").append( node.toString() );
 
         //% (and/or quantity of machines); % need not be shown for manual tasks
-        nodeBuilder.append(" [").append( node.recipe.machine().toString() ).append(']');
+        nodeBuilder.append(" [").append( node.recipe.machine().toString() );
+        if( !node.recipe.circuit().equals(MachineConfiguration.None) ) {
+            nodeBuilder.append(", ").append(
+                MachineConfigurationHelper.machineConfigurationToString( node.recipe.circuit() )
+            );
+        }
+        nodeBuilder.append(']');
+
+        //uptime
         if(
             0.0 <= node.calculated_uptime
             && !node.recipe.machine().equals(Machines.PLAYER)
