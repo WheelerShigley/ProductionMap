@@ -78,7 +78,7 @@ public class Recipes {
     }
     public static final Recipe COMPRESSED_AIR; static {
         COMPRESSED_AIR = new Recipe(
-                Machines.LOW_VOLTAGE_FLUID_TANK,
+                Machines.BASIC_COMPRESSOR,
                 MachineConfiguration.None,
                 List.of(
                         new ItemStack(Items.EMPTY_CELL, 1)

@@ -12,6 +12,7 @@ public class Machines {
     public static final Machine BASIC_BENDING_MACHINE = new Machine("gregtech","basic_bending_machine");
     public static final Machine BASIC_CENTRIFUGE = new Machine("gregtech","basic_centrifuge");
     public static final Machine BASIC_CIRCUIT_ASSEMBLER = new Machine("gregtech","basic_circuit_assembler");
+    public static final Machine BASIC_COMPRESSOR = new Machine("gregtech","basic_compressor");
     public static final Machine BASIC_FLUID_EXTRACTOR = new Machine("gregtech","basic_fluid_extractor");
     public static final Machine BASIC_FORGE_HAMMER = new Machine("gregtech","basic_forge_hammer");
     public static final Machine BASIC_MACERATOR = new Machine("gregtech","basic_macerator");
