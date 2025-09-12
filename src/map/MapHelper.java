@@ -17,12 +17,73 @@ import java.util.logging.*;
 import static machines.Voltage.getAveragePowerConsumptionString;
 
 public class MapHelper {
-    private static void printMachineNode(MachineNode node, int depth, final Logger LOGGER) {
+    private static char getPipe(int depth) {
+        return switch(depth%4) {
+            //case 0, 1 -> '│';
+            case 2, 3 ->   '║';
+            default ->  '│';
+        };
+    }
+    private static char getSplitPipe(int depth) {
+        return switch(depth%4) {
+            //case 0 -> '├';
+            case 1 ->   '╞';
+            case 2 ->   '╟';
+            case 3 ->   '╠';
+            default ->  '├';
+        };
+    }
+    private static char getAngledPipe(int depth) {
+        return switch(depth%4) {
+            //case 0 -> '└';
+            case 1 ->   '╘';
+            case 2 ->   '╙';
+            case 3 ->   '╚';
+            default ->  '└';
+        };
+    }
+
+    private static MachineNode getLastSource(MachineNode node) {
+        if(node == null) {
+            return null;
+        }
+        if( node.sources.isEmpty() ) {
+            return null;
+        }
+
+        MachineNode lastSource = null;
+        for(MachineNode source : node.sources) {
+            lastSource = source;
+        }
+        return lastSource;
+    }
+
+    private static void printMachineNode(Map map, MachineNode parent, MachineNode node, HashMap<Integer, Boolean> depthsWithLines, int depth, final Logger LOGGER) {
         StringBuilder nodeBuilder = new StringBuilder();
-        for(int i = 0; i < depth-1; i++) {
+        //nodeBuilder.append("\n"+depthsWithLines.toString()+"\n");
+        for(int index = 0; index < depth-1; index++) {
+            if( depthsWithLines.containsKey(index) && depthsWithLines.get(index) ) {
+                nodeBuilder.append( getPipe(index) );
+            } else {
+                nodeBuilder.append(' ');
+            }
             nodeBuilder.append("\t");
         }
-        nodeBuilder.append("└ ").append( node.toString() );
+        //head node needs not be derived from another recipe
+        MachineNode lastSourceOfParent = getLastSource(parent);
+        if(  !node.equals( map.getHead() )  ) {
+            boolean isLastInLine = lastSourceOfParent != null && lastSourceOfParent.equals(node);
+            if( depthsWithLines.containsKey(depth-1) ) {
+                depthsWithLines.replace(depth-1, !isLastInLine);
+            } else {
+                depthsWithLines.put(depth-1, !isLastInLine);
+            }
+            nodeBuilder
+                .append( isLastInLine ? getAngledPipe(depth-1) : getSplitPipe(depth-1) )
+                .append(' ')
+            ;
+        }
+        nodeBuilder.append(node);
 
         //% (and/or quantity of machines); % need not be shown for manual tasks
         nodeBuilder.append(" [");
@@ -46,7 +107,7 @@ public class MapHelper {
 
         //print sources
         for(MachineNode source : node.sources) {
-            printMachineNode(source, depth+1, LOGGER);
+            printMachineNode(map, node, source, depthsWithLines, depth+1, LOGGER);
         }
     }
 
@@ -73,7 +134,9 @@ public class MapHelper {
             );
             LOGGER.addHandler(handler);
         }
-        printMachineNode(map.getHead(), 0, LOGGER);
+        HashMap<Integer, Boolean> linePositions = new HashMap<Integer, Boolean>();
+        linePositions.put(0, true);
+        printMachineNode(map, null, map.getHead(), linePositions, 0, LOGGER);
 
         LOGGER.log(
             Level.INFO,
