@@ -10,7 +10,7 @@ public class Machines extends Registered<Machine> {
     }
 
     public static final Machine CELL_CYCLING = new Machine("system","cycling", Low);
-    public static final Machine PLAYER = new Machine("player","manual", None);
+    public static final Machine PLAYER = new Machine("player","manual");
 
     public static final Machine ADVANCED_EXTRUDER = new Machine("gregtech","advanced_extruder", Medium);
     public static final Machine ADVANCED_FLUID_EXTRACTOR = new Machine("gregtech","advanced_fluid_extractor", Medium);
@@ -29,6 +29,6 @@ public class Machines extends Registered<Machine> {
     public static final Machine BASIC_SIFTER = new Machine("gregtech","basic_sifter", Low);
     public static final Machine BASIC_WIREMILL = new Machine("gregtech","basic_wiremill", Low);
     public static final Machine CROP_MANAGER_LV = new Machine("gregtech","crop_manager_lv", Low);
-    public static final Machine ELECTRIC_BLAST_FURNACE_LV_NICU = new Machine("gregtech","electric_blast_furnace_lv_nicu", Low);
+    public static final Machine ELECTRIC_BLAST_FURNACE_LV_NICU = new Machine("gregtech","electric_blast_furnace_lv_nicu", Low, 400);
     public static final Machine LOW_VOLTAGE_FLUID_TANK = new Machine("gregtech","low_voltage_fluid_tank", Low);
 }

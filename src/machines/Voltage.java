@@ -68,7 +68,7 @@ public enum Voltage {
     public static String getAveragePowerConsumptionString(HashMap<Voltage, Double> averagePowerConsumption){
         //print average power consumption
         StringBuilder powerConsumptionMessageBuilder = new StringBuilder();
-        powerConsumptionMessageBuilder.append("Average Power Consumption: {");
+        powerConsumptionMessageBuilder.append("Average Power Consumption = {");
 
         int accumulator = 0;
         for(Voltage voltage : averagePowerConsumption.keySet() ) {

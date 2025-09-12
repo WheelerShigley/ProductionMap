@@ -81,6 +81,11 @@ public class MapHelper {
                 recursivelyGetAveragePowerConsumption( map.getHead() )
             )
         );
+
+        LOGGER.log(
+            Level.INFO,
+            "Average Pollution = "+ recursivelyGetAveragePollutionOutput( map.getHead() )  +" pol/s."
+        );
     }
 
     private static MachineNode discoverPrecalculatedUptimeMachine(MachineNode node) {
@@ -337,5 +342,15 @@ public class MapHelper {
         }
 
         return powerConsumption;
+    }
+
+    public static double recursivelyGetAveragePollutionOutput(MachineNode node) {
+        double pollution_rate = node.recipe.machine.pollution * node.calculated_uptime;
+
+        for(MachineNode source : node.sources) {
+            pollution_rate += recursivelyGetAveragePollutionOutput(source);
+        }
+
+        return pollution_rate;
     }
 }
