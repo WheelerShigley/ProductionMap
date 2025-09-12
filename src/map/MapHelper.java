@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.*;
 
+import static machines.Voltage.getAveragePowerConsumptionString;
+
 public class MapHelper {
     private static void printMachineNode(MachineNode node, int depth, final Logger LOGGER) {
         StringBuilder nodeBuilder = new StringBuilder();
@@ -72,6 +74,13 @@ public class MapHelper {
             LOGGER.addHandler(handler);
         }
         printMachineNode(map.getHead(), 0, LOGGER);
+
+        LOGGER.log(
+            Level.INFO,
+            getAveragePowerConsumptionString(
+                recursivelyGetAveragePowerConsumption( map.getHead() )
+            )
+        );
     }
 
     private static MachineNode discoverPrecalculatedUptimeMachine(MachineNode node) {
@@ -293,5 +302,40 @@ public class MapHelper {
         for(MachineNode sourceNode : sourceNodes) {
             recursivelyGenerateRecipesFromPreferredSources(sourceNode);
         }
+    }
+
+    private static void addAmperages(HashMap<Voltage, Double> first, HashMap<Voltage, Double> second) {
+        for( Voltage addedVoltage : second.keySet() ) {
+            if( first.containsKey(addedVoltage) ) {
+                first.replace(
+                    addedVoltage,
+                    first.get(addedVoltage)+second.get(addedVoltage)
+                );
+            } else {
+                first.put(
+                    addedVoltage,
+                    second.get(addedVoltage)
+                );
+            }
+        }
+    }
+
+    public static HashMap<Voltage, Double> recursivelyGetAveragePowerConsumption(MachineNode node) {
+        HashMap<Voltage, Double> powerConsumption = new HashMap<Voltage, Double>();
+
+        powerConsumption.put(
+            node.recipe.machine.voltage,
+            node.recipe.amperage * node.calculated_uptime
+        );
+
+        //get source's consumption as well
+        for(MachineNode source : node.sources) {
+            addAmperages(
+                powerConsumption,
+                recursivelyGetAveragePowerConsumption(source)
+            );
+        }
+
+        return powerConsumption;
     }
 }

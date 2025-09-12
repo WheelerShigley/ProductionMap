@@ -1,5 +1,8 @@
 package machines;
 
+import java.util.HashMap;
+import java.util.logging.Logger;
+
 public enum Voltage {
     None,
     UltraLow,
@@ -60,5 +63,34 @@ public enum Voltage {
             case Maximum ->                 Integer.MAX_VALUE;
             default ->                      0;
         };
+    }
+
+    public static String getAveragePowerConsumptionString(HashMap<Voltage, Double> averagePowerConsumption){
+        //print average power consumption
+        StringBuilder powerConsumptionMessageBuilder = new StringBuilder();
+        powerConsumptionMessageBuilder.append("Average Power Consumption: {");
+
+        int accumulator = 0;
+        for(Voltage voltage : averagePowerConsumption.keySet() ) {
+            if( voltage.equals(Voltage.None) ) {
+                continue;
+            }
+            powerConsumptionMessageBuilder
+                .append(
+                    Math.round(
+                        100.0*averagePowerConsumption.get(voltage)
+                    )/100.0
+                )
+                .append("A@")
+                .append( voltage.toString() )
+            ;
+            if(accumulator < averagePowerConsumption.size()-2) {
+                powerConsumptionMessageBuilder.append(", ");
+            }
+            accumulator++;
+        }
+        powerConsumptionMessageBuilder.append('}');
+
+        return powerConsumptionMessageBuilder.toString();
     }
 }

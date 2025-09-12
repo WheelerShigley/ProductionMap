@@ -1,9 +1,15 @@
 package map;
 
+import machines.Voltage;
 import recipes.Recipe;
+
+import java.util.HashMap;
+
+import static map.MapHelper.recursivelyGetAveragePowerConsumption;
 
 public class Map {
     public final MachineNode head;
+    HashMap<Voltage, Double> averagePowerConsumption;
 
     public Map(Recipe recipe) {
         this.head = new MachineNode(recipe);
@@ -14,6 +20,7 @@ public class Map {
         MapHelper.recursivelyGenerateRecipesFromPreferredSources(head);
         head.setUptime(uptime);
         MapHelper.calculateUptimes(this);
+        averagePowerConsumption = recursivelyGetAveragePowerConsumption(head);
     }
 
     public MachineNode getHead() {
