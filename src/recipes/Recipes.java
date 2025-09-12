@@ -361,15 +361,15 @@ public class Recipes {
                     Recipes.EMPTY_CELL_CYCLED
                 ),
                 new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.COMPRESSED_AIR, 10),
-                    Recipes.COMPRESSED_AIR
+                    new ItemStack(Items.AIR_GAS, 10),
+                    Recipes.AIR_GAS
                 )
             ),
             List.of(
                 new ItemStack(Items.OXYGEN_CELL, 1),
                 new ItemStack(Items.NITROGEN_GAS, 3.9)
             ),
-            2.8
+            80
         );
     }
     public static final Recipe MOLTEN_RED_ALLOY; static {

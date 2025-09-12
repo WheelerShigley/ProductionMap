@@ -7,7 +7,6 @@ import machines.MachineConfiguration;
 import machines.Machines;
 import recipes.ItemStackWithPreferredRecipeSource;
 import recipes.Recipe;
-import recipes.Recipes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,10 +159,6 @@ public class MapHelper {
                 * node.calculated_uptime //desired rate, in "items/second"
             ;
             for(MachineNode source : node.sources) {
-                if(0.0 < source.calculated_uptime) {
-                    continue;
-                }
-
                 double maximum_production_rate = getRateOfDesiredOutput( source.recipe, sourceItem.itemStack.item() );
                 if(maximum_production_rate <= 0.0) {
                     continue;
@@ -277,13 +272,10 @@ public class MapHelper {
         if(
             node.recipe == null
             || node.recipe.machine().equals(Machines.PLAYER)
+            || node.recipe.machine().equals(Machines.CELL_CYCLING)
             || itemStacksAreNothing( node.recipe.getInputsAsItemStacks() )
         ) {
             return;
-        }
-
-        if(  node.recipe.outputs().contains( new ItemStack(Items.EMPTY_CELL, 1) )  ) {
-            int a = 1;
         }
 
         //create new sources
