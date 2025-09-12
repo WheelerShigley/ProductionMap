@@ -2,7 +2,7 @@ package items;
 
 import register.Registered;
 
-import static register.namespaces.*;
+import static register.Namespaces.*;
 
 public class Items extends Registered<Item> {
     public Items() {
