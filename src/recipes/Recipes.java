@@ -332,7 +332,7 @@ public class Recipes {
                 new ItemStack(Items.EMPTY_CELL, 1),
                 new ItemStack(Items.AIR_GAS, 2)
             ),
-            1
+            0.1
         );
     }
     public static final Recipe FLINT; static {
@@ -524,7 +524,7 @@ public class Recipes {
                 new ItemStack(Items.EMPTY_CELL, 1),
                 new ItemStack(Items.OXYGEN_GAS, 1)
             ),
-            1
+            0.1
         );
     }
     public static final Recipe QUARTZ_SAND; static {
