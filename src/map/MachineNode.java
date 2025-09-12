@@ -23,6 +23,10 @@ public class MachineNode {
         this.calculated_uptime = uptime;
     }
 
+    public void setSources(List<MachineNode> sources) {
+        this.sources = sources;
+    }
+
     private String ItemStackListToString(List<ItemStack> items) {
         StringBuilder ItemStackListStringBuilder = new StringBuilder();
 
@@ -43,9 +47,13 @@ public class MachineNode {
 
     @Override
     public String toString() {
+        if(this.recipe == null) {
+            return "Recipe is \"null\".";
+        }
+
         StringBuilder nodeStringBuilder = new StringBuilder();
 
-        String inputs  = ItemStackListToString( recipe.inputs()  );
+        String inputs  = ItemStackListToString( recipe.getInputsAsItemStacks()  );
         String outputs = ItemStackListToString( recipe.outputs() );
 
         nodeStringBuilder.append(inputs).append(" = ").append(outputs);

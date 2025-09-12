@@ -201,6 +201,7 @@ public class Maps {
             }
 
             //recipe (root)
+            /*
             head = new MachineNode(
                 Recipes.ELECTRIC_CIRCUITS,
                 List.of(
@@ -211,6 +212,13 @@ public class Maps {
                     MOLTEN_LEAD
                 )
             );
+            */
+
+            head = new MachineNode(Recipes.ELECTRIC_CIRCUITS);
+            MapHelper.recursivelyGenerateRecipesFromPreferredSources(head);
+            head.setUptime(2.0);
+            //MapHelper.calculateUptimes(head);
+
         }
     };
 }

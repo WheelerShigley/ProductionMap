@@ -2,10 +2,14 @@ package map;
 
 import items.Item;
 import items.ItemStack;
+import items.Items;
 import machines.MachineConfiguration;
 import machines.Machines;
+import recipes.ItemStackWithPreferredRecipeSource;
 import recipes.Recipe;
+import recipes.Recipes;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.*;
 
@@ -18,8 +22,11 @@ public class MapHelper {
         nodeBuilder.append("└ ").append( node.toString() );
 
         //% (and/or quantity of machines); % need not be shown for manual tasks
-        nodeBuilder.append(" [").append( node.recipe.machine().toString() );
-        if( !node.recipe.circuit().equals(MachineConfiguration.None) ) {
+        nodeBuilder.append(" [");
+        if(node.recipe != null) {
+            nodeBuilder.append( node.recipe.machine().toString() );
+        }
+        if( node.recipe != null && !node.recipe.circuit().equals(MachineConfiguration.None) ) {
             nodeBuilder.append(", ").append( node.recipe.circuit().toString() );
         }
         nodeBuilder.append(']');
@@ -114,6 +121,10 @@ public class MapHelper {
     }
 
     private static double getRateOfDesiredOutput(Recipe recipe, Item desiredItem) {
+        if(recipe == null) {
+            return 0.0;
+        }
+
         //find produced quantity of desired output
         double produced_quantity = 0.0;
         for( ItemStack producedItem : recipe.outputs() ) {
@@ -143,9 +154,9 @@ public class MapHelper {
 
         //calculate expected rate of each source, back-propagating base on their times; then, back-propagate the sources
         //Note: This assumes that only one of any given input produces any given desired item
-        for( ItemStack sourceItem : node.recipe.inputs() ) {
+        for( ItemStackWithPreferredRecipeSource sourceItem : node.recipe.inputs() ) {
             double desired_production_rate =
-                ( sourceItem.quantity()/node.recipe.time_seconds() ) //maximum rate, in "items/second"
+                ( sourceItem.itemStack.quantity()/node.recipe.time_seconds() ) //maximum rate, in "items/second"
                 * node.calculated_uptime //desired rate, in "items/second"
             ;
             for(MachineNode source : node.sources) {
@@ -153,7 +164,7 @@ public class MapHelper {
                     continue;
                 }
 
-                double maximum_production_rate = getRateOfDesiredOutput( source.recipe, sourceItem.item() );
+                double maximum_production_rate = getRateOfDesiredOutput( source.recipe, sourceItem.itemStack.item() );
                 if(maximum_production_rate <= 0.0) {
                     continue;
                 }
@@ -194,7 +205,7 @@ public class MapHelper {
         //recursively forward-to-back-propagate uptimes, until reaching the head
         MachineNode precursor = discoverParentOfPrecalculatedUptimeMachine( map.getHead() );
         if(precursor == null) {
-            LOGGER.log(Level.WARNING, "No expected-uptime-parent found; cannot calculate uptimes.");
+            LOGGER.log(Level.WARNING, "No expected-uptime-parent found; final-machine is the limiting factor, or cannot calculate uptimes.");
             return;
         }
         while(  precursor != null  &&  !precursor.equals( map.getHead() )  ) {
@@ -202,7 +213,7 @@ public class MapHelper {
             MachineNode calculatedNode = discoverPrecalculatedUptimeMachine( map.getHead() );
 
             //find common item between precursor and pre-calculated node
-            Item commonItem = getFirstItemInCommon( precursor.recipe.inputs(), calculatedNode.recipe.outputs() );
+            Item commonItem = getFirstItemInCommon( precursor.recipe.getInputsAsItemStacks(), calculatedNode.recipe.outputs() );
             if(commonItem == null) {
                 LOGGER.log(Level.WARNING, "No expected-uptime and parent overlap found; cannot calculate uptimes.");
                 return;
@@ -210,7 +221,7 @@ public class MapHelper {
 
             //calculate production rates for precursor
             double uptime; {
-                double potential_rate = precursor.recipe.time_seconds() / getQuantityOfDesiredIO(precursor.recipe.inputs(), commonItem);
+                double potential_rate = precursor.recipe.time_seconds() / getQuantityOfDesiredIO(precursor.recipe.getInputsAsItemStacks(), commonItem);
                 double available_rate = ( calculatedNode.recipe.time_seconds() / calculatedNode.calculated_uptime )  /  getQuantityOfDesiredIO(calculatedNode.recipe.outputs(), commonItem);
                 uptime = potential_rate/available_rate;
             }
@@ -235,14 +246,14 @@ public class MapHelper {
             return;
         }
             //find common item for parent and head
-        Item commonItem = getFirstItemInCommon(calculatedHeadParent.recipe.outputs(), map.getHead().recipe.inputs() );
+        Item commonItem = getFirstItemInCommon(calculatedHeadParent.recipe.outputs(), map.getHead().recipe.getInputsAsItemStacks() );
         if(commonItem == null) {
             LOGGER.log(Level.WARNING, "No match for final-product's parents' and final-product's items; cannot calculate uptimes.");
             return;
         }
             //get production rates for head and calculated-parent
         double uptime; {
-            double potential_rate = map.getHead().recipe.time_seconds() / getQuantityOfDesiredIO(map.getHead().recipe.inputs(), commonItem);
+            double potential_rate = map.getHead().recipe.time_seconds() / getQuantityOfDesiredIO(map.getHead().recipe.getInputsAsItemStacks(), commonItem);
             double available_rate = ( calculatedHeadParent.recipe.time_seconds() / calculatedHeadParent.calculated_uptime )  /  getQuantityOfDesiredIO(calculatedHeadParent.recipe.outputs(), commonItem);
             uptime = potential_rate/available_rate;
         }
@@ -250,5 +261,43 @@ public class MapHelper {
 
         //back-propagate from head
         backPropagateUptimes( map.getHead() );
+    }
+
+    private static boolean itemStacksAreNothing(List<ItemStack> items) {
+        for(ItemStack item : items) {
+            if( !item.item().equals(Items.NOTHING) ) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static void recursivelyGenerateRecipesFromPreferredSources(MachineNode node) {
+        //for leaf-nodes, return
+        if(
+            node.recipe == null
+            || node.recipe.machine().equals(Machines.PLAYER)
+            || itemStacksAreNothing( node.recipe.getInputsAsItemStacks() )
+        ) {
+            return;
+        }
+
+        if(  node.recipe.outputs().contains( new ItemStack(Items.EMPTY_CELL, 1) )  ) {
+            int a = 1;
+        }
+
+        //create new sources
+        List<MachineNode> sourceNodes = new ArrayList<MachineNode>();
+        for(ItemStackWithPreferredRecipeSource inputWithSource : node.recipe.inputs() ) {
+            sourceNodes.add(
+                new MachineNode(inputWithSource.preferredRecipeSource)
+            );
+        }
+        node.sources = sourceNodes;
+
+        //generate sources for each source
+        for(MachineNode sourceNode : sourceNodes) {
+            recursivelyGenerateRecipesFromPreferredSources(sourceNode);
+        }
     }
 }
