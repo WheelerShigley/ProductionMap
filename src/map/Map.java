@@ -15,4 +15,8 @@ public class Map {
         head.setUptime(uptime);
         MapHelper.calculateUptimes(this);
     }
+
+    public MachineNode getHead() {
+        return head;
+    }
 }
