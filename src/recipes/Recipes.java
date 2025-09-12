@@ -606,6 +606,7 @@ public class Recipes {
     public static final Recipe WROUGHT_IRON_DUST; static {
         WROUGHT_IRON_DUST = new Recipe(
             Machines.BASIC_MACERATOR,
+            3,
             MachineConfiguration.ProgrammedCircuitEleven,
             List.of(
                 new ItemStackWithPreferredRecipeSource(
@@ -623,7 +624,8 @@ public class Recipes {
     //of^7 nothing
     public static final Recipe STEEL_INGOT; static {
         STEEL_INGOT = new Recipe(
-            Machines.ELECTRIC_BLAST_FURNACE_MV_NICU,
+            Machines.ELECTRIC_BLAST_FURNACE_LV_NICU,
+            4,
             MachineConfiguration.ProgrammedCircuitEleven,
             List.of(
                 new ItemStackWithPreferredRecipeSource(

@@ -54,7 +54,7 @@ public class MachineNode {
         StringBuilder nodeStringBuilder = new StringBuilder();
 
         String inputs  = ItemStackListToString( recipe.getInputsAsItemStacks()  );
-        String outputs = ItemStackListToString( recipe.outputs() );
+        String outputs = ItemStackListToString( recipe.outputs );
 
         nodeStringBuilder.append(inputs).append(" = ").append(outputs);
         return nodeStringBuilder.toString();

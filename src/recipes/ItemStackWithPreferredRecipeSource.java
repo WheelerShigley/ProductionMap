@@ -22,12 +22,12 @@ public class ItemStackWithPreferredRecipeSource {
     private boolean isValidSource(Item item, Recipe source) {
         if(
             source == null || item.equals(Items.NOTHING)
-            || source.equals(Recipes.DUMMY) || source.machine().equals(Machines.PLAYER)
+            || source.equals(Recipes.DUMMY) || source.machine.equals(Machines.PLAYER)
         ) {
             return true;
         }
 
-        for( ItemStack output : source.outputs() ) {
+        for( ItemStack output : source.outputs ) {
             if( output.item().equals(item) ) {
                 return true;
             }
