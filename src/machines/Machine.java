@@ -1,42 +1,9 @@
 package machines;
 
-public record Machine(String namespace, String identifier) {
-    public Machine(String namespace, String identifier) {
-        this.namespace = namespace;
-        this.identifier = identifier;
-        MachinesRegistry.registerMachine(this, false);
-    }
+import register.Identified;
 
-    public String getIdentifierString() {
-        return this.namespace+':'+this.identifier;
-    }
-
-    @Override
-    public String toString() {
-        char[] reformattedIdentifier = this.identifier.replace('_',' ').toCharArray();
-        StringBuilder titleMaker = new StringBuilder();
-
-        boolean lastCharWasWhiteSpace = true, currentCharIsWhiteSpace = false;
-        for(char character : reformattedIdentifier) {
-            //skip consecuative white-space
-            currentCharIsWhiteSpace = Character.isWhitespace(character);
-            if(currentCharIsWhiteSpace && lastCharWasWhiteSpace) {
-                continue;
-            }
-
-            //capitalize new words
-            if(lastCharWasWhiteSpace) {
-                titleMaker.append( Character.toUpperCase(character) );
-                lastCharWasWhiteSpace = currentCharIsWhiteSpace;
-                continue;
-            }
-
-            //append current character
-            titleMaker.append(character);
-
-            //set last-char
-            lastCharWasWhiteSpace = currentCharIsWhiteSpace;
-        }
-        return titleMaker.toString().replace(' ','-');
+public class Machine extends Identified {
+    public Machine(String namespace, String name) {
+        super(namespace, name);
     }
 }

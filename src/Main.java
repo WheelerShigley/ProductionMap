@@ -12,6 +12,7 @@ public class Main {
          * Calculate System's Pollution Output
          *
          * Fix branches of output map?
+         * Make Recipes be Identified?
          */
         final Map ELECTRIC_CIRCUIT = Maps.ELECTRIC_CIRCUIT;
         MapHelper.calculateUptimes(ELECTRIC_CIRCUIT);

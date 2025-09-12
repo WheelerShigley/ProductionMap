@@ -1,6 +1,12 @@
 package machines;
 
-public class Machines {
+import register.Registered;
+
+public class Machines extends Registered<Machine> {
+    public Machines() {
+        super("Machines");
+    }
+
     public static final Machine CELL_CYCLING = new Machine("system","cycling");
     public static final Machine PLAYER = new Machine("player","manual");
 

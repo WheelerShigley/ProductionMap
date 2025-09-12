@@ -3,7 +3,6 @@ package map;
 import items.Item;
 import items.ItemStack;
 import machines.MachineConfiguration;
-import machines.MachineConfigurationHelper;
 import machines.Machines;
 import recipes.Recipe;
 
@@ -21,9 +20,7 @@ public class MapHelper {
         //% (and/or quantity of machines); % need not be shown for manual tasks
         nodeBuilder.append(" [").append( node.recipe.machine().toString() );
         if( !node.recipe.circuit().equals(MachineConfiguration.None) ) {
-            nodeBuilder.append(", ").append(
-                MachineConfigurationHelper.machineConfigurationToString( node.recipe.circuit() )
-            );
+            nodeBuilder.append(", ").append( node.recipe.circuit().toString() );
         }
         nodeBuilder.append(']');
 
