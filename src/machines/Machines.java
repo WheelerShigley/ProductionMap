@@ -14,6 +14,7 @@ public class Machines extends Registered<Machine> {
     public static final Machine CELL_CYCLING = new Machine(WORLD,"cycling", Low);
     public static final Machine PLAYER = new Machine(Namespaces.PLAYER,"manual");
 
+    public static final Machine ADVANCED_ELECTROLYZER = new Machine(GREGTECH,"advanced_electrolyzer", Medium);
     public static final Machine ADVANCED_EXTRUDER = new Machine(GREGTECH,"advanced_extruder", Medium);
     public static final Machine ADVANCED_FLUID_EXTRACTOR = new Machine(GREGTECH,"advanced_fluid_extractor", Medium);
     public static final Machine BASIC_ALLOY_SMELTER = new Machine(GREGTECH,"basic_alloy_smelter", Low);
@@ -33,4 +34,5 @@ public class Machines extends Registered<Machine> {
     public static final Machine CROP_MANAGER_LV = new Machine(GREGTECH,"crop_manager_lv", Low);
     public static final Machine ELECTRIC_BLAST_FURNACE_LV_NICU = new Machine(GREGTECH,"electric_blast_furnace_lv_nicu", Low, 400);
     public static final Machine LOW_VOLTAGE_FLUID_TANK = new Machine(GREGTECH,"low_voltage_fluid_tank", Low);
+    public static final Machine REINFORCED_LAVA_BOILER = new Machine(GREGTECH,"reinforced_lava_boiler");
 }
