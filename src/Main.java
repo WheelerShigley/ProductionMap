@@ -1,4 +1,3 @@
-import map.MapHelper;
 import map.Maps;
 
 public class Main {
@@ -15,6 +14,6 @@ public class Main {
      * README.md
      */
     public static void main(String[] args) {
-        MapHelper.printMap(Maps.ELECTRIC_CIRCUIT);
+        System.out.println( Maps.ELECTRIC_CIRCUIT.toString() );
     }
 }
