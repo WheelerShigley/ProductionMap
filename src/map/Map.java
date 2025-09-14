@@ -9,14 +9,13 @@ import machines.Voltage;
 import recipes.ItemStackWithPreferredRecipeSource;
 import recipes.Recipe;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Map {
     private final MachineNode head;
+    private final List<MachineNode> consolidatedBranches = new ArrayList<MachineNode>();
 
     @Deprecated
     public Map(Recipe recipe) {
@@ -28,12 +27,28 @@ public class Map {
         recursivelyGenerateRecipesFromPreferredSources(head);
         head.setUptime(uptime);
         calculateUptimes(this);
+
+        consolidateDuplicateBranches(this);
     }
 
     //# toString() and Helpers
     @Override
     public String toString() {
         final StringBuilder MAP_STRING_BUILDER = new StringBuilder();
+
+        //print sub-systems first
+        for(MachineNode subMapHead : this.consolidatedBranches) {
+            Map subSystemMap = new Map(subMapHead.recipe);
+            subSystemMap.head.setUptime(subMapHead.calculated_uptime);
+            calculateUptimes(subSystemMap);
+
+            HashMap<Integer, Boolean> linePositions = new HashMap<Integer, Boolean>();
+            linePositions.put(0, false);
+            getMapNodeAsString(subSystemMap, null, subSystemMap.getHead(), linePositions, 0, MAP_STRING_BUILDER);
+
+            MAP_STRING_BUILDER.append("\r\n");
+        }
+        MAP_STRING_BUILDER.append("\r\n");
 
         //print tree (branched node-graph)
         HashMap<Integer, Boolean> linePositions = new HashMap<Integer, Boolean>();
@@ -127,6 +142,7 @@ public class Map {
             0.0 <= node.calculated_uptime
             && node.recipe != null
             && !node.recipe.machine.equals(Machines.PLAYER)
+            && !node.recipe.machine.equals(Machines.CONSOLIDATED_BRANCH)
         ) {
             STRINGBUILDER.append("@").append( Math.round(10000.0*node.calculated_uptime)/100.0 ).append('%');
         }
@@ -182,10 +198,10 @@ public class Map {
     private static void recursivelyGenerateRecipesFromPreferredSources(MachineNode node) {
         //for leaf-nodes, return
         if(
-                node.recipe == null
-                        || node.recipe.machine.equals(Machines.PLAYER)
-                        || node.recipe.machine.equals(Machines.CELL_CYCLING)
-                        || itemStacksAreNothing( node.recipe.getInputsAsItemStacks() )
+            node.recipe == null
+            || node.recipe.machine.equals(Machines.PLAYER)
+            || node.recipe.machine.equals(Machines.CELL_CYCLING)
+            || itemStacksAreNothing( node.recipe.getInputsAsItemStacks() )
         ) {
             return;
         }
@@ -194,7 +210,7 @@ public class Map {
         List<MachineNode> sourceNodes = new ArrayList<MachineNode>();
         for(ItemStackWithPreferredRecipeSource inputWithSource : node.recipe.inputs ) {
             sourceNodes.add(
-                    new MachineNode(inputWithSource.preferredRecipeSource)
+                new MachineNode(inputWithSource.preferredRecipeSource)
             );
         }
         node.sources = sourceNodes;
@@ -206,11 +222,14 @@ public class Map {
     }
     private static boolean itemStacksAreNothing(List<ItemStack> items) {
         for(ItemStack item : items) {
-            if( !item.item().equals(Items.NOTHING) ) {
-                return false;
+            if(
+                   item.item().equals(Items.NOTHING)
+                || item.item().equals(Items.MANUAL)
+            ) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     private static void calculateUptimes(Map map) {
@@ -395,6 +414,233 @@ public class Map {
         }
         return null;
     }
+
+    private static void consolidateDuplicateBranches(Map map) {
+        //get all nodes in Map
+        List<MachineNode> nodes = getAllSourceNodes( map.getHead() );
+
+        //Check each node against all others for matching branches,
+        //when a matching branch is found, move them into a set for matching branches.
+        List< List<MachineNode> > matchingBranchesHeads = new ArrayList< List<MachineNode> >();
+        for(MachineNode primaryNode : nodes) {
+            for(MachineNode secondaryNode : nodes) {
+                //skip self
+                if(primaryNode == secondaryNode) {
+                    continue;
+                }
+
+                if( areBranchesDuplicates(primaryNode,secondaryNode) ) {
+                    incorporateBranchesIntoMatchingList(matchingBranchesHeads, primaryNode, secondaryNode);
+                }
+            }
+        }
+
+        //remove matched sub-branch-sets (these are sub-branches of other matched branches)
+        final HashMap<  Integer,  List< List<MachineNode> >  > COMPLEXITY_BRANCH_MAP = new HashMap<>();
+        /*Order Branches (and sub-Branches) by their recipe-complexity*/ {
+            MachineNode exampleNode;
+            int complexity;
+            for(List<MachineNode> branch : matchingBranchesHeads) {
+                exampleNode = branch.getFirst();
+                complexity = exampleNode.recipe.complexity;
+                if( COMPLEXITY_BRANCH_MAP.containsKey(complexity) ) {
+                    List< List<MachineNode> > modifiedBranchList = new ArrayList<>(
+                        COMPLEXITY_BRANCH_MAP.get(complexity)
+                    );
+                    modifiedBranchList.add(branch);
+                    COMPLEXITY_BRANCH_MAP.replace(complexity, modifiedBranchList);
+                } else {
+                    List< List<MachineNode> > branchAsList = new ArrayList<>();
+                    branchAsList.add(branch);
+                    COMPLEXITY_BRANCH_MAP.put(complexity, branchAsList );
+                }
+            }
+        }
+
+        List< List<MachineNode> > subBranchesToBeRemoved = new ArrayList<>();
+        /*In forward order (toward higher complexity), verify that sub-branches do not exist; if they do, annihilate them.*/ {
+            int maximum_complexity = 0;
+            for(Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
+                maximum_complexity = Math.max(maximum_complexity, complexity.intValue() );
+            }
+
+            for(int complexity = 0; complexity < maximum_complexity; complexity++) {
+                if( !COMPLEXITY_BRANCH_MAP.containsKey(complexity) ) {
+                    continue;
+                }
+
+                //with an example from each potential sub-branch, check if it exists in any higher-complexity branch
+                for(List<MachineNode> subBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                    MachineNode subBranchExampleNode = subBranch.getFirst();
+                    List<MachineNode> higherComplexityBranchNodes = getAllNodesInHigherComplexityBranches(COMPLEXITY_BRANCH_MAP, complexity);
+
+                    if( MachineNode.includes(higherComplexityBranchNodes, subBranchExampleNode) ) {
+                        for( List<MachineNode> potentiallyRemovedSubBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                            if( potentiallyRemovedSubBranch.contains(subBranchExampleNode) ) {
+                                subBranchesToBeRemoved.add(potentiallyRemovedSubBranch);
+                            }
+                        }
+                    }
+                }
+            }
+            //remove branches marked for culling
+            for( Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
+                for( Iterator< List<MachineNode> > mapAtComplexityIterator = COMPLEXITY_BRANCH_MAP.get(complexity).iterator(); mapAtComplexityIterator.hasNext(); ) {
+                    List<MachineNode> branch = mapAtComplexityIterator.next();
+                    for(List<MachineNode> branchToBeRemoved : subBranchesToBeRemoved) {
+                        if(branch == branchToBeRemoved) {
+                            mapAtComplexityIterator.remove();
+                        }
+                    }
+                }
+            }
+        }
+
+        //create new lists of combined sub-branches into a set of branches (consolidated branches)
+        for(Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
+            for(List<MachineNode> subBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                MachineNode newBranch = new MachineNode(subBranch.getFirst().recipe);
+                //recursivelyGenerateRecipesFromPreferredSources(newBranch);
+
+                double newBranchUptime = 0.0;
+                for(MachineNode subBranchNode : subBranch) {
+                    newBranchUptime += subBranchNode.calculated_uptime;
+                }
+                newBranch.setUptime(newBranchUptime);
+                //backPropagateUptimes(newBranch);
+
+                map.consolidatedBranches.add(newBranch);
+            }
+        }
+
+        /*remove sub-branches from map via removing sources from matches and using "consolidation" type*/ {
+            List<MachineNode> nodesToBeMarkedAsConsolidated = new ArrayList<>(); {
+                for( Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
+                    for(List<MachineNode> subBranchHeads : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                        nodesToBeMarkedAsConsolidated.addAll(subBranchHeads);
+                    }
+                }
+            }
+
+            setBranchesInListToConsolidationType(map.getHead(), nodesToBeMarkedAsConsolidated);
+        }
+
+    }
+    private static List<MachineNode> getAllSourceNodes(MachineNode node) {
+        List<MachineNode> allSourceNodes = new ArrayList<MachineNode>(node.sources);
+        for(MachineNode source : node.sources) {
+            allSourceNodes.addAll(
+                getAllSourceNodes(source)
+            );
+        }
+        return allSourceNodes;
+    }
+    private static boolean areBranchesDuplicates(MachineNode nodeOne, MachineNode nodeTwo) {
+        if( nodeOne.equals(nodeTwo) ) {
+            if( nodeOne.sources.isEmpty() && nodeTwo.sources.isEmpty() ) {
+                return true;
+            }
+            if( nodeOne.sources.size() != nodeTwo.sources.size() ) {
+                return false;
+            }
+
+            boolean areAllSourcesMatching = true;
+            for(MachineNode sourceOne : nodeOne.sources) {
+                if( !MachineNode.includes(nodeTwo.sources, sourceOne) ) {
+                    return false;
+                }
+
+                MachineNode matchingSource = null;
+                for(MachineNode sourceTwo : nodeTwo.sources) {
+                    if( sourceOne.equals(sourceTwo) ) {
+                        matchingSource = sourceTwo;
+                        break;
+                    }
+                }
+                if(matchingSource == null) {
+                    return false;
+                }
+                return areBranchesDuplicates(sourceOne, matchingSource);
+        }
+
+            return true;
+        }
+        return false;
+    }
+    private static void incorporateBranchesIntoMatchingList(
+        List< List<MachineNode> > matchingBranchesList,
+        MachineNode... matchingNodes
+    ) {
+        MachineNode exampleNode = null;
+        for(MachineNode node : matchingNodes) {
+            exampleNode = node;
+            break;
+        }
+        if(exampleNode == null) {
+            return;
+        }
+
+        //find if it belongs to an existing branch-set
+        for(List<MachineNode> branch : matchingBranchesList) {
+            if( branch.isEmpty() ) {
+                continue;
+            }
+            if( areBranchesDuplicates(branch.getFirst(), exampleNode) ) {
+                for(MachineNode node : matchingNodes) {
+                    if( !branch.contains(node) ) {
+                        branch.add(node);
+                    }
+                }
+                return;
+            }
+        }
+
+        //if it does not belong to an existing branch-set, create a new one
+        matchingBranchesList.add(
+            new ArrayList<MachineNode>( Arrays.asList(matchingNodes) )
+        );
+    }
+    private static List<MachineNode> getAllNodesInHigherComplexityBranches(
+        final HashMap<  Integer,  List< List<MachineNode> >  > branches,
+        int complexity
+    ) {
+        List<MachineNode> allNodesInHigherComplexityBranches = new ArrayList<>();
+        //linear search, because they may be in an arbitrary order
+        for(Integer branchComplexity : branches.keySet() ) {
+            if( branchComplexity.intValue() <= complexity ) {
+                continue;
+            }
+            for(List<MachineNode> higherComplexityBranch : branches.get(branchComplexity) ) {
+                for(MachineNode subNode : higherComplexityBranch) {
+                    allNodesInHigherComplexityBranches.add(subNode);
+                    allNodesInHigherComplexityBranches.addAll(
+                        getAllSourceNodes(subNode)
+                    );
+                }
+            }
+        }
+        return allNodesInHigherComplexityBranches;
+    }
+    private static void setBranchesInListToConsolidationType(MachineNode node, List<MachineNode> consolidatedBranchHeads) {
+        if(node == null) {
+            return;
+        }
+
+        for(MachineNode consolidatedBranchHead : consolidatedBranchHeads) {
+            if( node.equals(consolidatedBranchHead) ) {
+                MachineNode consolidatedNode = new MachineNode(node.recipe);
+                consolidatedNode.recipe.machine = Machines.CONSOLIDATED_BRANCH;
+                consolidatedNode.sources = new ArrayList<>();
+                node.sources = new ArrayList<>();
+                node = consolidatedNode;
+                return;
+            }
+        }
+        for(MachineNode source : node.sources) {
+            setBranchesInListToConsolidationType(source, consolidatedBranchHeads);
+        }
+    }
+
 
     //# GETTERS
     public MachineNode getHead() {

@@ -45,6 +45,13 @@ public class MachineNode {
         return ItemStackListStringBuilder.toString();
     }
 
+    public boolean equals(MachineNode otherNode) {
+        if(otherNode == null) {
+            return false;
+        }
+        return otherNode.recipe == this.recipe;
+    }
+
     @Override
     public String toString() {
         if(this.recipe == null) {
@@ -58,5 +65,14 @@ public class MachineNode {
 
         nodeStringBuilder.append(inputs).append(" = ").append(outputs);
         return nodeStringBuilder.toString();
+    }
+
+    public static boolean includes(List<MachineNode> nodes, MachineNode node) {
+        for(MachineNode listNode : nodes) {
+            if( listNode.equals(node) ) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -12,6 +12,7 @@ public class Machines extends Registered<Machine> {
     }
 
     public static final Machine CELL_CYCLING = new Machine(WORLD,"cycling", Low);
+    public static final Machine CONSOLIDATED_BRANCH = new Machine(Namespaces.PLAYER,"consolidated_branch", None);
     public static final Machine PLAYER = new Machine(Namespaces.PLAYER,"manual");
 
     public static final Machine ADVANCED_ELECTROLYZER = new Machine(GREGTECH,"advanced_electrolyzer", Medium);

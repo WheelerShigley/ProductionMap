@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Recipe {
-    public final Machine machine;
+    public Machine machine;
     public final double amperage;
     public final MachineConfiguration circuit;
-    public final List<ItemStackWithPreferredRecipeSource> inputs;
+    public List<ItemStackWithPreferredRecipeSource> inputs;
     public final List<ItemStack> outputs;
     public final double time_seconds;
+    public final int complexity;
 
     public Recipe(
         Machine machine,
@@ -27,6 +28,7 @@ public class Recipe {
         this.inputs = inputs;
         this.outputs = outputs;
         this.time_seconds = time_seconds;
+        this.complexity = calculateComplexity(this);
 
     }
     public Recipe(
@@ -42,6 +44,7 @@ public class Recipe {
         this.inputs = inputs;
         this.outputs = outputs;
         this.time_seconds = time_seconds;
+        this.complexity = calculateComplexity(this);
     }
     public Recipe(
             Machine machine,
@@ -56,6 +59,7 @@ public class Recipe {
         this.inputs = inputs;
         this.outputs = outputs;
         this.time_seconds = time_seconds;
+        this.complexity = calculateComplexity(this);
     }
     public Recipe(
             Machine machine,
@@ -71,6 +75,7 @@ public class Recipe {
         this.inputs = inputs;
         this.outputs = outputs;
         this.time_seconds = time_seconds;
+        this.complexity = calculateComplexity(this);
     }
 
     public List<ItemStack> getInputsAsItemStacks() {
@@ -79,5 +84,17 @@ public class Recipe {
             inputsList.add(source.itemStack);
         }
         return inputsList;
+    }
+
+    //Complexity is the number of steps to get from
+    //basic inputs to the result of the recipe
+    public static int calculateComplexity(Recipe recipe) {
+        int depth = 0;
+        for(ItemStackWithPreferredRecipeSource input : recipe.inputs) {
+            if(input.preferredRecipeSource != null) {
+                depth = Math.max(depth, calculateComplexity(input.preferredRecipeSource)+1 );
+            }
+        }
+        return depth;
     }
 }
