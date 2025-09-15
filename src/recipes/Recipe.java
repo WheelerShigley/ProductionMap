@@ -1,6 +1,8 @@
 package recipes;
 
+import items.Item;
 import items.ItemStack;
+import items.Items;
 import machines.MachineConfiguration;
 import machines.Machine;
 import register.Identified;
@@ -8,7 +10,7 @@ import register.Identified;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Recipe {
+public class Recipe extends Identified {
     public Machine machine;
     public final double amperage;
     public final MachineConfiguration circuit;
@@ -23,6 +25,14 @@ public class Recipe {
         List<ItemStack> outputs,
         double time_seconds
     ) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
         this.machine = machine;
         amperage = 1.0;
         circuit = MachineConfiguration.None;
@@ -30,6 +40,8 @@ public class Recipe {
         this.outputs = outputs;
         this.time_seconds = time_seconds;
         this.complexity = calculateComplexity(this);
+
+        Recipes.register(this);
     }
     public Recipe(
             Machine machine,
@@ -38,6 +50,14 @@ public class Recipe {
             List<ItemStack> outputs,
             double time_seconds
     ) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
         this.machine = machine;
         amperage = 1.0;
         this.circuit = circuit;
@@ -45,6 +65,8 @@ public class Recipe {
         this.outputs = outputs;
         this.time_seconds = time_seconds;
         this.complexity = calculateComplexity(this);
+
+        Recipes.register(this);
     }
     public Recipe(
             Machine machine,
@@ -53,6 +75,14 @@ public class Recipe {
             List<ItemStack> outputs,
             double time_seconds
     ) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
         this.machine = machine;
         this.amperage = amperage;
         this.circuit = MachineConfiguration.None;
@@ -60,6 +90,8 @@ public class Recipe {
         this.outputs = outputs;
         this.time_seconds = time_seconds;
         this.complexity = calculateComplexity(this);
+
+        Recipes.register(this);
     }
     public Recipe(
             Machine machine,
@@ -69,6 +101,14 @@ public class Recipe {
             List<ItemStack> outputs,
             double time_seconds
     ) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
         this.machine = machine;
         this.amperage = amperage;
         this.circuit = configuration;
@@ -76,6 +116,8 @@ public class Recipe {
         this.outputs = outputs;
         this.time_seconds = time_seconds;
         this.complexity = calculateComplexity(this);
+
+        Recipes.register(this);
     }
 
     public List<ItemStack> getInputsAsItemStacks() {
@@ -84,6 +126,12 @@ public class Recipe {
             inputsList.add(source.itemStack);
         }
         return inputsList;
+    }
+    private static Item getFirstItem(List<ItemStack> itemStacks) {
+        if( itemStacks.isEmpty() ) {
+            return null;
+        }
+        return itemStacks.getFirst().item();
     }
 
     //Complexity is the number of steps to get from
@@ -96,5 +144,32 @@ public class Recipe {
             }
         }
         return depth;
+    }
+
+    private static int getRegisteredRecipeOccuranceCount(Item item) {
+        int counter = 0;
+        for(Recipe registeredRecipe : Recipes.registry) {
+            if(
+                registeredRecipe.outputs != null
+                && registeredRecipe.outputs.getFirst().item().equals(item)
+            ) {
+                counter++;
+            }
+        }
+        return counter;
+    }
+    public static String getUniqueRecipeName(Item primaryInput, String namespace) {
+        if(primaryInput == null) {
+            return "";
+        }
+
+        int recipe_count = getRegisteredRecipeOccuranceCount(primaryInput);
+
+        StringBuilder nameBuilder = new StringBuilder();
+        nameBuilder.append(namespace).append(":").append( primaryInput.toString() );
+        if(0 < recipe_count) {
+            nameBuilder.append("__").append( Integer.toString(recipe_count) );
+        }
+        return nameBuilder.toString();
     }
 }

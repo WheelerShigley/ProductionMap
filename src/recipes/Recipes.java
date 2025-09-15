@@ -4,10 +4,25 @@ import items.ItemStack;
 import items.Items;
 import machines.MachineConfiguration;
 import machines.Machines;
+import register.Registered;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Recipes {
+public class Recipes extends Registered<Recipe> {
+    private static Recipes instance;
+    public static final List<Recipe> registry = new ArrayList<Recipe>();
+    public Recipes() {
+        super("Recipes", registry);
+        instance = this;
+    }
+
+    public static boolean register(Recipe recipe) {
+        if(instance == null) {
+            instance = new Recipes();
+        }
+        return instance.registerInstance(recipe);
+    }
 
     //nothing
     public static final Recipe DUMMY; static {
@@ -349,18 +364,18 @@ public class Recipes {
     }
     public static final Recipe REDSTONE_DUST_OBSIDIAN; static {
         REDSTONE_DUST_OBSIDIAN = new Recipe(
-                Machines.BASIC_ROCK_BREAKER,
-                MachineConfiguration.ProgrammedCircuitOne,
-                List.of(
-                        new ItemStackWithPreferredRecipeSource(
-                                new ItemStack(Items.REDSTONE_DUST, 1),
-                                Recipes.REDSTONE_DUST
-                        )
-                ),
-                List.of(
-                        new ItemStack(Items.OBSIDIAN, 1)
-                ),
-                6.4
+            Machines.BASIC_ROCK_BREAKER,
+            MachineConfiguration.ProgrammedCircuitOne,
+            List.of(
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.REDSTONE_DUST, 1),
+                    Recipes.REDSTONE_DUST
+                )
+            ),
+            List.of(
+                new ItemStack(Items.OBSIDIAN, 1)
+            ),
+            6.4
         );
     }
     public static final Recipe REFINED_GLUE; static {
@@ -446,27 +461,6 @@ public class Recipes {
                 new ItemStack(Items.OBSIDIAN_DUST, 12)
             ),
             9.9
-        );
-    }
-    public static final Recipe OXYGEN_CELL; static {
-        OXYGEN_CELL = new Recipe(
-            Machines.BASIC_CENTRIFUGE,
-            MachineConfiguration.None,
-            List.of(
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.EMPTY_CELL, 1),
-                    Recipes.EMPTY_CELL_CYCLED
-                ),
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.AIR_GAS, 10),
-                    Recipes.AIR_GAS
-                )
-            ),
-            List.of(
-                new ItemStack(Items.OXYGEN_CELL, 1),
-                new ItemStack(Items.NITROGEN_GAS, 3.9)
-            ),
-            80
         );
     }
     public static final Recipe MOLTEN_RED_ALLOY; static {
@@ -593,21 +587,21 @@ public class Recipes {
     }
     public static final Recipe ELECTROLYZED_OBSIDIAN_DUST; static {
         ELECTROLYZED_OBSIDIAN_DUST = new Recipe(
-                Machines.ADVANCED_ELECTROLYZER,
-                MachineConfiguration.None,
-                List.of(
-                    new ItemStackWithPreferredRecipeSource(
-                        new ItemStack(Items.OBSIDIAN_DUST, 12),
-                        Recipes.OBSIDIAN_DUST
-                    )
-                ),
-                List.of(
-                    new ItemStack(Items.MAGNESIUM_DUST, 1),
-                    new ItemStack(Items.IRON_DUST, 1),
-                    new ItemStack(Items.RAW_SILICON_DUST, 2),
-                    new ItemStack(Items.OXYGEN_GAS, 8)
-                ),
-                12
+            Machines.ADVANCED_ELECTROLYZER,
+            MachineConfiguration.None,
+            List.of(
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.OBSIDIAN_DUST, 12),
+                    Recipes.OBSIDIAN_DUST
+                )
+            ),
+            List.of(
+                new ItemStack(Items.MAGNESIUM_DUST, 1),
+                new ItemStack(Items.IRON_DUST, 1),
+                new ItemStack(Items.RAW_SILICON_DUST, 2),
+                new ItemStack(Items.OXYGEN_GAS, 8)
+            ),
+            12
         );
     }
     public static final Recipe FLINT_DUST; static {
@@ -626,21 +620,25 @@ public class Recipes {
             10
         );
     }
-    public static final Recipe OXYGEN_GAS; static {
-        OXYGEN_GAS = new Recipe(
-            Machines.LOW_VOLTAGE_FLUID_TANK,
+    public static final Recipe OXYGEN_CELL; static {
+        OXYGEN_CELL = new Recipe(
+            Machines.BASIC_CENTRIFUGE,
             MachineConfiguration.None,
             List.of(
                 new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.OXYGEN_CELL, 1),
-                    Recipes.OXYGEN_CELL
+                    new ItemStack(Items.EMPTY_CELL, 1),
+                    Recipes.EMPTY_CELL_CYCLED
+                ),
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.AIR_GAS, 10),
+                    Recipes.AIR_GAS
                 )
             ),
             List.of(
-                new ItemStack(Items.EMPTY_CELL, 1),
-                new ItemStack(Items.OXYGEN_GAS, 1)
+                new ItemStack(Items.OXYGEN_CELL, 1),
+                new ItemStack(Items.NITROGEN_GAS, 3.9)
             ),
-            0.1
+            80
         );
     }
     public static final Recipe QUARTZ_SAND; static {
@@ -661,27 +659,6 @@ public class Recipes {
     }
 
     //of^5 nothing
-    public static final Recipe ANNEALED_COPPER_INGOT; static {
-        ANNEALED_COPPER_INGOT = new Recipe(
-            Machines.BASIC_MIXER,
-            3,
-            MachineConfiguration.ProgrammedCircuitFour,
-            List.of(
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.COPPER_DUST, 1),
-                    Recipes.COPPER_DUST
-                ),
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.ANNEALED_COPPER_INGOT, 63.0/1000.0),
-                    Recipes.ANNEALED_COPPER_INGOT
-                )
-            ),
-            List.of(
-                new ItemStack(Items.ANNEALED_COPPER_INGOT, 1)
-            ),
-            3.15
-        );
-    }
     public static final Recipe GLASS_DUST; static {
         GLASS_DUST = new Recipe(
             Machines.BASIC_MIXER,
@@ -700,6 +677,23 @@ public class Recipes {
                 new ItemStack(Items.GLASS_DUST, 16)
             ),
             40
+        );
+    }
+    public static final Recipe OXYGEN_GAS; static {
+        OXYGEN_GAS = new Recipe(
+            Machines.LOW_VOLTAGE_FLUID_TANK,
+            MachineConfiguration.None,
+            List.of(
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.OXYGEN_CELL, 1),
+                    Recipes.OXYGEN_CELL
+                )
+            ),
+            List.of(
+                new ItemStack(Items.EMPTY_CELL, 1),
+                new ItemStack(Items.OXYGEN_GAS, 1)
+            ),
+            0.1
         );
     }
     public static final Recipe REDSTONE_ALLOY_DUST; static {
@@ -726,42 +720,27 @@ public class Recipes {
             5
         );
     }
-    public static final Recipe WROUGHT_IRON_INGOT; static {
-        WROUGHT_IRON_INGOT = new Recipe(
-            Machines.BASIC_ARC_FURNACE,
-            MachineConfiguration.None,
+
+    //of^6 nothing
+    public static final Recipe ANNEALED_COPPER_INGOT; static {
+        ANNEALED_COPPER_INGOT = new Recipe(
+            Machines.BASIC_MIXER,
+            3,
+            MachineConfiguration.ProgrammedCircuitFour,
             List.of(
                 new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.IRON_DUST, 1),
-                    Recipes.IRON_DUST
+                    new ItemStack(Items.COPPER_DUST, 1),
+                    Recipes.COPPER_DUST
                 ),
                 new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.OXYGEN_GAS, 56.0/1000.0),
+                    new ItemStack(Items.OXYGEN_GAS, 63.0/1000.0),
                     Recipes.OXYGEN_GAS
                 )
             ),
             List.of(
-                new ItemStack(Items.WROUGHT_IRON_INGOT, 1)
+                new ItemStack(Items.ANNEALED_COPPER_INGOT, 1)
             ),
-            2.8
-        );
-    }
-
-    //of^6 nothing
-    public static final Recipe ONE_ANNEALED_COPPER_WIRE; static {
-        ONE_ANNEALED_COPPER_WIRE = new Recipe(
-            Machines.BASIC_WIREMILL,
-            MachineConfiguration.ProgrammedCircuitOne,
-            List.of(
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.ANNEALED_COPPER_INGOT, 1),
-                    Recipes.ANNEALED_COPPER_INGOT
-                )
-            ),
-            List.of(
-                new ItemStack(Items.ONE_ANNEALED_COPPER_WIRE, 2)
-            ),
-            5
+            3.15
         );
     }
     public static final Recipe GLASS_TUBE; static {
@@ -801,6 +780,59 @@ public class Recipes {
             40
         );
     }
+    public static final Recipe WROUGHT_IRON_INGOT; static {
+        WROUGHT_IRON_INGOT = new Recipe(
+            Machines.BASIC_ARC_FURNACE,
+            MachineConfiguration.None,
+            List.of(
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.IRON_DUST, 1),
+                    Recipes.IRON_DUST
+                ),
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.OXYGEN_GAS, 56.0/1000.0),
+                    Recipes.OXYGEN_GAS
+                )
+            ),
+            List.of(
+                new ItemStack(Items.WROUGHT_IRON_INGOT, 1)
+            ),
+            2.8
+        );
+    }
+
+    //of^7 nothing
+    public static final Recipe MOLTEN_REDSTONE_ALLOY; static {
+        MOLTEN_REDSTONE_ALLOY = new Recipe(
+            Machines.ADVANCED_FLUID_EXTRACTOR,
+            List.of(
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.REDSTONE_ALLOY_INGOT, 1),
+                    Recipes.REDSTONE_ALLOY_INGOT
+                )
+            ),
+            List.of(
+                new ItemStack(Items.MOLTEN_REDSTONE_ALLOY, 1)
+            ),
+            1.2
+        );
+    }
+    public static final Recipe ONE_ANNEALED_COPPER_WIRE; static {
+        ONE_ANNEALED_COPPER_WIRE = new Recipe(
+            Machines.BASIC_WIREMILL,
+            MachineConfiguration.ProgrammedCircuitOne,
+            List.of(
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.ANNEALED_COPPER_INGOT, 1),
+                    Recipes.ANNEALED_COPPER_INGOT
+                )
+            ),
+            List.of(
+                new ItemStack(Items.ONE_ANNEALED_COPPER_WIRE, 2)
+            ),
+            5
+        );
+    }
     public static final Recipe WROUGHT_IRON_DUST; static {
         WROUGHT_IRON_DUST = new Recipe(
             Machines.BASIC_MACERATOR,
@@ -819,7 +851,7 @@ public class Recipes {
         );
     }
 
-    //of^7 nothing
+    //of^8 nothing
     public static final Recipe STEEL_INGOT; static {
         STEEL_INGOT = new Recipe(
             Machines.ELECTRIC_BLAST_FURNACE_LV_NICU,
@@ -842,51 +874,8 @@ public class Recipes {
             5
         );
     }
-    public static final Recipe MOLTEN_REDSTONE_ALLOY; static {
-        MOLTEN_REDSTONE_ALLOY = new Recipe(
-            Machines.ADVANCED_FLUID_EXTRACTOR,
-            List.of(
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.REDSTONE_ALLOY_INGOT, 1),
-                    Recipes.REDSTONE_ALLOY_INGOT
-                )
-            ),
-            List.of(
-                new ItemStack(Items.MOLTEN_REDSTONE_ALLOY, 1)
-            ),
-            1.2
-        );
-    }
-    public static final Recipe MOLTEN_REDSTONE_VACUUM_TUBE; static {
-        MOLTEN_REDSTONE_VACUUM_TUBE = new Recipe(
-            Machines.BASIC_ASSEMBLING_MACHINE,
-            MachineConfiguration.ProgrammedCircuitFive,
-            List.of(
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.GLASS_TUBE, 2),
-                    Recipes.GLASS_TUBE
-                ),
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.ONE_COPPER_WIRE, 4),
-                    Recipes.ONE_COPPER_WIRE
-                ),
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.STEEL_ROD, 4),
-                    Recipes.STEEL_ROD
-                ),
-                new ItemStackWithPreferredRecipeSource(
-                    new ItemStack(Items.MOLTEN_REDSTONE, 1),
-                    Recipes.MOLTEN_REDSTONE
-                )
-            ),
-            List.of(
-                new ItemStack(Items.VACUUM_TUBE, 2)
-            ),
-            8
-        );
-    }
 
-    //of^8 nothing
+    //of^9 nothing
     public static final Recipe STEEL_ROD; static {
         STEEL_ROD = new Recipe(
             Machines.ADVANCED_EXTRUDER,
@@ -904,7 +893,7 @@ public class Recipes {
         );
     }
 
-    //of^9 nothing
+    //of^10 nothing
     public static final Recipe MOLTEN_RED_ALLOY_VACUUM_TUBE; static {
         MOLTEN_RED_ALLOY_VACUUM_TUBE = new Recipe(
             Machines.BASIC_ASSEMBLING_MACHINE,
@@ -961,8 +950,36 @@ public class Recipes {
             8
         );
     }
+    public static final Recipe MOLTEN_REDSTONE_VACUUM_TUBE; static {
+        MOLTEN_REDSTONE_VACUUM_TUBE = new Recipe(
+            Machines.BASIC_ASSEMBLING_MACHINE,
+            MachineConfiguration.ProgrammedCircuitFive,
+            List.of(
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.GLASS_TUBE, 2),
+                    Recipes.GLASS_TUBE
+                ),
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.ONE_COPPER_WIRE, 4),
+                    Recipes.ONE_COPPER_WIRE
+                ),
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.STEEL_ROD, 4),
+                    Recipes.STEEL_ROD
+                ),
+                new ItemStackWithPreferredRecipeSource(
+                    new ItemStack(Items.MOLTEN_REDSTONE, 1),
+                    Recipes.MOLTEN_REDSTONE
+                )
+            ),
+            List.of(
+                new ItemStack(Items.VACUUM_TUBE, 2)
+            ),
+            8
+        );
+    }
 
-    //of^10 nothing
+    //of^11 nothing
     public static final Recipe ELECTRIC_CIRCUITS; static {
         ELECTRIC_CIRCUITS = new Recipe(
             Machines.BASIC_CIRCUIT_ASSEMBLER,

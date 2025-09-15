@@ -8,6 +8,16 @@ public class Item extends Identified {
         Items.register(this);
     }
 
+    public boolean equals(Item otherItem) {
+        if(
+               otherItem.getNamespace().equals( this.getNamespace() )
+            && otherItem.getName().equals( this.getName() )
+        ) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         StringBuilder nameBuilder = new StringBuilder();

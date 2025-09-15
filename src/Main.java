@@ -1,4 +1,6 @@
 import map.Maps;
+import recipes.Recipe;
+import recipes.Recipes;
 
 public class Main {
     /* TODO
@@ -15,5 +17,9 @@ public class Main {
      */
     public static void main(String[] args) {
         System.out.println( Maps.ELECTRIC_CIRCUIT );
+
+        for(Recipe registeredRecipe : Recipes.registry) {
+            System.out.println( registeredRecipe.toString() +"@"+ registeredRecipe.complexity);
+        }
     }
 }
