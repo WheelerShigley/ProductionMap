@@ -6,8 +6,9 @@ public class Main {
      * 2a Maximum Power Consumption
      * 2b Maximum Pollution Production
      *
+     * Add to consolidated branches, when one already exists?
      * 3y Using byproducts?
-     * 3z Prioritized Input-sources
+     * 3z ^Prioritized Input-sources
      *
      * ?  README.md
      */

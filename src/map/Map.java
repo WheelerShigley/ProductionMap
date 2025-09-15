@@ -3,6 +3,7 @@ package map;
 import items.Item;
 import items.ItemStack;
 import items.Items;
+import machines.Machine;
 import machines.MachineConfiguration;
 import machines.Machines;
 import machines.Voltage;
@@ -59,6 +60,8 @@ public class Map {
         MAP_STRING_BUILDER.append("\r\n");
         MAP_STRING_BUILDER.append( getAveragePowerConsumptionString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getAveragePollutionRateString(this) );
+        MAP_STRING_BUILDER.append("\r\n\r\nMachines:\r\n");
+        MAP_STRING_BUILDER.append( getMachinesCountString(this) );
 
         return MAP_STRING_BUILDER.toString();
     }
@@ -197,6 +200,85 @@ public class Map {
             case 3 ->   '╚';
             default ->  '└';
         };
+    }
+
+    private static String getMachinesCountString(Map map) {
+        HashMap<Machine, Integer> countedMachines = new HashMap<>(); {
+            //get original map and all consolidated Branches' machines
+            List< HashMap<Machine, Integer> > branchesCountedMachines = new ArrayList<>();
+            branchesCountedMachines.add(  getMachinesCount( map.getHead() )  );
+            for(MachineNode branchHead : map.consolidatedBranches) {
+                branchesCountedMachines.add( getMachinesCount(branchHead) );
+            }
+            //add all machine counts
+            for(HashMap<Machine, Integer> branchCountedMachines: branchesCountedMachines) {
+                for( Machine branchCountedMachine : branchCountedMachines.keySet() ) {
+                    if( countedMachines.containsKey(branchCountedMachine) ) {
+                        countedMachines.replace(
+                            branchCountedMachine,
+                            branchCountedMachines.get(branchCountedMachine) + countedMachines.get(branchCountedMachine)
+                        );
+                    } else {
+                        countedMachines.put(
+                            branchCountedMachine,
+                            branchCountedMachines.get(branchCountedMachine)
+                        );
+                    }
+                }
+            }
+        }
+
+
+        StringBuilder countedMachinesBuilder = new StringBuilder();
+        int counter = 0;
+        for(Machine countedMachine : countedMachines.keySet() ) {
+
+            countedMachinesBuilder.append(' ');
+            if( counter < countedMachines.size()-1 ) {
+                countedMachinesBuilder.append( getSplitPipe(0) );
+            } else {
+                countedMachinesBuilder.append( getAngledPipe(0) );
+            }
+            countedMachinesBuilder.append(' ');
+
+            countedMachinesBuilder
+                .append( countedMachines.get(countedMachine) )
+                .append("× ")
+                .append( countedMachine.toString() ).append(" (").append( countedMachine.voltage.toString() ).append(')')
+                .append("\r\n")
+            ;
+
+            counter++;
+        }
+        return countedMachinesBuilder.toString();
+    }
+    private static HashMap<Machine, Integer> getMachinesCount(MachineNode node) {
+        HashMap<Machine, Integer> nodeMachines = new HashMap<>();
+        if( node.recipe.machine.equals(Machines.PLAYER) ) {
+            return nodeMachines;
+        }
+
+        nodeMachines.put(
+            node.recipe.machine,
+            (int)Math.ceil( node.calculated_uptime )
+        );
+        for(MachineNode source : node.sources) {
+            HashMap<Machine, Integer> sourceMachines = getMachinesCount(source);
+            for( Machine sourceMachine : sourceMachines.keySet() ) {
+                if( nodeMachines.containsKey(sourceMachine) ) {
+                    nodeMachines.replace(
+                        sourceMachine,
+                        nodeMachines.get(sourceMachine) + sourceMachines.get(sourceMachine)
+                    );
+                } else {
+                    nodeMachines.put(
+                        sourceMachine,
+                        sourceMachines.get(sourceMachine)
+                    );
+                }
+            }
+        }
+        return nodeMachines;
     }
 
     //# GENERATORS
@@ -505,14 +587,14 @@ public class Map {
         for(Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
             for(List<MachineNode> subBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
                 MachineNode newBranch = new MachineNode(subBranch.getFirst().recipe);
-                //recursivelyGenerateRecipesFromPreferredSources(newBranch);
+                recursivelyGenerateRecipesFromPreferredSources(newBranch);
 
                 double newBranchUptime = 0.0;
                 for(MachineNode subBranchNode : subBranch) {
                     newBranchUptime += subBranchNode.calculated_uptime;
                 }
                 newBranch.setUptime(newBranchUptime);
-                //backPropagateUptimes(newBranch);
+                backPropagateUptimes(newBranch);
 
                 map.consolidatedBranches.add(newBranch);
             }
