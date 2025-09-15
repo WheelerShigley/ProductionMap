@@ -18,6 +18,7 @@ public class Recipe extends Identified {
     public final List<ItemStack> outputs;
     public final double time_seconds;
     public final int complexity;
+    public boolean isConsolidated;
 
     public Recipe(
         Machine machine,

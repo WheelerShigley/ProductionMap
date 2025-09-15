@@ -44,7 +44,7 @@ public class Map {
 
             HashMap<Integer, Boolean> linePositions = new HashMap<Integer, Boolean>();
             linePositions.put(0, false);
-            getMapNodeAsString(subSystemMap, null, subSystemMap.getHead(), linePositions, 0, MAP_STRING_BUILDER);
+            getMapNodeAsString(subSystemMap, null, subSystemMap.getHead(), linePositions, 0, MAP_STRING_BUILDER, false);
 
             MAP_STRING_BUILDER.append("\r\n");
         }
@@ -53,7 +53,7 @@ public class Map {
         //print tree (branched node-graph)
         HashMap<Integer, Boolean> linePositions = new HashMap<Integer, Boolean>();
         linePositions.put(0, true);
-        getMapNodeAsString(this, null, this.head, linePositions, 0, MAP_STRING_BUILDER);
+        getMapNodeAsString(this, null, this.head, linePositions, 0, MAP_STRING_BUILDER, true);
 
         //additional data
         MAP_STRING_BUILDER.append("\r\n");
@@ -99,7 +99,8 @@ public class Map {
         Map map, MachineNode parent,
         MachineNode node,
         HashMap<Integer, Boolean> depthsWithLines, int depth,
-        final StringBuilder STRINGBUILDER
+        final StringBuilder STRINGBUILDER,
+        boolean includeConsolidations
     ) {
         //add existing pipes (unfinished branches)
         for(int index = 0; index < depth-1; index++) {
@@ -130,7 +131,11 @@ public class Map {
         //% (and/or quantity of machines); % need not be shown for manual tasks
         STRINGBUILDER.append(" [");
         if(node.recipe != null) {
-            STRINGBUILDER.append( node.recipe.machine.toString() );
+            if(includeConsolidations && node.recipe.isConsolidated) {
+                STRINGBUILDER.append( Machines.CONSOLIDATED_BRANCH.toString() );
+            } else {
+                STRINGBUILDER.append(node.recipe.machine.toString());
+            }
         }
         if( node.recipe != null && !node.recipe.circuit.equals(MachineConfiguration.None) ) {
             STRINGBUILDER.append(", ").append( node.recipe.circuit.toString() );
@@ -151,7 +156,7 @@ public class Map {
 
         //print sources
         for(MachineNode source : node.sources) {
-            getMapNodeAsString(map, node, source, depthsWithLines, depth + 1, STRINGBUILDER);
+            getMapNodeAsString(map, node, source, depthsWithLines, depth + 1, STRINGBUILDER, includeConsolidations);
         }
     }
     private static MachineNode getLastSource(MachineNode node) {
@@ -629,7 +634,7 @@ public class Map {
         for(MachineNode consolidatedBranchHead : consolidatedBranchHeads) {
             if( node.equals(consolidatedBranchHead) ) {
                 MachineNode consolidatedNode = new MachineNode(node.recipe);
-                consolidatedNode.recipe.machine = Machines.CONSOLIDATED_BRANCH;
+                consolidatedNode.recipe.isConsolidated = true;
                 consolidatedNode.sources = new ArrayList<>();
                 node.sources = new ArrayList<>();
                 node = consolidatedNode;
