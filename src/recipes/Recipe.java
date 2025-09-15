@@ -3,6 +3,7 @@ package recipes;
 import items.ItemStack;
 import machines.MachineConfiguration;
 import machines.Machine;
+import register.Identified;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,6 @@ public class Recipe {
         this.outputs = outputs;
         this.time_seconds = time_seconds;
         this.complexity = calculateComplexity(this);
-
     }
     public Recipe(
             Machine machine,

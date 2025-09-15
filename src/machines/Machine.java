@@ -10,20 +10,28 @@ public class Machine extends Identified {
         super(namespace, name);
         this.voltage = Voltage.None;
         this.pollution = 0.0;
+
+        Machines.register(this);
     }
     public Machine(String namespace, String name, Voltage voltage) {
         super(namespace, name);
         this.voltage = voltage;
         this.pollution = 0.0;
+
+        Machines.register(this);
     }
     public Machine(String namespace, String name, double pollution) {
         super(namespace, name);
         this.voltage = Voltage.None;
         this.pollution = pollution;
+
+        Machines.register(this);
     }
     public Machine(String namespace, String name, Voltage voltage, double pollution) {
         super(namespace, name);
         this.voltage = voltage;
         this.pollution = pollution;
+
+        Machines.register(this);
     }
 }

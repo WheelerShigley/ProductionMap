@@ -3,12 +3,25 @@ package machines;
 import register.Namespaces;
 import register.Registered;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static machines.Voltage.*;
 import static register.Namespaces.*;
 
 public class Machines extends Registered<Machine> {
+    private static Machines instance;
+    public static final List<Machine> registry = new ArrayList<Machine>();
     public Machines() {
-        super("Machines");
+        super("Machines", registry);
+        instance = this;
+    }
+
+    public static boolean register(Machine machine) {
+        if(instance == null) {
+            instance = new Machines();
+        }
+        return instance.registerInstance(machine);
     }
 
     public static final Machine CELL_CYCLING = new Machine(WORLD,"cycling", Low);

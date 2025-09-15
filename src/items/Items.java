@@ -1,12 +1,26 @@
 package items;
 
+import machines.Machine;
 import register.Registered;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static register.Namespaces.*;
 
 public class Items extends Registered<Item> {
+    private static Items instance;
+    public static final List<Item> registry = new ArrayList<Item>();
     public Items() {
-        super("Items");
+        super("Items", registry);
+        instance = this;
+    }
+
+    public static boolean register(Item item) {
+        if(instance == null) {
+            instance = new Items();
+        }
+        return instance.registerInstance(item);
     }
 
     public static final Item MANUAL = new Item(PLAYER,"manual");

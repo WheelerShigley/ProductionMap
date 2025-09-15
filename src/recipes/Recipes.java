@@ -8,6 +8,7 @@ import machines.Machines;
 import java.util.List;
 
 public class Recipes {
+
     //nothing
     public static final Recipe DUMMY; static {
         DUMMY = new Recipe(

@@ -1,17 +1,19 @@
 package register;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public abstract class Registered<T extends Identified> {
     private static Logger LOGGER;
-    ArrayList<T> Registry = new ArrayList<T>();
+    private final List<T> registry;
 
-    public Registered(String name) {
+    public Registered(String name, List<T> registry) {
         LOGGER = Logger.getLogger(name+"Registry");
+        this.registry = registry;
     }
 
+    //# Registrations
     public boolean registerInstance(T instance) {
         return registerInstance(instance, false);
     }
@@ -43,7 +45,7 @@ public abstract class Registered<T extends Identified> {
         }
 
         //ensure it is not already registered
-        for(T registeredInstance : Registry) {
+        for(T registeredInstance : registry) {
             if(
                    registeredInstance.getNamespace().equalsIgnoreCase( instance.getNamespace() )
                 && registeredInstance.getName().equalsIgnoreCase( instance.getName() )
@@ -57,7 +59,7 @@ public abstract class Registered<T extends Identified> {
         }
 
         //register item
-        Registry.add(instance);
+        registry.add(instance);
         if(enableLogging) {
             loggingMessageBuilder.append("was registered.");
             LOGGER.log( Level.INFO, loggingMessageBuilder.toString() );
