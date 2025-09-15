@@ -1,25 +1,17 @@
 import map.Maps;
-import recipes.Recipe;
-import recipes.Recipes;
 
 public class Main {
     /* TODO
-     * Correct Recipes' Complexity (Register Recipes, calculate each's complexity, correct)
+     * 3y Using byproducts?
+     * 3z Prioritized Input-sources
      *
-     * Using byproducts?
-     * Prioritized Input-sources
+     * 1  EU/t usage?
+     * 2a Maximum Power Consumption
+     * 2b Maximum Pollution Production
      *
-     * EU/t usage?
-     * Maximum Power Consumption
-     * Maximum Pollution Production
-     *
-     * README.md
+     * ?  README.md
      */
     public static void main(String[] args) {
         System.out.println( Maps.ELECTRIC_CIRCUIT );
-
-        for(Recipe registeredRecipe : Recipes.registry) {
-            System.out.println( registeredRecipe.toString() +"@"+ registeredRecipe.complexity);
-        }
     }
 }
