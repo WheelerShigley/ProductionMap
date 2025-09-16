@@ -95,33 +95,32 @@ public class Main {
     <pre style="font-family: monospace; line-height: 0.5rem; margin: 0;">
     ## Maximum Power Consumption<br>
      ├82.69A LV (2646.0 EU/t)<br>
-     └2.66A MV (340.0 EU/t)<br><br>
+     └2.66A MV (340.0 EU/t)<br>
     ## Average Power Consumption<br>
     ├70.89A LV (2268.53 EU/t)<br>
     └1.13A MV (144.6 EU/t)<br><br>
     ## Maximum Pollution Rate<br>
-    └ 1200.0 pollution/second<br><br>
+    └ 1200.0 pollution/second<br>
     ## Average Pollution Rate<br>
     └ 1200.0 pollution/second<br><br>
     ## Machines<br>
-    ├ 6× Basic-Assembling-Machine (LV)<br>
-    ├ 9× Basic-Wiremill (LV)<br>
-    ├ 2× Basic-Rock-Breaker (LV)<br>
-    ├ 2× Crop-Manager-Lv (LV)<br>
-    ├ 8× Basic-Circuit-Assembler (LV)<br>
-    ├ 1× Basic-Arc-Furnace (LV)<br>
-    ├ 20× Basic-Compressor (LV)<br>
-    ├ 4× Basic-Alloy-Smelter (LV)<br>
-    ├ 2× Basic-Mixer (LV)<br>
-    ├ 2× Advanced-Extruder (MV)<br>
-    ├ 4× Basic-Forge-Hammer (LV)<br>
-    ├ 2× Advanced-Fluid-Extractor (MV)<br>
-    ├ 9× Basic-Macerator (LV)<br>
-    ├ 3× Basic-Bending-Machine (LV)<br>
-    ├ 1× Advanced-Electrolyzer (MV)<br>
-    ├ 25× Basic-Centrifuge (LV)<br>
-    ├ 1× Basic-Sifter (LV)<br>
-    └ 3× Electric-Blast-Furnace-Lv-Nicu (LV)<br>
+     ├ 1× Advanced-Electrolyzer (MV)<br>
+     ├ 2× Advanced-Extruder (MV)<br>
+     ├ 2× Advanced-Fluid-Extractor (MV)<br>
+     ├ 4× Basic-Alloy-Smelter (LV)<br>
+     ├ 1× Basic-Arc-Furnace (LV)<br>
+     ├ 6× Basic-Assembling-Machine (LV)<br>
+     ├ 3× Basic-Bending-Machine (LV)<br>
+     ├ 4× Basic-Centrifuge (LV)<br>
+     ├ 8× Basic-Circuit-Assembler (LV)<br>
+     ├ 4× Basic-Forge-Hammer (LV)<br>
+     ├ 9× Basic-Macerator (LV)<br>
+     ├ 2× Basic-Mixer (LV)<br>
+     ├ 2× Basic-Rock-Breaker (LV)<br>
+     ├ 1× Basic-Sifter (LV)<br>
+     ├ 9× Basic-Wiremill (LV)<br>
+     ├ 2× Crop-Manager-Lv (LV)<br>
+     └ 3× Electric-Blast-Furnace-Lv-Nicu (LV)<br>
     </pre>
 </details>
 

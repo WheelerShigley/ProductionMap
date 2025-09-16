@@ -60,7 +60,7 @@ public class Map {
 
         //additional data
         MAP_STRING_BUILDER.append("\r\n");
-        MAP_STRING_BUILDER.append( getMaximumPowerConsumptionString(this) ).append("\r\n");
+        MAP_STRING_BUILDER.append( getMaximumPowerConsumptionString(this) );
         MAP_STRING_BUILDER.append( getAveragePowerConsumptionString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getMaximumPollutionRateString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getAveragePollutionRateString(this) ).append("\r\n\r\n");
@@ -298,11 +298,26 @@ public class Map {
             }
         }
 
+        Machine[] sortedCountedMachines = countedMachines.keySet().toArray(new Machine[0]);
+        Arrays.sort(
+            sortedCountedMachines,
+            new Comparator<Machine>() {
+                @Override
+                public int compare(Machine primary, Machine secondary) {
+                    return primary.getName().compareTo( secondary.getName() );
+                }
+
+                @Override
+                public boolean equals(Object obj) {
+                    return false;
+                }
+            }
+        );
 
         StringBuilder countedMachinesBuilder = new StringBuilder();
         countedMachinesBuilder.append("## Machines\r\n");
         int counter = 0;
-        for(Machine countedMachine : countedMachines.keySet() ) {
+        for(Machine countedAndSortedMachine : sortedCountedMachines ) {
 
             countedMachinesBuilder.append(' ');
             if( counter < countedMachines.size()-1 ) {
@@ -313,9 +328,9 @@ public class Map {
             countedMachinesBuilder.append(' ');
 
             countedMachinesBuilder
-                .append( countedMachines.get(countedMachine) )
+                .append( countedMachines.get(countedAndSortedMachine) )
                 .append("× ")
-                .append( countedMachine.toString() ).append(" (").append( countedMachine.voltage.toString() ).append(')')
+                .append( countedAndSortedMachine.toString() ).append(" (").append( countedAndSortedMachine.voltage.toString() ).append(')')
                 .append("\r\n")
             ;
 
@@ -325,7 +340,10 @@ public class Map {
     }
     private static HashMap<Machine, Integer> getMachinesCount(MachineNode node) {
         HashMap<Machine, Integer> nodeMachines = new HashMap<>();
-        if( node.recipe.machine.equals(Machines.PLAYER) ) {
+        if(
+            node.recipe.machine.equals(Machines.PLAYER)
+            || node.recipe.machine.voltage.equals(Voltage.None)
+        ) {
             return nodeMachines;
         }
 

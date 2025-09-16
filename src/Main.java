@@ -2,7 +2,6 @@ import map.Maps;
 
 public class Main {
     /* TODO
-     * Remove Cycling+Tanks from Machines List (anything with Voltage "none"?)
      * Alphabetize Machines Counts
      * Automatic Machine-count correction + uptime% adjustment (only in map.toString())
      * Add setting for minimum-depth branch-consolidation (default =? 3)
