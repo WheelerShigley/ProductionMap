@@ -47,6 +47,6 @@ public class Machines extends Registered<Machine> {
     public static final Machine BASIC_WIREMILL = new Machine(GREGTECH,"basic_wiremill", Low);
     public static final Machine CROP_MANAGER_LV = new Machine(GREGTECH,"crop_manager_lv", Low);
     public static final Machine ELECTRIC_BLAST_FURNACE_LV_NICU = new Machine(GREGTECH,"electric_blast_furnace_lv_nicu", Low, 400);
-    public static final Machine LOW_VOLTAGE_FLUID_TANK = new Machine(GREGTECH,"low_voltage_fluid_tank", Low);
+    public static final Machine LOW_VOLTAGE_FLUID_TANK = new Machine(GREGTECH,"low_voltage_fluid_tank",None);
     public static final Machine REINFORCED_LAVA_BOILER = new Machine(GREGTECH,"reinforced_lava_boiler");
 }

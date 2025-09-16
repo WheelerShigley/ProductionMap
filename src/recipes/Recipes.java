@@ -49,8 +49,9 @@ public class Recipes extends Registered<Recipe> {
             List.of(
                 new ItemStack(Items.ANY_WOOD, 1)
             ),
-            0.05
+            1
         );
+        ANY_WOOD.setEUPerTick(16);
     }
     public static final Recipe COAL_DUST; static {
         COAL_DUST = new Recipe(
@@ -83,6 +84,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             0.8
         );
+        COBBLESTONE.setEUPerTick(30);
     }
     public static final Recipe COPPER_DUST; static {
         COPPER_DUST = new Recipe(
@@ -209,8 +211,9 @@ public class Recipes extends Registered<Recipe> {
             List.of(
                 new ItemStack(Items.STICKY_RESIN, 1)
             ),
-            0.05
+            1
         );
+        STICKY_RESIN.setEUPerTick(16);
     }
 
     //of^2 nothing
@@ -229,6 +232,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             15
         );
+        COMPRESSED_AIR.setEUPerTick(2);
     }
     public static final Recipe COPPER_FOIL; static {
         COPPER_FOIL = new Recipe(
@@ -245,6 +249,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             6.3
         );
+        COPPER_FOIL.setEUPerTick(24);
     }
     public static final Recipe FINE_COPPER_WIRE; static {
         FINE_COPPER_WIRE = new Recipe(
@@ -261,6 +266,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             5
         );
+        FINE_COPPER_WIRE.setEUPerTick(4);
     }
     public static final Recipe GRAVEL; static {
         GRAVEL = new Recipe(
@@ -277,6 +283,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             0.5
         );
+        GRAVEL.setEUPerTick(16);
     }
     public static final Recipe MOLTEN_LEAD; static {
         MOLTEN_LEAD = new Recipe(
@@ -293,6 +300,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             1.2
         );
+        MOLTEN_LEAD.setEUPerTick(34);
     }
     public static final Recipe MOLTEN_REDSTONE; static {
         MOLTEN_REDSTONE = new Recipe(
@@ -309,6 +317,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             1.2
         );
+        MOLTEN_REDSTONE.setEUPerTick(30);
     }
     public static final Recipe LAVA_OBSIDIAN; static {
         LAVA_OBSIDIAN = new Recipe(
@@ -341,6 +350,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             5
         );
+        ONE_COPPER_WIRE.setEUPerTick(4);
     }
     public static final Recipe RED_ALLOY_INGOT; static {
         RED_ALLOY_INGOT = new Recipe(
@@ -361,6 +371,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             2.5
         );
+        RED_ALLOY_INGOT.setEUPerTick(16);
     }
     public static final Recipe REDSTONE_DUST_OBSIDIAN; static {
         REDSTONE_DUST_OBSIDIAN = new Recipe(
@@ -377,6 +388,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             6.4
         );
+        REDSTONE_DUST_OBSIDIAN.setEUPerTick(30);
     }
     public static final Recipe REFINED_GLUE; static {
         REFINED_GLUE = new Recipe(
@@ -395,6 +407,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             0.05
         );
+        REFINED_GLUE.setEUPerTick(5);
     }
     public static final Recipe WOOD_PULP; static {
         WOOD_PULP = new Recipe(
@@ -411,6 +424,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             20
         );
+        WOOD_PULP.setEUPerTick(2);
     }
 
     //of^3 nothing
@@ -446,6 +460,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             30
         );
+        FLINT.setEUPerTick(16);
     }
     public static final Recipe OBSIDIAN_DUST; static {
         OBSIDIAN_DUST = new Recipe(
@@ -460,8 +475,9 @@ public class Recipes extends Registered<Recipe> {
             List.of(
                 new ItemStack(Items.OBSIDIAN_DUST, 12)
             ),
-            9.9
+            9.0*1.1
         );
+        OBSIDIAN_DUST.setEUPerTick(4);
     }
     public static final Recipe MOLTEN_RED_ALLOY; static {
         MOLTEN_RED_ALLOY = new Recipe(
@@ -478,6 +494,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             1.2
         );
+        MOLTEN_RED_ALLOY.setEUPerTick(30);
     }
     public static final Recipe ONE_RED_ALLOY_WIRE; static {
         ONE_RED_ALLOY_WIRE = new Recipe(
@@ -494,6 +511,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             5
         );
+        ONE_RED_ALLOY_WIRE.setEUPerTick(4);
     }
     public static final Recipe RESISTOR; static {
         RESISTOR = new Recipe(
@@ -522,6 +540,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             16
         );
+        RESISTOR.setEUPerTick(16);
     }
     public static final Recipe SAND; static {
         SAND = new Recipe(
@@ -538,6 +557,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             0.5
         );
+        SAND.setEUPerTick(16);
     }
     public static final Recipe WOOD_PLANK; static {
         WOOD_PLANK = new Recipe(
@@ -558,6 +578,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             120
         );
+        WOOD_PLANK.setEUPerTick(30);
     }
 
     //of^4 nothing
@@ -584,6 +605,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             80
         );
+        CIRCUIT_BOARD.setEUPerTick(8);
     }
     public static final Recipe ELECTROLYZED_OBSIDIAN_DUST; static {
         ELECTROLYZED_OBSIDIAN_DUST = new Recipe(
@@ -603,6 +625,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             12
         );
+        ELECTROLYZED_OBSIDIAN_DUST.setEUPerTick(90);
     }
     public static final Recipe FLINT_DUST; static {
         FLINT_DUST = new Recipe(
@@ -619,6 +642,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             10
         );
+        FLINT_DUST.setEUPerTick(2);
     }
     public static final Recipe OXYGEN_CELL; static {
         OXYGEN_CELL = new Recipe(
@@ -640,6 +664,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             80
         );
+        OXYGEN_CELL.setEUPerTick(8);
     }
     public static final Recipe QUARTZ_SAND; static {
         QUARTZ_SAND = new Recipe(
@@ -656,6 +681,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             10
         );
+        QUARTZ_SAND.setEUPerTick(8);
     }
 
     //of^5 nothing
@@ -678,6 +704,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             40
         );
+        GLASS_DUST.setEUPerTick(8);
     }
     public static final Recipe OXYGEN_GAS; static {
         OXYGEN_GAS = new Recipe(
@@ -719,6 +746,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             5
         );
+        REDSTONE_ALLOY_DUST.setEUPerTick(8);
     }
 
     //of^6 nothing
@@ -742,6 +770,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             3.15
         );
+        ANNEALED_COPPER_INGOT.setEUPerTick(3*30);
     }
     public static final Recipe GLASS_TUBE; static {
         GLASS_TUBE = new Recipe(
@@ -758,6 +787,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             6
         );
+        GLASS_TUBE.setEUPerTick(16);
     }
     public static final Recipe REDSTONE_ALLOY_INGOT; static {
         REDSTONE_ALLOY_INGOT = new Recipe(
@@ -779,10 +809,12 @@ public class Recipes extends Registered<Recipe> {
             ),
             40
         );
+        REDSTONE_ALLOY_INGOT.setEUPerTick(120);
     }
     public static final Recipe WROUGHT_IRON_INGOT; static {
         WROUGHT_IRON_INGOT = new Recipe(
             Machines.BASIC_ARC_FURNACE,
+            3,
             MachineConfiguration.None,
             List.of(
                 new ItemStackWithPreferredRecipeSource(
@@ -799,6 +831,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             2.8
         );
+        WROUGHT_IRON_INGOT.setEUPerTick(3*30);
     }
 
     //of^7 nothing
@@ -816,6 +849,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             1.2
         );
+        MOLTEN_REDSTONE_ALLOY.setEUPerTick(36);
     }
     public static final Recipe ONE_ANNEALED_COPPER_WIRE; static {
         ONE_ANNEALED_COPPER_WIRE = new Recipe(
@@ -832,6 +866,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             5
         );
+        ONE_ANNEALED_COPPER_WIRE.setEUPerTick(4);
     }
     public static final Recipe WROUGHT_IRON_DUST; static {
         WROUGHT_IRON_DUST = new Recipe(
@@ -849,6 +884,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             2.8
         );
+        WROUGHT_IRON_DUST.setEUPerTick(4);
     }
 
     //of^8 nothing
@@ -873,6 +909,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             5
         );
+        STEEL_INGOT.setEUPerTick(120);
     }
 
     //of^9 nothing
@@ -891,6 +928,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             5.6
         );
+        STEEL_ROD.setEUPerTick(90);
     }
 
     //of^10 nothing
@@ -921,6 +959,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             8
         );
+        MOLTEN_RED_ALLOY_VACUUM_TUBE.setEUPerTick(8);
     }
     public static final Recipe MOLTEN_REDSTONE_ALLOY_VACUUM_TUBE; static {
         MOLTEN_REDSTONE_ALLOY_VACUUM_TUBE = new Recipe(
@@ -949,6 +988,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             8
         );
+        MOLTEN_REDSTONE_ALLOY_VACUUM_TUBE.setEUPerTick(8);
     }
     public static final Recipe MOLTEN_REDSTONE_VACUUM_TUBE; static {
         MOLTEN_REDSTONE_VACUUM_TUBE = new Recipe(
@@ -977,11 +1017,12 @@ public class Recipes extends Registered<Recipe> {
             ),
             8
         );
+        MOLTEN_REDSTONE_VACUUM_TUBE.setEUPerTick(8);
     }
 
     //of^11 nothing
-    public static final Recipe ELECTRIC_CIRCUITS; static {
-        ELECTRIC_CIRCUITS = new Recipe(
+    public static final Recipe ELECTRONIC_CIRCUIT; static {
+        ELECTRONIC_CIRCUIT = new Recipe(
             Machines.BASIC_CIRCUIT_ASSEMBLER,
             MachineConfiguration.None,
             List.of(
@@ -1011,5 +1052,6 @@ public class Recipes extends Registered<Recipe> {
             ),
             10
         );
+        ELECTRONIC_CIRCUIT.setEUPerTick(16);
     }
 }

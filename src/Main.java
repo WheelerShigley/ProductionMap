@@ -2,7 +2,7 @@ import map.Maps;
 
 public class Main {
     /* TODO
-     * 1  EU/t usage?
+     ** Check  that power consumption also accounts for consolidated branches
      * 2a Maximum Power Consumption
      * 2b Maximum Pollution Production
      *

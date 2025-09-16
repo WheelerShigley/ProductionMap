@@ -69,26 +69,28 @@ public class Map {
         final StringBuilder AVERAGE_POWER_CONSUMPTION_STRING_BUILDER = new StringBuilder();
 
         HashMap<Voltage, Double> averagePowerConsumption = getAveragePowerConsumption( map.getHead() );
-        AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("Average Power Consumption = { ");
+        AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("Average Power Consumption:").append("\r\n");
         int index = 0;
+        boolean isLast;
         for(Voltage voltage : averagePowerConsumption.keySet() ) {
             if( voltage.equals(Voltage.None) ) {
                 continue;
             }
 
+            isLast = averagePowerConsumption.size()-2 <= index;
+
             AVERAGE_POWER_CONSUMPTION_STRING_BUILDER
+                .append(' ')
+                .append(  ( isLast ? getAngledPipe(0) : getSplitPipe(0) )  )
                 .append(
                     Math.round( 100.0*averagePowerConsumption.get(voltage) )/100.0
-                ).append("A ")
-                .append( voltage.toString() )
+                )
+                .append("A ").append(voltage)
             ;
 
-            if(index < averagePowerConsumption.size()-2) {
-                AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append(", ");
-            }
+            AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("\r\n");
             index++;
         }
-        AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append('}');
 
         return AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.toString();
     }
@@ -153,6 +155,18 @@ public class Map {
             && !node.recipe.machine.equals(Machines.CONSOLIDATED_BRANCH)
         ) {
             STRINGBUILDER.append("@").append( Math.round(10000.0*node.calculated_uptime)/100.0 ).append('%');
+        }
+
+        if(node.recipe != null) {
+            STRINGBUILDER
+                .append(" ( ")
+                .append(node.calculated_uptime).append('*').append(node.recipe.eu_per_tick )
+                .append('/')
+                .append( node.recipe.amperage*node.recipe.machine.voltage.EULimit() )
+                .append(" EU/t  = ")
+                .append( (node.calculated_uptime*node.recipe.eu_per_tick)/(node.recipe.amperage*node.recipe.machine.voltage.EULimit()) )
+                .append("A )")
+            ;
         }
 
         STRINGBUILDER.append("\r\n");
@@ -740,6 +754,7 @@ public class Map {
         powerConsumption.put(
             node.recipe.machine.voltage,
             node.recipe.amperage * node.calculated_uptime
+            * ( node.recipe.eu_per_tick / node.recipe.machine.voltage.EULimit() )
         );
 
         //get source's consumption as well

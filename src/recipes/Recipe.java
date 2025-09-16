@@ -2,23 +2,27 @@ package recipes;
 
 import items.Item;
 import items.ItemStack;
-import items.Items;
 import machines.MachineConfiguration;
 import machines.Machine;
 import register.Identified;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Recipe extends Identified {
     public Machine machine;
     public final double amperage;
+    public double eu_per_tick;
     public final MachineConfiguration circuit;
     public List<ItemStackWithPreferredRecipeSource> inputs;
     public final List<ItemStack> outputs;
     public final double time_seconds;
     public final int complexity;
     public boolean isConsolidated;
+
+    private final static Logger LOGGER = Logger.getLogger("RecipeLogger");
 
     public Recipe(
         Machine machine,
@@ -36,6 +40,7 @@ public class Recipe extends Identified {
 
         this.machine = machine;
         amperage = 1.0;
+        this.eu_per_tick = amperage*machine.voltage.EULimit();
         circuit = MachineConfiguration.None;
         this.inputs = inputs;
         this.outputs = outputs;
@@ -45,11 +50,11 @@ public class Recipe extends Identified {
         Recipes.register(this);
     }
     public Recipe(
-            Machine machine,
-            MachineConfiguration circuit,
-            List<ItemStackWithPreferredRecipeSource> inputs,
-            List<ItemStack> outputs,
-            double time_seconds
+        Machine machine,
+        MachineConfiguration circuit,
+        List<ItemStackWithPreferredRecipeSource> inputs,
+        List<ItemStack> outputs,
+        double time_seconds
     ) {
         super(
             machine.getNamespace(),
@@ -61,6 +66,7 @@ public class Recipe extends Identified {
 
         this.machine = machine;
         amperage = 1.0;
+        this.eu_per_tick = amperage*machine.voltage.EULimit();
         this.circuit = circuit;
         this.inputs = inputs;
         this.outputs = outputs;
@@ -86,6 +92,7 @@ public class Recipe extends Identified {
 
         this.machine = machine;
         this.amperage = amperage;
+        this.eu_per_tick = amperage*machine.voltage.EULimit();
         this.circuit = MachineConfiguration.None;
         this.inputs = inputs;
         this.outputs = outputs;
@@ -112,6 +119,7 @@ public class Recipe extends Identified {
 
         this.machine = machine;
         this.amperage = amperage;
+        this.eu_per_tick = amperage*machine.voltage.EULimit();
         this.circuit = configuration;
         this.inputs = inputs;
         this.outputs = outputs;
@@ -121,6 +129,26 @@ public class Recipe extends Identified {
         Recipes.register(this);
     }
 
+    //# Setter(s)
+    public void setEUPerTick(double eu_per_tick) {
+        if(eu_per_tick <= 0.0) {
+            eu_per_tick = 0.0;
+            return;
+        }
+
+        double maximum_EU_rate = amperage*( (double)this.machine.voltage.EULimit() );
+        if(maximum_EU_rate < eu_per_tick) {
+            Recipe.LOGGER.log(
+                Level.WARNING,
+                "EU-rate for \""+this+"\", "+eu_per_tick+" above maximum rate of "+maximum_EU_rate+"; truncated."
+            );
+
+        }
+
+        this.eu_per_tick = Math.min(maximum_EU_rate, eu_per_tick);
+    }
+
+    //# Calculators + Helpers
     public List<ItemStack> getInputsAsItemStacks() {
         List<ItemStack> inputsList = new ArrayList<>();
         for(ItemStackWithPreferredRecipeSource source : inputs) {
