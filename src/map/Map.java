@@ -58,6 +58,7 @@ public class Map {
 
         //additional data
         MAP_STRING_BUILDER.append("\r\n");
+        MAP_STRING_BUILDER.append( getMaximumPowerConsumptionString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getAveragePowerConsumptionString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getAveragePollutionRateString(this) );
         MAP_STRING_BUILDER.append("\r\n\r\nMachines:\r\n");
@@ -65,8 +66,9 @@ public class Map {
 
         return MAP_STRING_BUILDER.toString();
     }
+
     private static String getAveragePowerConsumptionString(Map map) {
-        final StringBuilder AVERAGE_POWER_CONSUMPTION_STRING_BUILDER = new StringBuilder();
+            final StringBuilder AVERAGE_POWER_CONSUMPTION_STRING_BUILDER = new StringBuilder();
 
         HashMap<Voltage, Double> averagePowerConsumption = new HashMap<>(); {
         List< HashMap<Voltage, Double> > averagePowerConsumptions = new ArrayList<>();
@@ -75,44 +77,60 @@ public class Map {
                 averagePowerConsumptions.add( getAveragePowerConsumption(branchHead) );
             }
 
-            for(HashMap<Voltage, Double> branchPowerConsumption : averagePowerConsumptions) {
-                for( Voltage voltage : branchPowerConsumption.keySet() ) {
-                    if( averagePowerConsumption.containsKey(voltage) ) {
-                        averagePowerConsumption.replace(
-                            voltage,
-                            averagePowerConsumption.get(voltage) + branchPowerConsumption.get(voltage)
-                        );
-                    } else {
-                        averagePowerConsumption.put(voltage, branchPowerConsumption.get(voltage) );
-                    }
-                }
-            }
+            averagePowerConsumption = Voltage.combinePower(averagePowerConsumptions);
         }
         AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("Average Power Consumption:").append("\r\n");
+        AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append( getPowerList(averagePowerConsumption) );
+
+        return AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.toString();
+    }
+    private static String getMaximumPowerConsumptionString(Map map) {
+        final StringBuilder MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER = new StringBuilder();
+
+        HashMap<Voltage, Double> maximumPowerConsumption = new HashMap<>(); {
+            List< HashMap<Voltage, Double> > maximumPowerConsumptions = new ArrayList<>();
+            maximumPowerConsumptions.add(  getMaximumPowerConsumption( map.getHead() )  );
+            for(MachineNode branchHead : map.consolidatedBranches) {
+                maximumPowerConsumptions.add( getMaximumPowerConsumption(branchHead) );
+            }
+
+            maximumPowerConsumption = Voltage.combinePower(maximumPowerConsumptions);
+        }
+        MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER.append("Maximum Power Consumption:").append("\r\n");
+        MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER.append( getPowerList(maximumPowerConsumption) );
+
+        return MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER.toString();
+    }
+    private static String getPowerList(HashMap<Voltage, Double> power) {
+        final StringBuilder POWER_LIST_BUILDER = new StringBuilder();
         int index = 0;
         boolean isLast;
-        for(Voltage voltage : averagePowerConsumption.keySet() ) {
+        for(Voltage voltage : power.keySet() ) {
             if( voltage.equals(Voltage.None) ) {
                 continue;
             }
 
-            isLast = averagePowerConsumption.size()-2 <= index;
+            isLast = power.size()-2 <= index;
 
-            AVERAGE_POWER_CONSUMPTION_STRING_BUILDER
+            POWER_LIST_BUILDER
                 .append(' ')
                 .append(  ( isLast ? getAngledPipe(0) : getSplitPipe(0) )  )
                 .append(
-                    Math.round( 100.0*averagePowerConsumption.get(voltage) )/100.0
+                    Math.round( 100.0*power.get(voltage) )/100.0
                 )
                 .append("A ").append(voltage)
+
+                .append(" (")
+                .append( Math.round(100.0*power.get(voltage)*voltage.EULimit() )/100.0 )
+                .append(" EU/t)")
             ;
 
-            AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("\r\n");
+            POWER_LIST_BUILDER.append("\r\n");
             index++;
         }
-
-        return AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.toString();
+        return POWER_LIST_BUILDER.toString();
     }
+
     private static String getAveragePollutionRateString(Map map) {
         double rate = getAveragePollutionRate( map.getHead() );
 
@@ -786,6 +804,26 @@ public class Map {
 
         return powerConsumption;
     }
+    public static HashMap<Voltage, Double> getMaximumPowerConsumption(MachineNode node) {
+        HashMap<Voltage, Double> powerConsumption = new HashMap<Voltage, Double>();
+        double maximum_amperage = node.recipe.amperage * Math.ceil(node.calculated_uptime);
+
+        powerConsumption.put(
+            node.recipe.machine.voltage,
+            maximum_amperage * ( node.recipe.eu_per_tick / node.recipe.machine.voltage.EULimit() )
+        );
+
+        //get source's consumption as well
+        for(MachineNode source : node.sources) {
+            addAmperes(
+                powerConsumption,
+                getMaximumPowerConsumption(source)
+            );
+        }
+
+        return powerConsumption;
+    }
+
     private static void addAmperes(HashMap<Voltage, Double> first, HashMap<Voltage, Double> second) {
         for( Voltage addedVoltage : second.keySet() ) {
             if( first.containsKey(addedVoltage) ) {

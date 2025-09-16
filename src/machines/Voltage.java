@@ -1,6 +1,10 @@
 package machines;
 
+import map.MachineNode;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 public enum Voltage {
@@ -92,5 +96,23 @@ public enum Voltage {
         powerConsumptionMessageBuilder.append('}');
 
         return powerConsumptionMessageBuilder.toString();
+    }
+
+    public static HashMap<Voltage, Double> combinePower(List< HashMap<Voltage, Double> > powers) {
+        HashMap<Voltage, Double> combinedPower = new HashMap<>(); {
+            for(HashMap<Voltage, Double> branchPowerConsumption : powers) {
+                for( Voltage voltage : branchPowerConsumption.keySet() ) {
+                    if( combinedPower.containsKey(voltage) ) {
+                        combinedPower.replace(
+                            voltage,
+                            combinedPower.get(voltage) + branchPowerConsumption.get(voltage)
+                        );
+                    } else {
+                        combinedPower.put(voltage, branchPowerConsumption.get(voltage) );
+                    }
+                }
+            }
+        }
+        return combinedPower;
     }
 }
