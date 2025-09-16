@@ -60,8 +60,9 @@ public class Map {
         MAP_STRING_BUILDER.append("\r\n");
         MAP_STRING_BUILDER.append( getMaximumPowerConsumptionString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getAveragePowerConsumptionString(this) ).append("\r\n");
-        MAP_STRING_BUILDER.append( getAveragePollutionRateString(this) );
-        MAP_STRING_BUILDER.append("\r\n\r\nMachines:\r\n");
+        MAP_STRING_BUILDER.append( getMaximumPollutionRateString(this) ).append("\r\n");
+        MAP_STRING_BUILDER.append( getAveragePollutionRateString(this) ).append("\r\n");
+        MAP_STRING_BUILDER.append("\r\nMachines:\r\n");
         MAP_STRING_BUILDER.append( getMachinesCountString(this) );
 
         return MAP_STRING_BUILDER.toString();
@@ -133,8 +134,19 @@ public class Map {
 
     private static String getAveragePollutionRateString(Map map) {
         double rate = getAveragePollutionRate( map.getHead() );
+        for(MachineNode branchHead : map.consolidatedBranches) {
+            rate += getAveragePollutionRate(branchHead);
+        }
 
         return "Average Pollution Rate = " + Math.round(100.0*rate)/100.0 +" pollution/second.";
+    }
+    private static String getMaximumPollutionRateString(Map map) {
+        double rate = getMaximumPollutionRate( map.getHead() );
+        for(MachineNode branchHead : map.consolidatedBranches) {
+            rate += getMaximumPollutionRate(branchHead);
+        }
+
+        return "Maximum Pollution Rate = " + Math.round(100.0*rate)/100.0 +" pollution/second.";
     }
 
     private static void getMapNodeAsString(
@@ -845,6 +857,15 @@ public class Map {
 
         for(MachineNode source : node.sources) {
             pollution_rate += getAveragePollutionRate(source);
+        }
+
+        return pollution_rate;
+    }
+    public static double getMaximumPollutionRate(MachineNode node) {
+        double pollution_rate = node.recipe.machine.pollution * Math.ceil(node.calculated_uptime);
+
+        for(MachineNode source : node.sources) {
+            pollution_rate += getMaximumPollutionRate(source);
         }
 
         return pollution_rate;
