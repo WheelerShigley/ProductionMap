@@ -38,6 +38,7 @@ public class Map {
         final StringBuilder MAP_STRING_BUILDER = new StringBuilder();
 
         //print sub-systems first
+        MAP_STRING_BUILDER.append("# Sub-System Production-Lines\r\n\r\n");
         for(MachineNode subMapHead : this.consolidatedBranches) {
             Map subSystemMap = new Map(subMapHead.recipe);
             subSystemMap.head.setUptime(subMapHead.calculated_uptime);
@@ -52,6 +53,7 @@ public class Map {
         MAP_STRING_BUILDER.append("\r\n");
 
         //print tree (branched node-graph)
+        MAP_STRING_BUILDER.append("# Main Production-Line\r\n");
         HashMap<Integer, Boolean> linePositions = new HashMap<Integer, Boolean>();
         linePositions.put(0, true);
         getMapNodeAsString(this, null, this.head, linePositions, 0, MAP_STRING_BUILDER, true);
@@ -61,8 +63,7 @@ public class Map {
         MAP_STRING_BUILDER.append( getMaximumPowerConsumptionString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getAveragePowerConsumptionString(this) ).append("\r\n");
         MAP_STRING_BUILDER.append( getMaximumPollutionRateString(this) ).append("\r\n");
-        MAP_STRING_BUILDER.append( getAveragePollutionRateString(this) ).append("\r\n");
-        MAP_STRING_BUILDER.append("\r\nMachines:\r\n");
+        MAP_STRING_BUILDER.append( getAveragePollutionRateString(this) ).append("\r\n\r\n");
         MAP_STRING_BUILDER.append( getMachinesCountString(this) );
 
         return MAP_STRING_BUILDER.toString();
@@ -80,7 +81,7 @@ public class Map {
 
             averagePowerConsumption = Voltage.combinePower(averagePowerConsumptions);
         }
-        AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("Average Power Consumption:").append("\r\n");
+        AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("## Average Power Consumption").append("\r\n");
         AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append( getPowerList(averagePowerConsumption) );
 
         return AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.toString();
@@ -97,7 +98,7 @@ public class Map {
 
             maximumPowerConsumption = Voltage.combinePower(maximumPowerConsumptions);
         }
-        MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER.append("Maximum Power Consumption:").append("\r\n");
+        MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER.append("## Maximum Power Consumption").append("\r\n");
         MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER.append( getPowerList(maximumPowerConsumption) );
 
         return MAXIMUM_POWER_CONSUMPTION_STRING_BUILDER.toString();
@@ -138,7 +139,10 @@ public class Map {
             rate += getAveragePollutionRate(branchHead);
         }
 
-        return "Average Pollution Rate = " + Math.round(100.0*rate)/100.0 +" pollution/second.";
+        return
+            "## Average Pollution Rate\r\n"
+            + getAngledPipe(0)+" " + Math.round(100.0*rate)/100.0 +" pollution/second"
+        ;
     }
     private static String getMaximumPollutionRateString(Map map) {
         double rate = getMaximumPollutionRate( map.getHead() );
@@ -146,7 +150,10 @@ public class Map {
             rate += getMaximumPollutionRate(branchHead);
         }
 
-        return "Maximum Pollution Rate = " + Math.round(100.0*rate)/100.0 +" pollution/second.";
+        return
+            "## Maximum Pollution Rate\r\n"
+            + getAngledPipe(0)+" " + Math.round(100.0*rate)/100.0 +" pollution/second"
+        ;
     }
 
     private static void getMapNodeAsString(
@@ -206,7 +213,7 @@ public class Map {
             STRINGBUILDER.append("@").append( Math.round(10000.0*node.calculated_uptime)/100.0 ).append('%');
         }
 
-        if(node.recipe != null) {
+        /*if(node.recipe != null) {
             STRINGBUILDER
                 .append(" ( ")
                 .append(node.calculated_uptime).append('*').append(node.recipe.eu_per_tick )
@@ -216,7 +223,7 @@ public class Map {
                 .append( (node.calculated_uptime*node.recipe.eu_per_tick)/(node.recipe.amperage*node.recipe.machine.voltage.EULimit()) )
                 .append("A )")
             ;
-        }
+        }*/
 
         STRINGBUILDER.append("\r\n");
 
@@ -293,6 +300,7 @@ public class Map {
 
 
         StringBuilder countedMachinesBuilder = new StringBuilder();
+        countedMachinesBuilder.append("## Machines\r\n");
         int counter = 0;
         for(Machine countedMachine : countedMachines.keySet() ) {
 
