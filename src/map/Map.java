@@ -68,7 +68,26 @@ public class Map {
     private static String getAveragePowerConsumptionString(Map map) {
         final StringBuilder AVERAGE_POWER_CONSUMPTION_STRING_BUILDER = new StringBuilder();
 
-        HashMap<Voltage, Double> averagePowerConsumption = getAveragePowerConsumption( map.getHead() );
+        HashMap<Voltage, Double> averagePowerConsumption = new HashMap<>(); {
+        List< HashMap<Voltage, Double> > averagePowerConsumptions = new ArrayList<>();
+            averagePowerConsumptions.add(  getAveragePowerConsumption( map.getHead() )  );
+            for(MachineNode branchHead : map.consolidatedBranches) {
+                averagePowerConsumptions.add( getAveragePowerConsumption(branchHead) );
+            }
+
+            for(HashMap<Voltage, Double> branchPowerConsumption : averagePowerConsumptions) {
+                for( Voltage voltage : branchPowerConsumption.keySet() ) {
+                    if( averagePowerConsumption.containsKey(voltage) ) {
+                        averagePowerConsumption.replace(
+                            voltage,
+                            averagePowerConsumption.get(voltage) + branchPowerConsumption.get(voltage)
+                        );
+                    } else {
+                        averagePowerConsumption.put(voltage, branchPowerConsumption.get(voltage) );
+                    }
+                }
+            }
+        }
         AVERAGE_POWER_CONSUMPTION_STRING_BUILDER.append("Average Power Consumption:").append("\r\n");
         int index = 0;
         boolean isLast;
