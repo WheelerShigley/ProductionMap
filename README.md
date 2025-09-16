@@ -20,7 +20,7 @@ public class Main {
 
 <details>
   <summary># Sub-System Production-Lines</summary>
-    <pre style="font-family: monospace; line-height: 0.7rem; margin: 0;">
+    <pre style="font-family: monospace; line-height: 0.5rem; margin: 0;">
     1.0 Manual = 1.0 Coal_dust [Manual]<br><br>
     1.0 Manual = 1.0 Redstone_dust [Manual]<br><br>
     1.0 Sticky_resin = 3.0 Raw_rubber_dust + 0.1 Plant_ball + 0.6944 Refined_glue [Basic-Centrifuge]@4.37%<br>
@@ -39,7 +39,7 @@ public class Main {
 </details>
 <details>
   <summary># Main Production-Line</summary>
-    <pre style="font-family: monospace; line-height: 0.7rem; margin: 0;">
+    <pre style="font-family: monospace; line-height: 0.5rem; margin: 0;">
     1.0 Circuit_board + 2.0 Resistor + 2.0 1x_red_alloy_wire + 2.0 Vacuum_tube + 2.0 Molten_lead = 1.0 Electric_circuit [Basic-Circuit-Assembler]@400.0%<br>
     ├ 8.0 Wood_plank + 32.0 Copper_foil + 4.0 Refined_glue = 8.0 Circuit_board [Basic-Assembling-Machine, 6]@400.0%<br>
     │	╞ 64.0 Wood_pulp + 1.0 Refined_glue = 64.0 Wood_plank [Basic-Assembling-Machine, 2]@75.0%<br>
@@ -92,7 +92,7 @@ public class Main {
 </details>
 <details>
   <summary># Additional Details</summary>
-    <pre style="font-family: monospace; line-height: 0.7rem; margin: 0;">
+    <pre style="font-family: monospace; line-height: 0.5rem; margin: 0;">
     ## Maximum Power Consumption<br>
      ├82.69A LV (2646.0 EU/t)<br>
      └2.66A MV (340.0 EU/t)<br><br>
