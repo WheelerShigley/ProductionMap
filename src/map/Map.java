@@ -195,7 +195,10 @@ public class Map {
             if(includeConsolidations && node.recipe.isConsolidated) {
                 STRINGBUILDER.append( Machines.CONSOLIDATED_BRANCH.toString() );
             } else {
-                STRINGBUILDER.append(node.recipe.machine.toString());
+                if( !node.recipe.machine.equals(Machines.PLAYER) ) {
+                    STRINGBUILDER.append( (int)Math.ceil(node.calculated_uptime) ).append("× ");
+                }
+                STRINGBUILDER.append( node.recipe.machine.toString() );
             }
         }
         if( node.recipe != null && !node.recipe.circuit.equals(MachineConfiguration.None) ) {
@@ -210,7 +213,9 @@ public class Map {
             && !node.recipe.machine.equals(Machines.PLAYER)
             && !node.recipe.machine.equals(Machines.CONSOLIDATED_BRANCH)
         ) {
-            STRINGBUILDER.append("@").append( Math.round(10000.0*node.calculated_uptime)/100.0 ).append('%');
+            double minimum_machine_count = Math.ceil(node.calculated_uptime);
+            double rounded_percentage = Math.round(10000.0*node.calculated_uptime/minimum_machine_count)/100.0;
+            STRINGBUILDER.append("@").append(rounded_percentage).append('%');
         }
 
         /*if(node.recipe != null) {
