@@ -14,6 +14,6 @@ public class Main {
      * Refactor Map.toString() helper functions to be easier(?) to understand
      */
     public static void main(String[] args) {
-        System.out.println( Maps.ELECTRONIC_CIRCUIT);
+        System.out.println( Maps.ELECTRONIC_CIRCUIT );
     }
 }

@@ -23,10 +23,6 @@ public class Main {
 <details>
   <summary># Sub-System Production-Lines</summary>
     <pre style="font-family: monospace; line-height: 0.5rem; margin: 0;">
-    1.0 Manual = 1.0 Coal_dust [Manual]<br>
-    <br>
-    1.0 Manual = 1.0 Redstone_dust [Manual]<br>
-    <br>
     1.0 Sticky_resin = 3.0 Raw_rubber_dust + 0.1 Plant_ball + 0.6944 Refined_glue [1× Basic-Centrifuge]@4.37%<br>
     └ 1.0 Nothing = 1.0 Sticky_resin [1× Crop-Manager-Lv]@87.3%<br>
     <br>
@@ -57,7 +53,7 @@ public class Main {
     │	│	╙ 1.0 Manual = 1.0 Copper_ingot [Manual]<br>
     │	╘ 1.0 Sticky_resin = 3.0 Raw_rubber_dust + 0.1 Plant_ball + 0.6944 Refined_glue [Consolidated-Branch]@1.44%<br>
     ├ 1.0 Coal_dust + 4.0 Fine_copper_wire + 4.0 1x_copper_wire + 2.0 Refined_glue = 4.0 Resistor [4× Basic-Circuit-Assembler, 3]@80.0%<br>
-    │	╞ 1.0 Manual = 1.0 Coal_dust [Consolidated-Branch]<br>
+    │	╞ 1.0 Manual = 1.0 Coal_dust [Manual]<br>
     │	╞ 1.0 Copper_ingot = 4.0 Fine_copper_wire [1× Basic-Wiremill, 3]@100.0%<br>
     │	│	╙ 1.0 Manual = 1.0 Copper_ingot [Manual]<br>
     │	╞ 1.0 Copper_ingot = 2.0 1x_copper_wire [Consolidated-Branch, 1]@100.0%<br>
@@ -65,7 +61,7 @@ public class Main {
     ├ 1.0 Red_alloy_ingot = 2.0 1x_red_alloy_wire [2× Basic-Wiremill, 1]@100.0%<br>
     │	╘ 1.0 Copper_ingot + 4.0 Redstone_dust = 1.0 Red_alloy_ingot [1× Basic-Alloy-Smelter]@100.0%<br>
     │	 	╟ 1.0 Manual = 1.0 Copper_ingot [Manual]<br>
-    │	 	╙ 1.0 Manual = 1.0 Redstone_dust [Consolidated-Branch]<br>
+    │	 	╙ 1.0 Manual = 1.0 Redstone_dust [Manual]<br>
     ├ 4.0 Glass_tube + 4.0 1x_copper_wire + 4.0 Steel_rod + 0.5 Molten_redstone_alloy = 8.0 Vacuum_tube [1× Basic-Assembling-Machine, 5]@80.0%<br>
     │	╞ 1.0 Glass_dust = 1.0 Glass_tube [3× Basic-Alloy-Smelter, Ball]@80.0%<br>
     │	│	╙ 1.0 Flint_dust + 16.0 Quartz_sand = 16.0 Glass_dust [1× Basic-Mixer, 4]@100.0%<br>
@@ -86,12 +82,12 @@ public class Main {
     │	╘ 1.0 Redstone_alloy_ingot = 1.0 Molten_redstone_alloy [1× Advanced-Fluid-Extractor]@6.0%<br>
     │	 	╙ 1.0 Redstone_alloy_dust + 1.0 Oxygen = 1.0 Redstone_alloy_ingot [2× Electric-Blast-Furnace-Lv-Nicu, 11]@100.0%<br>
     │	 	 	╠ 1.0 Redstone_dust + 1.0 Raw_silicon_dust + 1.0 Coal_dust = 3.0 Redstone_alloy_dust [1× Basic-Mixer, 22]@8.33%<br>
-    │	 	 	║	├ 1.0 Manual = 1.0 Redstone_dust [Consolidated-Branch]<br>
+    │	 	 	║	├ 1.0 Manual = 1.0 Redstone_dust [Manual]<br>
     │	 	 	║	├ 12.0 Obsidian_dust = 1.0 Magnesium_dust + 1.0 Iron_dust + 2.0 Raw_silicon_dust + 8.0 Oxygen [1× Advanced-Electrolyzer]@10.0%<br>
     │	 	 	║	│	╘ 1.0 Obsidian = 12.0 Obsidian_dust [1× Basic-Macerator]@8.25%<br>
     │	 	 	║	│	 	╙ 1.0 Redstone_dust = 1.0 Obsidian [1× Basic-Rock-Breaker, 1]@5.33%<br>
-    │	 	 	║	│	 	 	╚ 1.0 Manual = 1.0 Redstone_dust [Consolidated-Branch]<br>
-    │	 	 	║	└ 1.0 Manual = 1.0 Coal_dust [Consolidated-Branch]<br>
+    │	 	 	║	│	 	 	╚ 1.0 Manual = 1.0 Redstone_dust [Manual]<br>
+    │	 	 	║	└ 1.0 Manual = 1.0 Coal_dust [Manual]<br>
     │	 	 	╚ 1.0 Oxygen_cell = 1.0 Empty_cell + 1.0 Oxygen [Consolidated-Branch]@0.5%<br>
     └ 1.0 Lead_ingot = 1.0 Molten_lead [1× Advanced-Fluid-Extractor]@96.0%<br>
         ╘ 1.0 Manual = 1.0 Lead_ingot [Manual]
@@ -133,18 +129,15 @@ public class Main {
 
 ---
 
-### Current Features:
+### Features:
 - Automatically generates Manufacturing-Process for a Product.
-- Discovers \[and separates\] common sub-processes into seperate lines.
+- Discovers \[and separates\] common sub-processes into separate lines (minimum-depth is configurable).
 - Calculates uptimes of entire Manufacturing-Process.
 
 ### Planned Features:
 - Product-input Information (manual inputs for producing one (1) product).
-- Configurable depth of sub-processes.
-- Machines should be incremented when over 100% up-time (with up-time adjusted) until under 100% up-time.
 - Reformatting Machines such that there can exist multiple implementations for different systems of Machines.
 - Multi-location inputs (by priority); maybe allowing for useful byproducts to be utilized.
 
-### Known Bugs:
+### Known Bug(s):
 - Multi-product sub-processes may overwrite an existing one.
-- Cell-Cycling is listed as a Machine, in Machines-List.

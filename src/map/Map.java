@@ -29,7 +29,15 @@ public class Map {
         head.setUptime(uptime);
         calculateUptimes(this);
 
-        consolidateDuplicateBranches(this);
+        consolidateDuplicateBranches(this, 3);
+    }
+    public Map(Recipe recipe, double uptime, int minimum_depth_to_seperate_branch) {
+        this.head = new MachineNode(recipe);
+        recursivelyGenerateRecipesFromPreferredSources(head);
+        head.setUptime(uptime);
+        calculateUptimes(this);
+
+        consolidateDuplicateBranches(this, minimum_depth_to_seperate_branch);
     }
 
     //# toString() and Helpers
@@ -596,7 +604,7 @@ public class Map {
         return null;
     }
 
-    private static void consolidateDuplicateBranches(Map map) {
+    private static void consolidateDuplicateBranches(Map map, int minimum_depth) {
         //get all nodes in Map
         List<MachineNode> nodes = getAllSourceNodes( map.getHead() );
 
@@ -617,7 +625,7 @@ public class Map {
         }
 
         //remove matched sub-branch-sets (these are sub-branches of other matched branches)
-        final HashMap<  Integer,  List< List<MachineNode> >  > COMPLEXITY_BRANCH_MAP = new HashMap<>();
+        HashMap<  Integer,  List< List<MachineNode> >  > COMPLEXITY_BRANCH_MAP = new HashMap<>();
         /*Order Branches (and sub-Branches) by their recipe-complexity*/ {
             MachineNode exampleNode;
             int complexity;
@@ -676,6 +684,20 @@ public class Map {
                 }
             }
         }
+
+        /*Remove entries with a smaller depth (complexity) than the minimum*/ {
+            HashMap<  Integer,  List< List<MachineNode> >  > NEW_COMPLEXITY_BRANCH_MAP = new HashMap<>();
+            for( Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
+                if(minimum_depth <= complexity) {
+                    NEW_COMPLEXITY_BRANCH_MAP.put(
+                        complexity,
+                        COMPLEXITY_BRANCH_MAP.get(complexity)
+                    );
+                }
+            }
+            COMPLEXITY_BRANCH_MAP = NEW_COMPLEXITY_BRANCH_MAP;
+        }
+
 
         //create new lists of combined sub-branches into a set of branches (consolidated branches)
         for(Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
