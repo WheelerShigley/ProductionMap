@@ -355,15 +355,19 @@ public class Map {
         HashMap<Machine, Integer> nodeMachines = new HashMap<>();
         if(
             node.recipe.machine.equals(Machines.PLAYER)
-            || node.recipe.machine.voltage.equals(Voltage.None)
+            || node.recipe.machine.equals(Machines.CELL_CYCLING)
         ) {
             return nodeMachines;
         }
 
-        nodeMachines.put(
-            node.recipe.machine,
-            (int)Math.ceil( node.calculated_uptime )
-        );
+        if(
+            !node.recipe.machine.equals(Machines.LOW_VOLTAGE_FLUID_TANK)
+        ) {
+            nodeMachines.put(
+                node.recipe.machine,
+                (int) Math.ceil(node.calculated_uptime)
+            );
+        }
         for(MachineNode source : node.sources) {
             HashMap<Machine, Integer> sourceMachines = getMachinesCount(source);
             for( Machine sourceMachine : sourceMachines.keySet() ) {
