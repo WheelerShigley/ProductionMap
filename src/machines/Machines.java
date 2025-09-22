@@ -28,18 +28,23 @@ public class Machines extends Registered<Machine> {
     public static final Machine CONSOLIDATED_BRANCH = new Machine(Namespaces.PLAYER,"consolidated_branch", None);
     public static final Machine PLAYER = new Machine(Namespaces.PLAYER,"manual");
 
+    public static final Machine ADVANCED_CENTRIFUGE = new Machine(GREGTECH,"advanced_centrifuge", Medium);
     public static final Machine ADVANCED_ELECTROLYZER = new Machine(GREGTECH,"advanced_electrolyzer", Medium);
     public static final Machine ADVANCED_EXTRUDER = new Machine(GREGTECH,"advanced_extruder", Medium);
     public static final Machine ADVANCED_FLUID_EXTRACTOR = new Machine(GREGTECH,"advanced_fluid_extractor", Medium);
+
     public static final Machine BASIC_ALLOY_SMELTER = new Machine(GREGTECH,"basic_alloy_smelter", Low);
     public static final Machine BASIC_ARC_FURNACE = new Machine(GREGTECH,"basic_arc_furnace", Low);
     public static final Machine BASIC_ASSEMBLING_MACHINE = new Machine(GREGTECH,"basic_assembling_machine", Low);
+    public static final Machine BASIC_AUTO_WORKBENCH = new Machine(GREGTECH,"basic_auto_workbench", Low);
     public static final Machine BASIC_BENDING_MACHINE = new Machine(GREGTECH,"basic_bending_machine", Low);
     public static final Machine BASIC_CENTRIFUGE = new Machine(GREGTECH,"basic_centrifuge", Low);
     public static final Machine BASIC_CIRCUIT_ASSEMBLER = new Machine(GREGTECH,"basic_circuit_assembler", Low);
     public static final Machine BASIC_COMPRESSOR = new Machine(GREGTECH,"basic_compressor", Low);
+    public static final Machine BASIC_ELECTRIC_FURNACE = new Machine(GREGTECH,"basic_electric_furnace", Low);
     public static final Machine BASIC_FLUID_EXTRACTOR = new Machine(GREGTECH,"basic_fluid_extractor", Low);
     public static final Machine BASIC_FORGE_HAMMER = new Machine(GREGTECH,"basic_forge_hammer", Low);
+    public static final Machine BASIC_LATHE = new Machine(GREGTECH,"basic_lathe", Low);
     public static final Machine BASIC_MACERATOR = new Machine(GREGTECH,"basic_macerator", Low);
     public static final Machine BASIC_MIXER = new Machine(GREGTECH,"basic_mixer", Low);
     public static final Machine BASIC_ROCK_BREAKER = new Machine(GREGTECH,"basic_rock_breaker", Low);

@@ -44,6 +44,9 @@ public class Items extends Registered<Item> {
     public static final Item FLINT_DUST = new Item(GREGTECH,"flint_dust");
     public static final Item GLASS_DUST = new Item(GREGTECH,"glass_dust");
     public static final Item GLASS_TUBE = new Item(GREGTECH,"glass_tube");
+    public static final Item GLOW_FLOWER = new Item(PAMS_NETHER,"glow_flower");
+    public static final Item GLOWSTONE_DUST = new Item(VANILLA,"glowstone_dust");
+    public static final Item GOLD_DUST = new Item(GREGTECH,"gold_dust");
     public static final Item GRAVEL = new Item(VANILLA,"gravel");
     public static final Item IRON_DUST = new Item(GREGTECH,"iron_dust");
     public static final Item LAVA = new Item(VANILLA,"lava");
@@ -72,6 +75,8 @@ public class Items extends Registered<Item> {
     public static final Item REFINED_GLUE = new Item(GREGTECH,"refined_glue");
     public static final Item RESISTOR = new Item(GREGTECH,"resistor");
     public static final Item SAND = new Item(VANILLA,"sand");
+    public static final Item SMALL_PILE_OF_STEEL_DUST = new Item(GREGTECH,"small_pile_of_steel_dust");
+    public static final Item STEEL_DUST = new Item(GREGTECH,"steel_dust");
     public static final Item STEEL_INGOT = new Item(GREGTECH,"steel_ingot");
     public static final Item STEEL_ROD = new Item(GREGTECH,"steel_rod");
     public static final Item STICKY_RESIN = new Item(INDUSTRIAL_CRAFT_TWO,"sticky_resin");

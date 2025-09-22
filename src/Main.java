@@ -1,9 +1,8 @@
 import map.Maps;
+import recipes.Recipes;
 
 public class Main {
     /* TODO
-     * Add setting for minimum-depth branch-consolidation (default =? 3)
-     *
      * List all inputs, and EU-count
      * Rename MachineNode to GTNHMachineNode (abstract MachineNode)
      *
@@ -15,5 +14,6 @@ public class Main {
      */
     public static void main(String[] args) {
         System.out.println( Maps.ELECTRONIC_CIRCUIT );
+        //Recipes.printAllComplexities();
     }
 }
