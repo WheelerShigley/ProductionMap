@@ -369,6 +369,10 @@ public class Map {
             );
         }
         for(MachineNode source : node.sources) {
+            if(source.recipe.isConsolidated) {
+                continue;
+            }
+
             HashMap<Machine, Integer> sourceMachines = getMachinesCount(source);
             for( Machine sourceMachine : sourceMachines.keySet() ) {
                 if( nodeMachines.containsKey(sourceMachine) ) {
