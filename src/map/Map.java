@@ -3,9 +3,9 @@ package map;
 import items.Item;
 import items.ItemStack;
 import items.Items;
-import machines.Machine;
 import machines.MachineConfiguration;
-import machines.Machines;
+import machines.MachineType;
+import machines.MachineTypes;
 import machines.Voltage;
 import recipes.ItemStackWithPreferredRecipeSource;
 import recipes.Recipe;
@@ -201,12 +201,12 @@ public class Map {
         STRINGBUILDER.append(" [");
         if(node.recipe != null) {
             if(includeConsolidations && node.recipe.isConsolidated) {
-                STRINGBUILDER.append( Machines.CONSOLIDATED_BRANCH.toString() );
+                STRINGBUILDER.append( MachineTypes.CONSOLIDATED_BRANCH.toString() );
             } else {
-                if( !node.recipe.machine.equals(Machines.PLAYER) ) {
+                if( !node.recipe.machineType.equals(MachineTypes.PLAYER) ) {
                     STRINGBUILDER.append( (int)Math.ceil(node.calculated_uptime) ).append("× ");
                 }
-                STRINGBUILDER.append( node.recipe.machine.toString() );
+                STRINGBUILDER.append( node.recipe.machineType.toString() );
             }
         }
         if( node.recipe != null && !node.recipe.circuit.equals(MachineConfiguration.None) ) {
@@ -218,8 +218,8 @@ public class Map {
         if(
             0.0 <= node.calculated_uptime
             && node.recipe != null
-            && !node.recipe.machine.equals(Machines.PLAYER)
-            && !node.recipe.machine.equals(Machines.CONSOLIDATED_BRANCH)
+            && !node.recipe.machineType.equals(MachineTypes.PLAYER)
+            && !node.recipe.machineType.equals(MachineTypes.CONSOLIDATED_BRANCH)
         ) {
             double minimum_machine_count = Math.ceil(node.calculated_uptime);
             double rounded_percentage = Math.round(10000.0*node.calculated_uptime/minimum_machine_count)/100.0;
@@ -286,16 +286,16 @@ public class Map {
     }
 
     private static String getMachinesCountString(Map map) {
-        HashMap<Machine, Integer> countedMachines = new HashMap<>(); {
+        HashMap<MachineType, Integer> countedMachines = new HashMap<>(); {
             //get original map and all consolidated Branches' machines
-            List< HashMap<Machine, Integer> > branchesCountedMachines = new ArrayList<>();
+            List< HashMap<MachineType, Integer> > branchesCountedMachines = new ArrayList<>();
             branchesCountedMachines.add(  getMachinesCount( map.getHead() )  );
             for(MachineNode branchHead : map.consolidatedBranches) {
                 branchesCountedMachines.add( getMachinesCount(branchHead) );
             }
             //add all machine counts
-            for(HashMap<Machine, Integer> branchCountedMachines: branchesCountedMachines) {
-                for( Machine branchCountedMachine : branchCountedMachines.keySet() ) {
+            for(HashMap<MachineType, Integer> branchCountedMachines: branchesCountedMachines) {
+                for( MachineType branchCountedMachine : branchCountedMachines.keySet() ) {
                     if( countedMachines.containsKey(branchCountedMachine) ) {
                         countedMachines.replace(
                             branchCountedMachine,
@@ -311,12 +311,12 @@ public class Map {
             }
         }
 
-        Machine[] sortedCountedMachines = countedMachines.keySet().toArray(new Machine[0]);
+        MachineType[] sortedCountedMachines = countedMachines.keySet().toArray(new MachineType[0]);
         Arrays.sort(
             sortedCountedMachines,
-            new Comparator<Machine>() {
+            new Comparator<MachineType>() {
                 @Override
-                public int compare(Machine primary, Machine secondary) {
+                public int compare(MachineType primary, MachineType secondary) {
                     return primary.getName().compareTo( secondary.getName() );
                 }
 
@@ -330,7 +330,7 @@ public class Map {
         StringBuilder countedMachinesBuilder = new StringBuilder();
         countedMachinesBuilder.append("## Machines\r\n");
         int counter = 0;
-        for(Machine countedAndSortedMachine : sortedCountedMachines ) {
+        for(MachineType countedAndSortedMachine : sortedCountedMachines ) {
 
             countedMachinesBuilder.append(' ');
             if( counter < countedMachines.size()-1 ) {
@@ -343,7 +343,8 @@ public class Map {
             countedMachinesBuilder
                 .append( countedMachines.get(countedAndSortedMachine) )
                 .append("× ")
-                .append( countedAndSortedMachine.toString() ).append(" (").append( countedAndSortedMachine.voltage.toString() ).append(')')
+                    //TODO: fix Voltage count
+                .append( countedAndSortedMachine.toString() ).append(" (").append( countedAndSortedMachine.getMinimumVoltage().toString() ).append(')')
                 .append("\r\n")
             ;
 
@@ -351,20 +352,20 @@ public class Map {
         }
         return countedMachinesBuilder.toString();
     }
-    private static HashMap<Machine, Integer> getMachinesCount(MachineNode node) {
-        HashMap<Machine, Integer> nodeMachines = new HashMap<>();
+    private static HashMap<MachineType, Integer> getMachinesCount(MachineNode node) {
+        HashMap<MachineType, Integer> nodeMachines = new HashMap<>();
         if(
-            node.recipe.machine.equals(Machines.PLAYER)
-            || node.recipe.machine.equals(Machines.CELL_CYCLING)
+            node.recipe.machineType.equals(MachineTypes.PLAYER)
+            || node.recipe.machineType.equals(MachineTypes.CELL_CYCLING)
         ) {
             return nodeMachines;
         }
 
         if(
-            !node.recipe.machine.equals(Machines.LOW_VOLTAGE_FLUID_TANK)
+            !node.recipe.machineType.equals(MachineTypes.FLUID_TANK)
         ) {
             nodeMachines.put(
-                node.recipe.machine,
+                node.recipe.machineType,
                 (int) Math.ceil(node.calculated_uptime)
             );
         }
@@ -373,8 +374,8 @@ public class Map {
                 continue;
             }
 
-            HashMap<Machine, Integer> sourceMachines = getMachinesCount(source);
-            for( Machine sourceMachine : sourceMachines.keySet() ) {
+            HashMap<MachineType, Integer> sourceMachines = getMachinesCount(source);
+            for( MachineType sourceMachine : sourceMachines.keySet() ) {
                 if( nodeMachines.containsKey(sourceMachine) ) {
                     nodeMachines.replace(
                         sourceMachine,
@@ -396,8 +397,8 @@ public class Map {
         //for leaf-nodes, return
         if(
             node.recipe == null
-            || node.recipe.machine.equals(Machines.PLAYER)
-            || node.recipe.machine.equals(Machines.CELL_CYCLING)
+            || node.recipe.machineType.equals(MachineTypes.PLAYER)
+            || node.recipe.machineType.equals(MachineTypes.CELL_CYCLING)
             || itemStacksAreNothing( node.recipe.getInputsAsItemStacks() )
         ) {
             return;
@@ -862,9 +863,9 @@ public class Map {
         HashMap<Voltage, Double> powerConsumption = new HashMap<Voltage, Double>();
 
         powerConsumption.put(
-            node.recipe.machine.voltage,
+            node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick),
             node.recipe.amperage * node.calculated_uptime
-            * ( node.recipe.eu_per_tick / node.recipe.machine.voltage.EULimit() )
+            * ( node.recipe.eu_per_tick / node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick).EULimit() )
         );
 
         //get source's consumption as well
@@ -882,8 +883,10 @@ public class Map {
         double maximum_amperage = node.recipe.amperage * Math.ceil(node.calculated_uptime);
 
         powerConsumption.put(
-            node.recipe.machine.voltage,
-            maximum_amperage * ( node.recipe.eu_per_tick / node.recipe.machine.voltage.EULimit() )
+            node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick),
+            maximum_amperage * (
+                node.recipe.eu_per_tick / node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick).EULimit()
+            )
         );
 
         //get source's consumption as well
@@ -914,7 +917,8 @@ public class Map {
     }
 
     public static double getAveragePollutionRate(MachineNode node) {
-        double pollution_rate = node.recipe.machine.pollution * node.calculated_uptime;
+        //TODO
+        double pollution_rate = 0; //node.recipe.machineType.getPollution() * node.calculated_uptime;
 
         for(MachineNode source : node.sources) {
             pollution_rate += getAveragePollutionRate(source);
@@ -923,7 +927,8 @@ public class Map {
         return pollution_rate;
     }
     public static double getMaximumPollutionRate(MachineNode node) {
-        double pollution_rate = node.recipe.machine.pollution * Math.ceil(node.calculated_uptime);
+        //TODO
+        double pollution_rate = 0; //node.recipe.machineType.pollution * Math.ceil(node.calculated_uptime);
 
         for(MachineNode source : node.sources) {
             pollution_rate += getMaximumPollutionRate(source);

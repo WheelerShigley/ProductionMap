@@ -3,7 +3,7 @@ package recipes;
 import items.Item;
 import items.ItemStack;
 import items.Items;
-import machines.Machines;
+import machines.MachineTypes;
 
 public class ItemStackWithPreferredRecipeSource {
     public final ItemStack itemStack;
@@ -22,7 +22,7 @@ public class ItemStackWithPreferredRecipeSource {
     private boolean isValidSource(Item item, Recipe source) {
         if(
             source == null || item.equals(Items.NOTHING)
-            || source.equals(Recipes.DUMMY) || source.machine.equals(Machines.PLAYER)
+            || source.equals(Recipes.DUMMY) || source.machineType.equals(MachineTypes.PLAYER)
         ) {
             return true;
         }

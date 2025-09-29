@@ -1,5 +1,6 @@
 package machines;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,6 +45,27 @@ public enum Voltage {
         };
     }
 
+    public String toUnabreviatedString() {
+        return switch(this) {
+            case UltraLow -> "Ultra Low Voltage";
+            case Low -> "Low Voltage";
+            case Medium -> "Medium Voltage";
+            case High -> "High Voltage";
+            case Extreme -> "Extreme Voltage";
+            case Insane -> "Insane Voltage";
+            case Ludicrous -> "Ludicrous Voltage";
+            case ZPM -> "ZPM";
+            case Ultimate -> "Ultimate Voltage";
+            case HighlyUltimate -> "Highly Ultimate Voltage";
+            case ExtremelyUltimate -> "Extremely Ultimate Voltage";
+            case InsanelyUltimate -> "Insanely Ultimate Voltage";
+            case MegaUltimate -> "Mega Voltage";
+            case ExtendedMegaUltimate -> "Extended Mega Voltage";
+            case Maximum -> "Maximum Voltage";
+            default -> "";
+        };
+    }
+
     public int EULimit() {
         return switch(this) {
             case UltraLow ->                1<<3;
@@ -64,6 +86,41 @@ public enum Voltage {
             default ->                      0;
         };
     }
+
+    public static Voltage getNextVoltage(Voltage v) {
+        return switch(v) {
+            case Low ->                     Voltage.Medium;
+            case Medium ->                  Voltage.High;
+            case High ->                    Voltage.Extreme;
+            case Extreme ->                 Voltage.Insane;
+            case Insane ->                  Voltage.Ludicrous;
+            case Ludicrous ->               Voltage.ZPM;
+            case ZPM ->                     Voltage.Ultimate;
+            case Ultimate ->                Voltage.HighlyUltimate;
+            case HighlyUltimate ->          Voltage.ExtremelyUltimate;
+            case ExtremelyUltimate ->       Voltage.InsanelyUltimate;
+            case InsanelyUltimate ->        Voltage.MegaUltimate;
+            case MegaUltimate ->            Voltage.ExtendedMegaUltimate;
+            case ExtendedMegaUltimate ->    Voltage.Maximum;
+            case Maximum ->                 null;
+            default ->                      Voltage.Low;
+        };
+    }
+
+    public static List<Voltage> getVoltagesBetweenInclusive(Voltage first, Voltage second) {
+        Voltage smaller =   (first.EULimit() < second.EULimit() ? first : second);
+        Voltage larger =    (first.EULimit() < second.EULimit() ? second : first);
+
+        List<Voltage> voltagesBetweenInclusive = new ArrayList<>();
+        Voltage current = smaller;
+        while( current != null && current.EULimit() <= larger.EULimit() ) {
+            voltagesBetweenInclusive.add(current);
+            current = getNextVoltage(current);
+        }
+        return voltagesBetweenInclusive;
+    }
+
+    //TODO: getMaximumAveragePower(double eu_limit) [for a power-refactor]
 
     public static String getAveragePowerConsumptionString(HashMap<Voltage, Double> averagePowerConsumption){
         //print average power consumption

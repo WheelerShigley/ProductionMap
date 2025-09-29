@@ -1,6 +1,5 @@
 package items;
 
-import machines.Machine;
 import register.Registered;
 
 import java.util.ArrayList;
