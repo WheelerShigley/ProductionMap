@@ -13,6 +13,10 @@ public class MachineType extends Identified {
         super(namespace, name);
 
         this.data = new HashMap<>();
+        this.data.put(
+            Voltage.None,
+            List.of(new MachineData(name) )
+        );
         this.name = name;
 
         MachineTypes.register(this);
@@ -39,13 +43,17 @@ public class MachineType extends Identified {
     }
 
     public Voltage getMinimumVoltageForLimit(double eu_limit) {
-        Voltage minimumVoltage = Voltage.None;
+        Voltage minimumVoltage = null;
         for( Voltage voltage : data.keySet() ) {
             if( eu_limit <= voltage.EULimit() ) {
-                minimumVoltage = ( minimumVoltage.EULimit() < voltage.EULimit() ) ? minimumVoltage : voltage;
+                if(minimumVoltage == null) {
+                    minimumVoltage = voltage;
+                } else {
+                    minimumVoltage = (minimumVoltage.EULimit() < voltage.EULimit()) ? minimumVoltage : voltage;
+                }
             }
         }
-        return minimumVoltage;
+        return (minimumVoltage == null ? Voltage.None : minimumVoltage);
     }
 
     public String getName(double eu_limit) {
@@ -55,6 +63,9 @@ public class MachineType extends Identified {
             return "! No such Machine !";
         }
 
+        if( data.get(minimumVoltage) == null ) {
+            return "";
+        }
 
         StringBuilder namesListBuilder = new StringBuilder();
         int amount_of_machine_options_at_voltage = data.get(minimumVoltage).size();

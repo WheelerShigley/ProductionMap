@@ -206,10 +206,14 @@ public class Map {
                 if( !node.recipe.machineType.equals(MachineTypes.PLAYER) ) {
                     STRINGBUILDER.append( (int)Math.ceil(node.calculated_uptime) ).append("× ");
                 }
-                STRINGBUILDER.append( node.recipe.machineType.toString() );
+                //Voltage minimumVoltage = node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick);
+                STRINGBUILDER.append( node.recipe.machineType.getName(node.recipe.eu_per_tick).replace(' ', '-') );
             }
         }
-        if( node.recipe != null && !node.recipe.circuit.equals(MachineConfiguration.None) ) {
+        if(
+            node.recipe != null
+            && !node.recipe.circuit.equals(MachineConfiguration.None)
+        ) {
             STRINGBUILDER.append(", ").append( node.recipe.circuit.toString() );
         }
         STRINGBUILDER.append(']');

@@ -123,9 +123,9 @@ public class MachineTypes extends Registered<MachineType> {
         return commonPlusPlusMachineData;
     }
 
-    public static final MachineType CELL_CYCLING = new MachineType(WORLD,"cycling");
-    public static final MachineType CONSOLIDATED_BRANCH = new MachineType(Namespaces.PLAYER,"consolidated_branch");
-    public static final MachineType PLAYER = new MachineType(Namespaces.PLAYER,"manual");
+    public static final MachineType CELL_CYCLING = new MachineType(WORLD,"Cycling");
+    public static final MachineType CONSOLIDATED_BRANCH = new MachineType(Namespaces.PLAYER,"Consolidated Branch");
+    public static final MachineType PLAYER = new MachineType(Namespaces.PLAYER,"Manual");
 
     /*
      * TODO: multi-types

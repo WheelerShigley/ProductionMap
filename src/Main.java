@@ -3,9 +3,9 @@ import recipes.Recipes;
 
 public class Main {
     /* TODO
-     * Correct Machine's Names by required voltages in output map
      * Refactor Recipes; Dynamically Generate optimized preferred recipes
      * Redo Pollution Calculations
+     * Redo Machines Counting (based on power demands, at voltages)
      *
      * List all inputs, and EU-count
      * Rename MachineNode to GTNHMachineNode (abstract MachineNode)
