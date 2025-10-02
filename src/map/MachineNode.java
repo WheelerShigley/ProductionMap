@@ -34,8 +34,8 @@ public class MachineNode {
         for(int index = 0; index < items.size(); index++) {
             itemStack = items.get(index);
             ItemStackListStringBuilder
-                .append( Math.round( 10000.0*itemStack.quantity() )/10000.0 ).append(' ')
-                .append( itemStack.item().toString() )
+                .append( Math.round( 10000.0*itemStack.quantity )/10000.0 ).append(' ')
+                .append( itemStack.item.toString() )
             ;
             if( index < items.size()-1 ) {
                 ItemStackListStringBuilder.append(" + ");
@@ -60,8 +60,8 @@ public class MachineNode {
 
         StringBuilder nodeStringBuilder = new StringBuilder();
 
-        String inputs  = ItemStackListToString( recipe.getInputsAsItemStacks()  );
-        String outputs = ItemStackListToString( recipe.outputs );
+        String inputs  = ItemStackListToString(recipe.inputs );
+        String outputs = ItemStackListToString(recipe.outputs);
 
         nodeStringBuilder.append(inputs).append(" = ").append(outputs);
         return nodeStringBuilder.toString();

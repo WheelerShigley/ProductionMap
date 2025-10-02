@@ -87,6 +87,17 @@ public enum Voltage {
         };
     }
 
+    public static Voltage getVoltage(double eu_per_tick) {
+        Voltage minimumVoltage = Voltage.None;
+        while(
+            minimumVoltage != null
+            && minimumVoltage.EULimit() < eu_per_tick
+        ) {
+            minimumVoltage = getNextVoltage(minimumVoltage);
+        }
+        return minimumVoltage;
+    }
+
     public static Voltage getNextVoltage(Voltage v) {
         return switch(v) {
             case Low ->                     Voltage.Medium;

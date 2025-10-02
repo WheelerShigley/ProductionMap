@@ -3,7 +3,7 @@ import recipes.Recipes;
 
 public class Main {
     /* TODO
-     * Refactor Recipes; Dynamically Generate optimized preferred recipes
+     * Fix Leaf-nodes not printing + Branches not Consolidating
      * Redo Pollution Calculations
      * Redo Machines Counting (based on power demands, at voltages)
      *

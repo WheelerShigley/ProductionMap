@@ -7,8 +7,8 @@ import machines.MachineConfiguration;
 import machines.MachineType;
 import machines.MachineTypes;
 import machines.Voltage;
-import recipes.ItemStackWithPreferredRecipeSource;
 import recipes.Recipe;
+import recipes.Recipes;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -212,9 +212,9 @@ public class Map {
         }
         if(
             node.recipe != null
-            && !node.recipe.circuit.equals(MachineConfiguration.None)
+            && !node.recipe.configuration.equals(MachineConfiguration.None)
         ) {
-            STRINGBUILDER.append(", ").append( node.recipe.circuit.toString() );
+            STRINGBUILDER.append(", ").append( node.recipe.configuration.toString() );
         }
         STRINGBUILDER.append(']');
 
@@ -403,16 +403,20 @@ public class Map {
             node.recipe == null
             || node.recipe.machineType.equals(MachineTypes.PLAYER)
             || node.recipe.machineType.equals(MachineTypes.CELL_CYCLING)
-            || itemStacksAreNothing( node.recipe.getInputsAsItemStacks() )
+            || itemStacksAreNothing(node.recipe.inputs)
         ) {
             return;
         }
 
         //create new sources
         List<MachineNode> sourceNodes = new ArrayList<MachineNode>();
-        for(ItemStackWithPreferredRecipeSource inputWithSource : node.recipe.inputs ) {
+        for(ItemStack sourceableItem : node.recipe.inputs ) {
+            if( !Recipes.optimalRecipes.containsKey(sourceableItem.item) ) {
+                //TODO: Warn
+                continue;
+            }
             sourceNodes.add(
-                new MachineNode(inputWithSource.preferredRecipeSource)
+                new MachineNode( Recipes.optimalRecipes.get(sourceableItem.item) )
             );
         }
         node.sources = sourceNodes;
@@ -425,8 +429,8 @@ public class Map {
     private static boolean itemStacksAreNothing(List<ItemStack> items) {
         for(ItemStack item : items) {
             if(
-                   item.item().equals(Items.NOTHING)
-                || item.item().equals(Items.MANUAL)
+                   item.item.equals(Items.NOTHING)
+                || item.item.equals(Items.MANUAL)
             ) {
                 return true;
             }
@@ -461,7 +465,7 @@ public class Map {
             }
 
             //find common item between precursor and pre-calculated node
-            Item commonItem = getFirstItemInCommon( precursor.recipe.getInputsAsItemStacks(), calculatedNode.recipe.outputs );
+            Item commonItem = getFirstItemInCommon( precursor.recipe.inputs, calculatedNode.recipe.outputs );
             if(commonItem == null) {
                 LOGGER.log(Level.WARNING, "No expected-uptime and parent overlap found; cannot calculate uptimes.");
                 return;
@@ -469,7 +473,7 @@ public class Map {
 
             //calculate production rates for precursor
             double uptime; {
-                double potential_rate = precursor.recipe.time_seconds / getQuantityOfDesiredIO(precursor.recipe.getInputsAsItemStacks(), commonItem);
+                double potential_rate = precursor.recipe.time_seconds / getQuantityOfDesiredIO(precursor.recipe.inputs, commonItem);
                 double available_rate = ( calculatedNode.recipe.time_seconds / calculatedNode.calculated_uptime )  /  getQuantityOfDesiredIO(calculatedNode.recipe.outputs, commonItem);
                 uptime = potential_rate/available_rate;
             }
@@ -494,14 +498,14 @@ public class Map {
             return;
         }
         //find common item for parent and head
-        Item commonItem = getFirstItemInCommon(calculatedHeadParent.recipe.outputs, map.getHead().recipe.getInputsAsItemStacks() );
+        Item commonItem = getFirstItemInCommon(calculatedHeadParent.recipe.outputs, map.getHead().recipe.inputs );
         if(commonItem == null) {
             LOGGER.log(Level.WARNING, "No match for final-product's parents' and final-product's items; cannot calculate uptimes.");
             return;
         }
         //get production rates for head and calculated-parent
         double uptime; {
-            double potential_rate = map.getHead().recipe.time_seconds / getQuantityOfDesiredIO(map.getHead().recipe.getInputsAsItemStacks(), commonItem);
+            double potential_rate = map.getHead().recipe.time_seconds / getQuantityOfDesiredIO(map.getHead().recipe.inputs, commonItem);
             double available_rate = ( calculatedHeadParent.recipe.time_seconds / calculatedHeadParent.calculated_uptime )  /  getQuantityOfDesiredIO(calculatedHeadParent.recipe.outputs, commonItem);
             uptime = potential_rate/available_rate;
         }
@@ -563,8 +567,8 @@ public class Map {
         //find produced quantity of desired output
         double produced_quantity = 0.0;
         for( ItemStack producedItem : recipe.outputs ) {
-            if( producedItem.item().equals(desiredItem) ) {
-                produced_quantity = Math.max(produced_quantity, producedItem.quantity() );
+            if( producedItem.item.equals(desiredItem) ) {
+                produced_quantity = Math.max(produced_quantity, producedItem.quantity );
             }
         }
         //return quantity per time
@@ -573,8 +577,8 @@ public class Map {
     private static double getQuantityOfDesiredIO(List<ItemStack> list, Item desiredItem) {
         //return quantity of first instance of item
         for(ItemStack producedItem : list) {
-            if( producedItem.item().equals(desiredItem) ) {
-                return producedItem.quantity();
+            if( producedItem.item.equals(desiredItem) ) {
+                return producedItem.quantity;
             }
         }
         return 0.0;
@@ -587,13 +591,13 @@ public class Map {
 
         //calculate expected rate of each source, back-propagating base on their times; then, back-propagate the sources
         //Note: This assumes that only one of any given input produces any given desired item
-        for( ItemStackWithPreferredRecipeSource sourceItem : node.recipe.inputs ) {
+        for( ItemStack sourceItem : node.recipe.inputs ) {
             double desired_production_rate =
-                    ( sourceItem.itemStack.quantity()/node.recipe.time_seconds ) //maximum rate, in "items/second"
+                    ( sourceItem.quantity/node.recipe.time_seconds ) //maximum rate, in "items/second"
                             * node.calculated_uptime //desired rate, in "items/second"
                     ;
             for(MachineNode source : node.sources) {
-                double maximum_production_rate = getRateOfDesiredOutput( source.recipe, sourceItem.itemStack.item() );
+                double maximum_production_rate = getRateOfDesiredOutput( source.recipe, sourceItem.item );
                 if(maximum_production_rate <= 0.0) {
                     continue;
                 }
@@ -609,8 +613,8 @@ public class Map {
         //linear search
         for(ItemStack firstItem : firstList) {
             for(ItemStack secondItem : secondList) {
-                if(  firstItem.item().equals( secondItem.item() )  ) {
-                    return firstItem.item();
+                if(  firstItem.item.equals(secondItem.item)  ) {
+                    return firstItem.item;
                 }
             }
         }
@@ -864,11 +868,13 @@ public class Map {
     }
 
     public static HashMap<Voltage, Double> getAveragePowerConsumption(MachineNode node) {
+        Voltage minimumVoltage = Voltage.getVoltage(node.recipe.eu_per_tick);
+        double amperage = ( minimumVoltage == null ? 0.0 : node.recipe.eu_per_tick/minimumVoltage.EULimit() );
         HashMap<Voltage, Double> powerConsumption = new HashMap<Voltage, Double>();
 
         powerConsumption.put(
             node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick),
-            node.recipe.amperage * node.calculated_uptime
+            amperage * node.calculated_uptime
             * ( node.recipe.eu_per_tick / node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick).EULimit() )
         );
 
@@ -883,8 +889,10 @@ public class Map {
         return powerConsumption;
     }
     public static HashMap<Voltage, Double> getMaximumPowerConsumption(MachineNode node) {
+        Voltage minimumVoltage = Voltage.getVoltage(node.recipe.eu_per_tick);
+        double amperage = ( minimumVoltage == null ? 0.0 : node.recipe.eu_per_tick/minimumVoltage.EULimit() );
         HashMap<Voltage, Double> powerConsumption = new HashMap<Voltage, Double>();
-        double maximum_amperage = node.recipe.amperage * Math.ceil(node.calculated_uptime);
+        double maximum_amperage = amperage * Math.ceil(node.calculated_uptime);
 
         powerConsumption.put(
             node.recipe.machineType.getMinimumVoltageForLimit(node.recipe.eu_per_tick),
