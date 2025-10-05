@@ -3,7 +3,7 @@
 ---
 
 ### Example Map
-![Example Map](./readme_images/ElectronicCircuit_MidMV_1.3.3.png "Electronic Circuit, EBF-limited, via Wrought-Iron and Redstone-Alloy")
+![Example Map](./readme_images/ElectronicCircuit_LV_1.0.0.png "Electronic Circuit, EBF-limited, via Wrought-Iron and Redstone-Alloy")
 
 This program is used to make readable Production-lines as inverted Trees, interpreted as inputs/outputs between machines. This tree can be used to \[manually\] produce images of Production-Lines.
 
