@@ -15,16 +15,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Map {
-    private final MachineNode head;
-    private final List<MachineNode> consolidatedBranches = new ArrayList<MachineNode>();
+    private final MapNode head;
+    private final List<MapNode> consolidatedBranches = new ArrayList<MapNode>();
 
     @Deprecated
     public Map(Recipe recipe) {
-        this.head = new MachineNode(recipe);
+        this.head = new MapNode(recipe);
         recursivelyGenerateRecipesFromPreferredSources(head);
     }
     public Map(Recipe recipe, double uptime) {
-        this.head = new MachineNode(recipe);
+        this.head = new MapNode(recipe);
         recursivelyGenerateRecipesFromPreferredSources(head);
         head.setUptime(uptime);
         calculateUptimes(this);
@@ -32,7 +32,7 @@ public class Map {
         consolidateDuplicateBranches(this, 3);
     }
     public Map(Recipe recipe, double uptime, int minimum_depth_to_seperate_branch) {
-        this.head = new MachineNode(recipe);
+        this.head = new MapNode(recipe);
         recursivelyGenerateRecipesFromPreferredSources(head);
         head.setUptime(uptime);
         calculateUptimes(this);
@@ -47,7 +47,7 @@ public class Map {
 
         //print sub-systems first
         MAP_STRING_BUILDER.append("# Sub-System Production-Lines\r\n\r\n");
-        for(MachineNode subMapHead : this.consolidatedBranches) {
+        for(MapNode subMapHead : this.consolidatedBranches) {
             Map subSystemMap = new Map(subMapHead.recipe);
             subSystemMap.head.setUptime(subMapHead.calculated_uptime);
             calculateUptimes(subSystemMap);
@@ -83,7 +83,7 @@ public class Map {
         HashMap<Voltage, Double> averagePowerConsumption = new HashMap<>(); {
         List< HashMap<Voltage, Double> > averagePowerConsumptions = new ArrayList<>();
             averagePowerConsumptions.add(  getAveragePowerConsumption( map.getHead() )  );
-            for(MachineNode branchHead : map.consolidatedBranches) {
+            for(MapNode branchHead : map.consolidatedBranches) {
                 averagePowerConsumptions.add( getAveragePowerConsumption(branchHead) );
             }
 
@@ -100,7 +100,7 @@ public class Map {
         HashMap<Voltage, Double> maximumPowerConsumption = new HashMap<>(); {
             List< HashMap<Voltage, Double> > maximumPowerConsumptions = new ArrayList<>();
             maximumPowerConsumptions.add(  getMaximumPowerConsumption( map.getHead() )  );
-            for(MachineNode branchHead : map.consolidatedBranches) {
+            for(MapNode branchHead : map.consolidatedBranches) {
                 maximumPowerConsumptions.add( getMaximumPowerConsumption(branchHead) );
             }
 
@@ -143,7 +143,7 @@ public class Map {
 
     private static String getAveragePollutionRateString(Map map) {
         double rate = getAveragePollutionRate( map.getHead() );
-        for(MachineNode branchHead : map.consolidatedBranches) {
+        for(MapNode branchHead : map.consolidatedBranches) {
             rate += getAveragePollutionRate(branchHead);
         }
 
@@ -154,7 +154,7 @@ public class Map {
     }
     private static String getMaximumPollutionRateString(Map map) {
         double rate = getMaximumPollutionRate( map.getHead() );
-        for(MachineNode branchHead : map.consolidatedBranches) {
+        for(MapNode branchHead : map.consolidatedBranches) {
             rate += getMaximumPollutionRate(branchHead);
         }
 
@@ -165,8 +165,8 @@ public class Map {
     }
 
     private static void getMapNodeAsString(
-        Map map, MachineNode parent,
-        MachineNode node,
+        Map map, MapNode parent,
+        MapNode node,
         HashMap<Integer, Boolean> depthsWithLines, int depth,
         final StringBuilder STRINGBUILDER,
         boolean includeConsolidations
@@ -182,7 +182,7 @@ public class Map {
         }
 
         //head node needs not be derived from another recipe
-        MachineNode lastSourceOfParent = getLastSource(parent);
+        MapNode lastSourceOfParent = getLastSource(parent);
         if(  !node.equals( map.getHead() )  ) {
             boolean isLastInLine = lastSourceOfParent != null && lastSourceOfParent.equals(node);
             if( depthsWithLines.containsKey(depth-1) ) {
@@ -245,11 +245,11 @@ public class Map {
         STRINGBUILDER.append("\r\n");
 
         //print sources
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             getMapNodeAsString(map, node, source, depthsWithLines, depth + 1, STRINGBUILDER, includeConsolidations);
         }
     }
-    private static MachineNode getLastSource(MachineNode node) {
+    private static MapNode getLastSource(MapNode node) {
         if(node == null) {
             return null;
         }
@@ -257,8 +257,8 @@ public class Map {
             return null;
         }
 
-        MachineNode lastSource = null;
-        for(MachineNode source : node.sources) {
+        MapNode lastSource = null;
+        for(MapNode source : node.sources) {
             lastSource = source;
         }
         return lastSource;
@@ -294,7 +294,7 @@ public class Map {
             //get original map and all consolidated Branches' machines
             List< HashMap<MachineType, Integer> > branchesCountedMachines = new ArrayList<>();
             branchesCountedMachines.add(  getMachinesCount( map.getHead() )  );
-            for(MachineNode branchHead : map.consolidatedBranches) {
+            for(MapNode branchHead : map.consolidatedBranches) {
                 branchesCountedMachines.add( getMachinesCount(branchHead) );
             }
             //add all machine counts
@@ -356,7 +356,7 @@ public class Map {
         }
         return countedMachinesBuilder.toString();
     }
-    private static HashMap<MachineType, Integer> getMachinesCount(MachineNode node) {
+    private static HashMap<MachineType, Integer> getMachinesCount(MapNode node) {
         HashMap<MachineType, Integer> nodeMachines = new HashMap<>();
         if(
             node.recipe.machineType.equals(MachineTypes.PLAYER)
@@ -373,7 +373,7 @@ public class Map {
                 (int) Math.ceil(node.calculated_uptime)
             );
         }
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             if(source.recipe.isConsolidated) {
                 continue;
             }
@@ -397,7 +397,7 @@ public class Map {
     }
 
     //# GENERATORS
-    private static void recursivelyGenerateRecipesFromPreferredSources(MachineNode node) {
+    private static void recursivelyGenerateRecipesFromPreferredSources(MapNode node) {
         //for leaf-nodes, return
         if(
             node.recipe == null
@@ -409,20 +409,20 @@ public class Map {
         }
 
         //create new sources
-        List<MachineNode> sourceNodes = new ArrayList<MachineNode>();
+        List<MapNode> sourceNodes = new ArrayList<MapNode>();
         for(ItemStack sourceableItem : node.recipe.inputs ) {
             if( !Recipes.optimalRecipes.containsKey(sourceableItem.item) ) {
                 //TODO: Warn
                 continue;
             }
             sourceNodes.add(
-                new MachineNode( Recipes.optimalRecipes.get(sourceableItem.item) )
+                new MapNode( Recipes.optimalRecipes.get(sourceableItem.item) )
             );
         }
         node.sources = sourceNodes;
 
         //generate sources for each source
-        for(MachineNode sourceNode : sourceNodes) {
+        for(MapNode sourceNode : sourceNodes) {
             recursivelyGenerateRecipesFromPreferredSources(sourceNode);
         }
     }
@@ -442,7 +442,7 @@ public class Map {
         Logger LOGGER = Logger.getLogger("uptime_calculation");
 
         //discover expected limited factor (one line should be set to an expected uptime)
-        MachineNode limitingFactor = discoverPrecalculatedUptimeMachine( map.getHead() );
+        MapNode limitingFactor = discoverPrecalculatedUptimeMachine( map.getHead() );
         if(limitingFactor == null) {
             LOGGER.log(Level.WARNING, "No expected-uptime found; cannot calculate uptimes.");
             return;
@@ -452,14 +452,14 @@ public class Map {
         backPropagateUptimes(limitingFactor);
 
         //recursively forward-to-back-propagate uptimes, until reaching the head
-        MachineNode precursor = discoverParentOfPrecalculatedUptimeMachine( map.getHead() );
+        MapNode precursor = discoverParentOfPrecalculatedUptimeMachine( map.getHead() );
         if(precursor == null) {
             LOGGER.log(Level.WARNING, "No expected-uptime-parent found; final-machine is the limiting factor, or cannot calculate uptimes.");
             return;
         }
         while(  precursor != null  &&  !precursor.equals( map.getHead() )  ) {
             //find precursor
-            MachineNode calculatedNode = discoverPrecalculatedUptimeMachine( map.getHead() );
+            MapNode calculatedNode = discoverPrecalculatedUptimeMachine( map.getHead() );
             if(calculatedNode == null) {
                 continue;
             }
@@ -486,8 +486,8 @@ public class Map {
 
         //calculate head's rate
         //find input [of head] which has a rate
-        MachineNode calculatedHeadParent = null;
-        for(MachineNode sourceNode : map.getHead().sources) {
+        MapNode calculatedHeadParent = null;
+        for(MapNode sourceNode : map.getHead().sources) {
             if(0.0 < sourceNode.calculated_uptime) {
                 calculatedHeadParent = sourceNode;
                 break;
@@ -514,7 +514,7 @@ public class Map {
         //back-propagate from head
         backPropagateUptimes( map.getHead() );
     }
-    private static MachineNode discoverPrecalculatedUptimeMachine(MachineNode node) {
+    private static MapNode discoverPrecalculatedUptimeMachine(MapNode node) {
         if(0.0 <= node.calculated_uptime) {
             return node;
         }
@@ -525,8 +525,8 @@ public class Map {
         }
 
         //search all sources
-        for(MachineNode source : node.sources) {
-            MachineNode result = discoverPrecalculatedUptimeMachine(source);
+        for(MapNode source : node.sources) {
+            MapNode result = discoverPrecalculatedUptimeMachine(source);
             if(result != null) {
                 return result;
             }
@@ -535,7 +535,7 @@ public class Map {
         //if nothing is found, return nothing
         return null;
     }
-    private static MachineNode discoverParentOfPrecalculatedUptimeMachine(MachineNode node) {
+    private static MapNode discoverParentOfPrecalculatedUptimeMachine(MapNode node) {
         if(0.0 <= node.calculated_uptime) {
             return null;
         }
@@ -546,11 +546,11 @@ public class Map {
         }
 
         //search all sources
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             if(0.0 <= source.calculated_uptime) {
                 return node;
             }
-            MachineNode checkedNode = discoverParentOfPrecalculatedUptimeMachine(source);
+            MapNode checkedNode = discoverParentOfPrecalculatedUptimeMachine(source);
             if(checkedNode != null) {
                 return checkedNode;
             }
@@ -583,7 +583,7 @@ public class Map {
         }
         return 0.0;
     }
-    private static void backPropagateUptimes(MachineNode node) {
+    private static void backPropagateUptimes(MapNode node) {
         //ensure current node has a calculated uptime
         if(node.calculated_uptime < 0.0) {
             return;
@@ -596,7 +596,7 @@ public class Map {
                     ( sourceItem.quantity/node.recipe.time_seconds ) //maximum rate, in "items/second"
                             * node.calculated_uptime //desired rate, in "items/second"
                     ;
-            for(MachineNode source : node.sources) {
+            for(MapNode source : node.sources) {
                 double maximum_production_rate = getRateOfDesiredOutput( source.recipe, sourceItem.item );
                 if(maximum_production_rate <= 0.0) {
                     continue;
@@ -623,13 +623,13 @@ public class Map {
 
     private static void consolidateDuplicateBranches(Map map, int minimum_depth) {
         //get all nodes in Map
-        List<MachineNode> nodes = getAllSourceNodes( map.getHead() );
+        List<MapNode> nodes = getAllSourceNodes( map.getHead() );
 
         //Check each node against all others for matching branches,
         //when a matching branch is found, move them into a set for matching branches.
-        List< List<MachineNode> > matchingBranchesHeads = new ArrayList< List<MachineNode> >();
-        for(MachineNode primaryNode : nodes) {
-            for(MachineNode secondaryNode : nodes) {
+        List< List<MapNode> > matchingBranchesHeads = new ArrayList< List<MapNode> >();
+        for(MapNode primaryNode : nodes) {
+            for(MapNode secondaryNode : nodes) {
                 //skip self
                 if(primaryNode == secondaryNode) {
                     continue;
@@ -642,28 +642,28 @@ public class Map {
         }
 
         //remove matched sub-branch-sets (these are sub-branches of other matched branches)
-        HashMap<  Integer,  List< List<MachineNode> >  > COMPLEXITY_BRANCH_MAP = new HashMap<>();
+        HashMap<  Integer,  List< List<MapNode> >  > COMPLEXITY_BRANCH_MAP = new HashMap<>();
         /*Order Branches (and sub-Branches) by their recipe-complexity*/ {
-            MachineNode exampleNode;
+            MapNode exampleNode;
             int complexity;
-            for(List<MachineNode> branch : matchingBranchesHeads) {
+            for(List<MapNode> branch : matchingBranchesHeads) {
                 exampleNode = branch.getFirst();
                 complexity = exampleNode.recipe.complexity;
                 if( COMPLEXITY_BRANCH_MAP.containsKey(complexity) ) {
-                    List< List<MachineNode> > modifiedBranchList = new ArrayList<>(
+                    List< List<MapNode> > modifiedBranchList = new ArrayList<>(
                         COMPLEXITY_BRANCH_MAP.get(complexity)
                     );
                     modifiedBranchList.add(branch);
                     COMPLEXITY_BRANCH_MAP.replace(complexity, modifiedBranchList);
                 } else {
-                    List< List<MachineNode> > branchAsList = new ArrayList<>();
+                    List< List<MapNode> > branchAsList = new ArrayList<>();
                     branchAsList.add(branch);
                     COMPLEXITY_BRANCH_MAP.put(complexity, branchAsList );
                 }
             }
         }
 
-        List< List<MachineNode> > subBranchesToBeRemoved = new ArrayList<>();
+        List< List<MapNode> > subBranchesToBeRemoved = new ArrayList<>();
         /*In forward order (toward higher complexity), verify that sub-branches do not exist; if they do, annihilate them.*/ {
             int maximum_complexity = 0;
             for(Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
@@ -676,12 +676,12 @@ public class Map {
                 }
 
                 //with an example from each potential sub-branch, check if it exists in any higher-complexity branch
-                for(List<MachineNode> subBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
-                    MachineNode subBranchExampleNode = subBranch.getFirst();
-                    List<MachineNode> higherComplexityBranchNodes = getAllNodesInHigherComplexityBranches(COMPLEXITY_BRANCH_MAP, complexity);
+                for(List<MapNode> subBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                    MapNode subBranchExampleNode = subBranch.getFirst();
+                    List<MapNode> higherComplexityBranchNodes = getAllNodesInHigherComplexityBranches(COMPLEXITY_BRANCH_MAP, complexity);
 
-                    if( MachineNode.includes(higherComplexityBranchNodes, subBranchExampleNode) ) {
-                        for( List<MachineNode> potentiallyRemovedSubBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                    if( MapNode.includes(higherComplexityBranchNodes, subBranchExampleNode) ) {
+                        for( List<MapNode> potentiallyRemovedSubBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
                             if( potentiallyRemovedSubBranch.contains(subBranchExampleNode) ) {
                                 subBranchesToBeRemoved.add(potentiallyRemovedSubBranch);
                             }
@@ -691,9 +691,9 @@ public class Map {
             }
             //remove branches marked for culling
             for( Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
-                for( Iterator< List<MachineNode> > mapAtComplexityIterator = COMPLEXITY_BRANCH_MAP.get(complexity).iterator(); mapAtComplexityIterator.hasNext(); ) {
-                    List<MachineNode> branch = mapAtComplexityIterator.next();
-                    for(List<MachineNode> branchToBeRemoved : subBranchesToBeRemoved) {
+                for(Iterator< List<MapNode> > mapAtComplexityIterator = COMPLEXITY_BRANCH_MAP.get(complexity).iterator(); mapAtComplexityIterator.hasNext(); ) {
+                    List<MapNode> branch = mapAtComplexityIterator.next();
+                    for(List<MapNode> branchToBeRemoved : subBranchesToBeRemoved) {
                         if(branch == branchToBeRemoved) {
                             mapAtComplexityIterator.remove();
                         }
@@ -703,7 +703,7 @@ public class Map {
         }
 
         /*Remove entries with a smaller depth (complexity) than the minimum*/ {
-            HashMap<  Integer,  List< List<MachineNode> >  > NEW_COMPLEXITY_BRANCH_MAP = new HashMap<>();
+            HashMap<  Integer,  List< List<MapNode> >  > NEW_COMPLEXITY_BRANCH_MAP = new HashMap<>();
             for( Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
                 if(minimum_depth <= complexity) {
                     NEW_COMPLEXITY_BRANCH_MAP.put(
@@ -718,12 +718,12 @@ public class Map {
 
         //create new lists of combined sub-branches into a set of branches (consolidated branches)
         for(Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
-            for(List<MachineNode> subBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
-                MachineNode newBranch = new MachineNode(subBranch.getFirst().recipe);
+            for(List<MapNode> subBranch : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                MapNode newBranch = new MapNode(subBranch.getFirst().recipe);
                 recursivelyGenerateRecipesFromPreferredSources(newBranch);
 
                 double newBranchUptime = 0.0;
-                for(MachineNode subBranchNode : subBranch) {
+                for(MapNode subBranchNode : subBranch) {
                     newBranchUptime += subBranchNode.calculated_uptime;
                 }
                 newBranch.setUptime(newBranchUptime);
@@ -734,9 +734,9 @@ public class Map {
         }
 
         /*remove sub-branches from map via removing sources from matches and using "consolidation" type*/ {
-            List<MachineNode> nodesToBeMarkedAsConsolidated = new ArrayList<>(); {
+            List<MapNode> nodesToBeMarkedAsConsolidated = new ArrayList<>(); {
                 for( Integer complexity : COMPLEXITY_BRANCH_MAP.keySet() ) {
-                    for(List<MachineNode> subBranchHeads : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
+                    for(List<MapNode> subBranchHeads : COMPLEXITY_BRANCH_MAP.get(complexity) ) {
                         nodesToBeMarkedAsConsolidated.addAll(subBranchHeads);
                     }
                 }
@@ -746,16 +746,16 @@ public class Map {
         }
 
     }
-    private static List<MachineNode> getAllSourceNodes(MachineNode node) {
-        List<MachineNode> allSourceNodes = new ArrayList<MachineNode>(node.sources);
-        for(MachineNode source : node.sources) {
+    private static List<MapNode> getAllSourceNodes(MapNode node) {
+        List<MapNode> allSourceNodes = new ArrayList<MapNode>(node.sources);
+        for(MapNode source : node.sources) {
             allSourceNodes.addAll(
                 getAllSourceNodes(source)
             );
         }
         return allSourceNodes;
     }
-    private static boolean areBranchesDuplicates(MachineNode nodeOne, MachineNode nodeTwo) {
+    private static boolean areBranchesDuplicates(MapNode nodeOne, MapNode nodeTwo) {
         if( nodeOne.equals(nodeTwo) ) {
             if( nodeOne.sources.isEmpty() && nodeTwo.sources.isEmpty() ) {
                 return true;
@@ -765,13 +765,13 @@ public class Map {
             }
 
             boolean areAllSourcesMatching = true;
-            for(MachineNode sourceOne : nodeOne.sources) {
-                if( !MachineNode.includes(nodeTwo.sources, sourceOne) ) {
+            for(MapNode sourceOne : nodeOne.sources) {
+                if( !MapNode.includes(nodeTwo.sources, sourceOne) ) {
                     return false;
                 }
 
-                MachineNode matchingSource = null;
-                for(MachineNode sourceTwo : nodeTwo.sources) {
+                MapNode matchingSource = null;
+                for(MapNode sourceTwo : nodeTwo.sources) {
                     if( sourceOne.equals(sourceTwo) ) {
                         matchingSource = sourceTwo;
                         break;
@@ -788,11 +788,11 @@ public class Map {
         return false;
     }
     private static void incorporateBranchesIntoMatchingList(
-        List< List<MachineNode> > matchingBranchesList,
-        MachineNode... matchingNodes
+        List< List<MapNode> > matchingBranchesList,
+        MapNode... matchingNodes
     ) {
-        MachineNode exampleNode = null;
-        for(MachineNode node : matchingNodes) {
+        MapNode exampleNode = null;
+        for(MapNode node : matchingNodes) {
             exampleNode = node;
             break;
         }
@@ -801,12 +801,12 @@ public class Map {
         }
 
         //find if it belongs to an existing branch-set
-        for(List<MachineNode> branch : matchingBranchesList) {
+        for(List<MapNode> branch : matchingBranchesList) {
             if( branch.isEmpty() ) {
                 continue;
             }
             if( areBranchesDuplicates(branch.getFirst(), exampleNode) ) {
-                for(MachineNode node : matchingNodes) {
+                for(MapNode node : matchingNodes) {
                     if( !branch.contains(node) ) {
                         branch.add(node);
                     }
@@ -817,21 +817,21 @@ public class Map {
 
         //if it does not belong to an existing branch-set, create a new one
         matchingBranchesList.add(
-            new ArrayList<MachineNode>( Arrays.asList(matchingNodes) )
+            new ArrayList<MapNode>( Arrays.asList(matchingNodes) )
         );
     }
-    private static List<MachineNode> getAllNodesInHigherComplexityBranches(
-        final HashMap<  Integer,  List< List<MachineNode> >  > branches,
+    private static List<MapNode> getAllNodesInHigherComplexityBranches(
+        final HashMap<  Integer,  List< List<MapNode> >  > branches,
         int complexity
     ) {
-        List<MachineNode> allNodesInHigherComplexityBranches = new ArrayList<>();
+        List<MapNode> allNodesInHigherComplexityBranches = new ArrayList<>();
         //linear search, because they may be in an arbitrary order
         for(Integer branchComplexity : branches.keySet() ) {
             if( branchComplexity.intValue() <= complexity ) {
                 continue;
             }
-            for(List<MachineNode> higherComplexityBranch : branches.get(branchComplexity) ) {
-                for(MachineNode subNode : higherComplexityBranch) {
+            for(List<MapNode> higherComplexityBranch : branches.get(branchComplexity) ) {
+                for(MapNode subNode : higherComplexityBranch) {
                     allNodesInHigherComplexityBranches.add(subNode);
                     allNodesInHigherComplexityBranches.addAll(
                         getAllSourceNodes(subNode)
@@ -841,14 +841,14 @@ public class Map {
         }
         return allNodesInHigherComplexityBranches;
     }
-    private static void setBranchesInListToConsolidationType(MachineNode node, List<MachineNode> consolidatedBranchHeads) {
+    private static void setBranchesInListToConsolidationType(MapNode node, List<MapNode> consolidatedBranchHeads) {
         if(node == null) {
             return;
         }
 
-        for(MachineNode consolidatedBranchHead : consolidatedBranchHeads) {
+        for(MapNode consolidatedBranchHead : consolidatedBranchHeads) {
             if( node.equals(consolidatedBranchHead) ) {
-                MachineNode consolidatedNode = new MachineNode(node.recipe);
+                MapNode consolidatedNode = new MapNode(node.recipe);
                 consolidatedNode.recipe.isConsolidated = true;
                 consolidatedNode.sources = new ArrayList<>();
                 node.sources = new ArrayList<>();
@@ -856,18 +856,18 @@ public class Map {
                 return;
             }
         }
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             setBranchesInListToConsolidationType(source, consolidatedBranchHeads);
         }
     }
 
 
     //# GETTERS
-    public MachineNode getHead() {
+    public MapNode getHead() {
         return head;
     }
 
-    public static HashMap<Voltage, Double> getAveragePowerConsumption(MachineNode node) {
+    public static HashMap<Voltage, Double> getAveragePowerConsumption(MapNode node) {
         Voltage minimumVoltage = Voltage.getVoltage(node.recipe.eu_per_tick);
         double amperage = ( minimumVoltage == null ? 0.0 : node.recipe.eu_per_tick/minimumVoltage.EULimit() );
         HashMap<Voltage, Double> powerConsumption = new HashMap<Voltage, Double>();
@@ -879,7 +879,7 @@ public class Map {
         );
 
         //get source's consumption as well
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             addAmperes(
                 powerConsumption,
                 getAveragePowerConsumption(source)
@@ -888,7 +888,7 @@ public class Map {
 
         return powerConsumption;
     }
-    public static HashMap<Voltage, Double> getMaximumPowerConsumption(MachineNode node) {
+    public static HashMap<Voltage, Double> getMaximumPowerConsumption(MapNode node) {
         Voltage minimumVoltage = Voltage.getVoltage(node.recipe.eu_per_tick);
         double amperage = ( minimumVoltage == null ? 0.0 : node.recipe.eu_per_tick/minimumVoltage.EULimit() );
         HashMap<Voltage, Double> powerConsumption = new HashMap<Voltage, Double>();
@@ -902,7 +902,7 @@ public class Map {
         );
 
         //get source's consumption as well
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             addAmperes(
                 powerConsumption,
                 getMaximumPowerConsumption(source)
@@ -928,21 +928,21 @@ public class Map {
         }
     }
 
-    public static double getAveragePollutionRate(MachineNode node) {
+    public static double getAveragePollutionRate(MapNode node) {
         //TODO
         double pollution_rate = 0; //node.recipe.machineType.getPollution() * node.calculated_uptime;
 
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             pollution_rate += getAveragePollutionRate(source);
         }
 
         return pollution_rate;
     }
-    public static double getMaximumPollutionRate(MachineNode node) {
+    public static double getMaximumPollutionRate(MapNode node) {
         //TODO
         double pollution_rate = 0; //node.recipe.machineType.pollution * Math.ceil(node.calculated_uptime);
 
-        for(MachineNode source : node.sources) {
+        for(MapNode source : node.sources) {
             pollution_rate += getMaximumPollutionRate(source);
         }
 

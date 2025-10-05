@@ -24,6 +24,13 @@ public class MachineTypes extends Registered<MachineType> {
         return instance.registerInstance(machine);
     }
 
+    public static boolean isLeafMachine(MachineType machine) {
+        return
+            machine.equals(PLAYER)
+            || machine.equals(CROP_MANAGER)
+        ;
+    }
+
     private static final List<Voltage> commonSingleBlockVoltages = new ArrayList<>(); static {
         commonSingleBlockVoltages.add(Voltage.Low);
         commonSingleBlockVoltages.add(Voltage.Medium);

@@ -1,3 +1,5 @@
+import graph.NodeGraphs;
+import graph.export.CSAcademy;
 import map.Maps;
 import recipes.Recipes;
 
@@ -21,5 +23,6 @@ public class Main {
     public static void main(String[] args) {
         System.out.println( Maps.ELECTRONIC_CIRCUIT );
         //Recipes.printAllComplexities();
+        //System.out.println( CSAcademy.getGraphData(NodeGraphs.electronicCircuitGraph) );
     }
 }

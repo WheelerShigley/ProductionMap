@@ -221,6 +221,11 @@ public class Recipe extends Identified {
         this.eu_per_tick = Math.min(maximum_EU_rate, eu_per_tick);
     }
 
+    //# Getter(s)
+    public int getTimeInTicks() {
+        return (int)(20.0*this.time_seconds);
+    }
+
     //# Calculators + Helpers
     private static Item getFirstItem(List<ItemStack> itemStacks) {
         if( itemStacks.isEmpty() ) {
@@ -269,5 +274,17 @@ public class Recipe extends Identified {
             nameBuilder.append("__").append( Integer.toString(recipe_count) );
         }
         return nameBuilder.toString();
+    }
+
+    public double getProductionRate(Item ofItem) {
+        double production_rate = 0.0;
+        for(ItemStack output : outputs) {
+            if( output.item.equals(ofItem) ) {
+                production_rate += output.quantity;
+            }
+        }
+        production_rate /= getTimeInTicks();
+
+        return production_rate;
     }
 }

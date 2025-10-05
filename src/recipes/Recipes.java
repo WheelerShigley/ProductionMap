@@ -4,7 +4,6 @@ import items.Item;
 import items.ItemStack;
 import items.Items;
 import machines.MachineConfiguration;
-import machines.MachineType;
 import machines.MachineTypes;
 import register.Registered;
 
@@ -37,6 +36,12 @@ public class Recipes extends Registered<Recipe> {
             calculateOptimalRecipes();
         }
         return wasSuccessfullyRegistered;
+    }
+    public static boolean isLeafRecipe(Recipe recipe) {
+        return
+            recipe.equals(COMPRESSED_AIR) //TODO: Account for looping
+            || recipe.equals(COBBLESTONE)
+        ;
     }
 
     public static void printAllComplexities() {
@@ -104,6 +109,21 @@ public class Recipes extends Registered<Recipe> {
                 optimalRecipes.put(item, playerSourcedItemRecipe);
             }
         }
+    }
+
+    public static Recipe getFastestProducingRecipe(Item ofItem) {
+        //linear search
+        double fastest_production_rate = 0.0, current_production_rate;
+        Recipe fastestProducingRecipes = Recipes.DUMMY;
+        for(Recipe potentiallyFastestProducingRecipe : Recipes.registry) {
+            current_production_rate = potentiallyFastestProducingRecipe.getProductionRate(ofItem);
+            if(fastest_production_rate < current_production_rate) {
+                fastest_production_rate = current_production_rate;
+                fastestProducingRecipes = potentiallyFastestProducingRecipe;
+            }
+        }
+
+        return fastestProducingRecipes;
     }
 
     //nothing

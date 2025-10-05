@@ -5,16 +5,16 @@ import recipes.Recipe;
 
 import java.util.List;
 
-public class MachineNode {
+public class MapNode {
     Recipe recipe;
-    List<MachineNode> sources;
+    List<MapNode> sources;
     public double calculated_uptime = -1.0f;
 
-    public MachineNode(Recipe recipe) {
+    public MapNode(Recipe recipe) {
         this.recipe = recipe;
         this.sources = List.of();
     }
-    public MachineNode(Recipe recipe, List<MachineNode> sources) {
+    public MapNode(Recipe recipe, List<MapNode> sources) {
         this.recipe = recipe;
         this.sources = sources;
     }
@@ -23,7 +23,7 @@ public class MachineNode {
         this.calculated_uptime = uptime;
     }
 
-    public void setSources(List<MachineNode> sources) {
+    public void setSources(List<MapNode> sources) {
         this.sources = sources;
     }
 
@@ -45,7 +45,7 @@ public class MachineNode {
         return ItemStackListStringBuilder.toString();
     }
 
-    public boolean equals(MachineNode otherNode) {
+    public boolean equals(MapNode otherNode) {
         if(otherNode == null) {
             return false;
         }
@@ -67,8 +67,8 @@ public class MachineNode {
         return nodeStringBuilder.toString();
     }
 
-    public static boolean includes(List<MachineNode> nodes, MachineNode node) {
-        for(MachineNode listNode : nodes) {
+    public static boolean includes(List<MapNode> nodes, MapNode node) {
+        for(MapNode listNode : nodes) {
             if( listNode.equals(node) ) {
                 return true;
             }
