@@ -5,15 +5,18 @@ import recipes.Recipe;
 
 import java.util.List;
 
+@Deprecated
 public class MapNode {
     Recipe recipe;
     List<MapNode> sources;
     public double calculated_uptime = -1.0f;
 
+    @Deprecated
     public MapNode(Recipe recipe) {
         this.recipe = recipe;
         this.sources = List.of();
     }
+    @Deprecated
     public MapNode(Recipe recipe, List<MapNode> sources) {
         this.recipe = recipe;
         this.sources = sources;

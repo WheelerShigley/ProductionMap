@@ -2,6 +2,7 @@ package machines;
 
 import register.Identified;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -10,22 +11,28 @@ public class MachineType extends Identified {
     private final String name;
 
     public MachineType(String namespace, String name) {
-        super(namespace, name);
+        super(
+            namespace,
+            name.replace(' ','-')
+        );
 
         this.data = new HashMap<>();
         this.data.put(
             Voltage.None,
             List.of(new MachineData(name) )
         );
-        this.name = name;
+        this.name = name.replace(' ','-');
 
         MachineTypes.register(this);
     }
     public MachineType(String namespace, String name, HashMap<Voltage, List<MachineData> > data) {
-        super(namespace, name);
+        super(
+            namespace,
+            name.replace(' ','-')
+        );
 
         this.data = data;
-        this.name = name;
+        this.name = name.replace(' ','-');
 
         MachineTypes.register(this);
     }
@@ -83,34 +90,13 @@ public class MachineType extends Identified {
         }
     }
 
-    //TODO
     public double getPollution(double eu_limit) {
-        return 0.0;
-
-        /*
         Voltage minimumVoltage = getMinimumVoltageForLimit(eu_limit);
-        if(minimumVoltage == null) {
-            //TODO: warn
+        List<MachineData> datas = data.get(minimumVoltage);
+        //TODO: fix that this is merely the first entry (it could be wrong)
+        if( datas.isEmpty() ) {
             return 0.0;
         }
-
-        StringBuilder pollutionListBuilder = new StringBuilder();
-        int amount_of_machine_options_at_voltage = data.get(minimumVoltage).size();
-        for(int index = 0; index < amount_of_machine_options_at_voltage; index++) {
-            pollutionListBuilder
-                .append( data.get(minimumVoltage).get(index).getName() )
-                .append("@").append( data.get(minimumVoltage).get(index).getPollutionRate() )
-            ;
-            if(index <= amount_of_machine_options_at_voltage-2) {
-                pollutionListBuilder.append(" | ");
-            }
-        }
-
-        if(1 < amount_of_machine_options_at_voltage) {
-            return "["+ pollutionListBuilder.toString() + "]";
-        } else {
-            return pollutionListBuilder.toString();
-        }
-         */
+        return datas.getFirst().getPollutionRate();
     }
 }

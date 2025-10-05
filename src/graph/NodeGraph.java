@@ -3,6 +3,7 @@ package graph;
 import items.Item;
 import machines.Machine;
 import machines.MachineTypes;
+import machines.Voltage;
 import recipes.Recipe;
 import recipes.Recipes;
 
@@ -140,34 +141,148 @@ public class NodeGraph {
         StringBuilder nodeGraphStringBuilder = new StringBuilder();
         nodeGraphStringBuilder.append("NodeGraph(").append( finalProduct.getName() ).append(") {\r\n");
 
-        int counter = 0;
-        nodeGraphStringBuilder.append("\tProducts:\r\n");
-        for(ProductNode product : products) {
-            nodeGraphStringBuilder.append("\t\t").append(counter++).append(" -> ").append( product.toString() ).append("\r\n");
+        /*Products*/ {
+            int counter = 0;
+            nodeGraphStringBuilder.append("\tProducts:\r\n");
+            for(ProductNode product : products) {
+                nodeGraphStringBuilder.append("\t\t").append(counter++).append(" -> ").append( product.toString() ).append("\r\n");
+            }
+            nodeGraphStringBuilder.append("\r\n");
         }
-        nodeGraphStringBuilder.append("\r\n");
 
-        counter = 0;
-        nodeGraphStringBuilder.append("\tTransformers:\r\n");
-        for(RecipeNode transformer : transformers) {
-            nodeGraphStringBuilder.append("\t\t").append(counter++).append(" -> ").append( transformer.toString() ).append("\r\n");
+        /*Transformers*/ {
+            int counter = 0;
+            nodeGraphStringBuilder.append("\tTransformers:\r\n");
+            for(RecipeNode transformer : transformers) {
+                nodeGraphStringBuilder.append("\t\t").append(counter++).append(" -> ").append( transformer.toString() ).append("\r\n");
+            }
+            nodeGraphStringBuilder.append("\r\n");
         }
-        nodeGraphStringBuilder.append("\r\n");
 
-        HashMap<Machine, Integer> machines = getMachineCounts();
-        nodeGraphStringBuilder.append("\tMachine Counts:\r\n");
-        for( Machine machine : machines.keySet() ) {
-            nodeGraphStringBuilder.append("\t\t")
-                .append( machines.get(machine) ).append("×")
-                .append(machine.name)
-                .append(" (").append(machine.voltage).append(" ").append( machine.machineType.getName() ).append(")")
-                .append("\r\n")
+        //TODO: simplify below
+        /*Machine Counts*/ {
+            HashMap<Machine, Integer> machines = getMachineCounts();
+            HashMap<Machine, Double> uptimes = getMachineSumUptimes();
+            nodeGraphStringBuilder.append("\tMachine Counts:\r\n");
+            for( Machine machine : machines.keySet() ) {
+                nodeGraphStringBuilder.append("\t\t")
+                    .append( machines.get(machine) ).append("×")
+                    .append(machine.name)
+                    .append(" (").append(machine.voltage).append(" ").append( machine.machineType.getName() ).append(")")
+                ;
+                Machine uptimeMachine = getMachineMatchInMap(uptimes, machine);
+                if( uptimes.containsKey(uptimeMachine) ) {
+                    nodeGraphStringBuilder.append(" @ ");
+                    double sum_uptime = uptimes.get(uptimeMachine)/machines.get(machine);
+                    nodeGraphStringBuilder
+                        .append( StringHelper.getNumberString(100.0*sum_uptime) )
+                        .append("%")
+                    ;
+                }
+                nodeGraphStringBuilder.append("\r\n");
+            }
+            nodeGraphStringBuilder.append("\r\n");
+            }
+
+        /*Average Power Usage*/ {
+            nodeGraphStringBuilder.append("\tAverage Power Usage:\r\n");
+            HashMap<Voltage, Double> powerMap = getPowerDemand(false);
+            for( Voltage voltage : powerMap.keySet() ) {
+                double usage_at_voltage = powerMap.get(voltage);
+                if(usage_at_voltage == 0.0 || voltage.equals(Voltage.None) ) {
+                    continue;
+                }
+
+                nodeGraphStringBuilder
+                    .append("\t\t").append(voltage).append(": ")
+                    .append( StringHelper.getNumberString(usage_at_voltage) )
+                    .append(" EU/t\r\n")
+                ;
+            }
+            //nodeGraphStringBuilder.append("\r\n");
+        }
+        /*Maximum Power Usage*/ {
+            nodeGraphStringBuilder.append("\tMaximum Power Usage:\r\n");
+            HashMap<Voltage, Double> powerMap = getPowerDemand(true);
+            for( Voltage voltage : powerMap.keySet() ) {
+                double usage_at_voltage = powerMap.get(voltage);
+                if(usage_at_voltage == 0.0 || voltage.equals(Voltage.None) ) {
+                    continue;
+                }
+
+                nodeGraphStringBuilder
+                    .append("\t\t").append(voltage).append(": ")
+                    .append( StringHelper.getNumberString(usage_at_voltage) )
+                    .append(" EU/t\r\n")
+                ;
+            }
+            nodeGraphStringBuilder.append("\r\n");
+        }
+
+        /*Average Pollution Output*/ {
+            nodeGraphStringBuilder.append("\tAverage Pollution Output:\r\n");
+            double pollution_rate = getPollutionRate(false);
+            nodeGraphStringBuilder
+                .append("\t\t")
+                .append(
+                    StringHelper.getNumberString(pollution_rate)
+                )
+                .append(" pollution/second\r\n")
             ;
+            //nodeGraphStringBuilder.append("\r\n");
         }
-        nodeGraphStringBuilder.append("\r\n");
+        /*Maximum Pollution Output*/ {
+            nodeGraphStringBuilder.append("\tMaximum Pollution Output:\r\n");
+            double pollution_rate = getPollutionRate(true);
+            nodeGraphStringBuilder
+                    .append("\t\t")
+                    .append(
+                            StringHelper.getNumberString(pollution_rate)
+                    )
+                    .append(" pollution/second\r\n")
+            ;
+            nodeGraphStringBuilder.append("\r\n");
+        }
 
         nodeGraphStringBuilder.append("}");
         return nodeGraphStringBuilder.toString();
+    }
+    private HashMap<Voltage, Double> getPowerDemand(boolean isMaximum) {
+        HashMap<Voltage, Double> powerMap = new HashMap<>();
+        for(RecipeNode transformer : transformers) {
+            //TODO: Account for non-eu power-types
+            double power_demand = transformer.recipe.eu_per_tick;
+            double average_power_demand = power_demand;
+            if(isMaximum) {
+                average_power_demand *= Math.ceil( transformer.getUptime() );
+            } else {
+                average_power_demand *= transformer.getUptime();
+            }
+            Voltage currentVoltage = transformer.recipe.machineType.getMinimumVoltageForLimit(power_demand);
+            if( currentVoltage.equals(Voltage.None) ) {
+                continue;
+            }
+            if( powerMap.containsKey(currentVoltage) ) {
+                powerMap.replace(
+                        currentVoltage,
+                        powerMap.get(currentVoltage) + average_power_demand
+                );
+            } else {
+                powerMap.put(currentVoltage, average_power_demand);
+            }
+        }
+        return powerMap;
+    }
+    private double getPollutionRate(boolean isMaximum) {
+        double pollution_rate = 0.0;
+        for(RecipeNode transformer : transformers) {
+            double current_pollution = transformer.recipe.machineType.getPollution(transformer.recipe.eu_per_tick);
+            if(!isMaximum) {
+                current_pollution *= transformer.getUptime();
+            }
+            pollution_rate += current_pollution;
+        }
+        return pollution_rate;
     }
 
     private Machine getMachineMatchInMap(HashMap<Machine, ?> map, Machine machine) {
@@ -184,7 +299,7 @@ public class NodeGraph {
         for(RecipeNode transformer : transformers) {
             currentMachine = new Machine(transformer.recipe.machineType, transformer.recipe.eu_per_tick);
             currentMachine = getMachineMatchInMap(machineCounts, currentMachine);
-            if( MachineTypes.isLeafMachine(currentMachine.machineType) ) {
+            if( currentMachine.machineType.equals(MachineTypes.PLAYER) ) {
                 continue;
             }
             if( machineCounts.containsKey(currentMachine) ) {
@@ -197,5 +312,25 @@ public class NodeGraph {
             }
         }
         return machineCounts;
+    }
+    private HashMap<Machine, Double> getMachineSumUptimes() {
+        HashMap<Machine, Double> uptimes = new HashMap<>();
+        Machine currentMachine;
+        for(RecipeNode transformer : transformers) {
+            currentMachine = new Machine(transformer.recipe.machineType, transformer.recipe.eu_per_tick);
+            currentMachine = getMachineMatchInMap(uptimes, currentMachine);
+            if( currentMachine.machineType.equals(MachineTypes.PLAYER) ) {
+                continue;
+            }
+            if( uptimes.containsKey(currentMachine) ) {
+                uptimes.replace(
+                    currentMachine,
+                    uptimes.get(currentMachine) + transformer.getUptime()
+                );
+            } else {
+                uptimes.put(  currentMachine,  transformer.getUptime()  );
+            }
+        }
+        return uptimes;
     }
 }

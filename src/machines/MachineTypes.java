@@ -71,9 +71,9 @@ public class MachineTypes extends Registered<MachineType> {
                 List.of(
                     new MachineData(
                         names.get(voltage),
-                        customData.getPollutionRate()-1.0,
-                        customData.getSpeed()-1.0,
-                        customData.getPowerPercentage()-1.0
+                        customData.getPollutionRate(),
+                        customData.getSpeed(),
+                        customData.getPowerPercentage()
                     )
                 )
             );
@@ -92,9 +92,9 @@ public class MachineTypes extends Registered<MachineType> {
                 List.of(
                     new MachineData(
                         names.get(voltage),
-                        customData.getPollutionRate()-1.0,
-                        customData.getSpeed()-1.0,
-                        customData.getPowerPercentage()-1.0
+                        customData.getPollutionRate(),
+                        customData.getSpeed(),
+                        customData.getPowerPercentage()
                     )
                 )
             );

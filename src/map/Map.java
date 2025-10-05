@@ -14,6 +14,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Deprecated
 public class Map {
     private final MapNode head;
     private final List<MapNode> consolidatedBranches = new ArrayList<MapNode>();
@@ -23,6 +24,7 @@ public class Map {
         this.head = new MapNode(recipe);
         recursivelyGenerateRecipesFromPreferredSources(head);
     }
+    @Deprecated
     public Map(Recipe recipe, double uptime) {
         this.head = new MapNode(recipe);
         recursivelyGenerateRecipesFromPreferredSources(head);
@@ -31,6 +33,7 @@ public class Map {
 
         consolidateDuplicateBranches(this, 3);
     }
+    @Deprecated
     public Map(Recipe recipe, double uptime, int minimum_depth_to_seperate_branch) {
         this.head = new MapNode(recipe);
         recursivelyGenerateRecipesFromPreferredSources(head);
