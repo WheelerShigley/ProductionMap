@@ -10,7 +10,7 @@ public class Item extends Identified {
 
     public boolean equals(Item otherItem) {
         if(
-               otherItem.getNamespace().equals( this.getNamespace() )
+           otherItem.getNamespace().equals( this.getNamespace() )
             && otherItem.getName().equals( this.getName() )
         ) {
             return true;

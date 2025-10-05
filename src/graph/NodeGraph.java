@@ -1,12 +1,13 @@
 package graph;
 
 import items.Item;
-import machines.MachineType;
+import machines.Machine;
 import machines.MachineTypes;
 import recipes.Recipe;
 import recipes.Recipes;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class NodeGraph {
@@ -14,7 +15,7 @@ public class NodeGraph {
     public final List<ProductNode> products = new ArrayList<>();
     public final List<RecipeNode> transformers = new ArrayList<>();
 
-    public NodeGraph(Item finalProduct, double rate) {
+    public NodeGraph(Item finalProduct, double items_per_second) {
         this.finalProduct = finalProduct;
 
         //create original recipe-node and product-node
@@ -24,7 +25,7 @@ public class NodeGraph {
             Recipes.getFastestProducingRecipe(finalProduct)
         );
         ultimateSource.setUpTime(
-            rate/ultimateSource.recipe.getProductionRate(finalProduct)
+            items_per_second/ultimateSource.recipe.getProductionRate(finalProduct)
         );
 
         ultimateSource.addOutput(ultimateSink);
@@ -33,7 +34,7 @@ public class NodeGraph {
         this.addTransformer(ultimateSource);
 
         //back-calculate production-map
-        constructIncompleteNodeGraph();
+        constructNodeGraph();
     }
 
     private List<RecipeNode> getUnsourcedRecipeNodes() {
@@ -63,7 +64,7 @@ public class NodeGraph {
         }
         return unsourcedProductNode;
     }
-    private void constructIncompleteNodeGraph() {
+    private void constructNodeGraph() {
         //temporary, for testing
         /*
         for(RecipeNode transformer : transformers) {
@@ -153,7 +154,48 @@ public class NodeGraph {
         }
         nodeGraphStringBuilder.append("\r\n");
 
+        HashMap<Machine, Integer> machines = getMachineCounts();
+        nodeGraphStringBuilder.append("\tMachine Counts:\r\n");
+        for( Machine machine : machines.keySet() ) {
+            nodeGraphStringBuilder.append("\t\t")
+                .append( machines.get(machine) ).append("×")
+                .append(machine.name)
+                .append(" (").append(machine.voltage).append(" ").append( machine.machineType.getName() ).append(")")
+                .append("\r\n")
+            ;
+        }
+        nodeGraphStringBuilder.append("\r\n");
+
         nodeGraphStringBuilder.append("}");
         return nodeGraphStringBuilder.toString();
+    }
+
+    private Machine getMachineMatchInMap(HashMap<Machine, ?> map, Machine machine) {
+        for(Machine currentMachine : map.keySet() ) {
+            if( currentMachine.equals(machine) ) {
+                return currentMachine;
+            }
+        }
+        return machine;
+    }
+    private HashMap<Machine, Integer> getMachineCounts() {
+        HashMap<Machine, Integer> machineCounts = new HashMap<>();
+        Machine currentMachine;
+        for(RecipeNode transformer : transformers) {
+            currentMachine = new Machine(transformer.recipe.machineType, transformer.recipe.eu_per_tick);
+            currentMachine = getMachineMatchInMap(machineCounts, currentMachine);
+            if( MachineTypes.isLeafMachine(currentMachine.machineType) ) {
+                continue;
+            }
+            if( machineCounts.containsKey(currentMachine) ) {
+                machineCounts.replace(
+                    currentMachine,
+                    machineCounts.get(currentMachine) + (int)Math.ceil( transformer.getUptime() )
+                );
+            } else {
+                machineCounts.put(  currentMachine,  (int)Math.ceil( transformer.getUptime() )  );
+            }
+        }
+        return machineCounts;
     }
 }

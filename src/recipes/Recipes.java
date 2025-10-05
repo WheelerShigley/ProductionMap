@@ -39,8 +39,7 @@ public class Recipes extends Registered<Recipe> {
     }
     public static boolean isLeafRecipe(Recipe recipe) {
         return
-            recipe.equals(COMPRESSED_AIR) //TODO: Account for looping
-            || recipe.equals(COBBLESTONE)
+            recipe.equals(COBBLESTONE)
         ;
     }
 
@@ -56,7 +55,6 @@ public class Recipes extends Registered<Recipe> {
         LOGGER.log(Level.INFO, complexitiesMapListBuilder.toString() );
     }
 
-    //TODO
     private static ItemStack getItemStackOfSpecificItem(List<ItemStack> itemStacks, Item itemType) {
         ItemStack result = new ItemStack(itemType, 0);
         for(ItemStack itemStack : itemStacks) {
@@ -137,7 +135,7 @@ public class Recipes extends Registered<Recipe> {
     public static final Recipe STICKY_RESIN = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.STICKY_RESIN), 1.0);
 
     //of^2 nothing
-    public static final Recipe COMPRESSED_AIR = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Items.COMPRESSED_AIR), 15.0);
+    public static final Recipe COMPRESSED_AIR = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Items.EMPTY_CELL), new ItemStack(Items.COMPRESSED_AIR), 15.0);
     public static final Recipe COPPER_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(Items.COPPER_DUST), new ItemStack(Items.COPPER_INGOT, 1), 6.4);
     public static final Recipe GRAVEL = new Recipe(MachineTypes.FORGE_HAMMER, 16.0, new ItemStack(Items.COBBLESTONE), new ItemStack(Items.GRAVEL), 0.5);
     public static final Recipe GLOWSTONE_DUST = new Recipe(MachineTypes.FLUID_EXTRACTOR, 2.0, new ItemStack(Items.GLOW_FLOWER, 2), new ItemStack(Items.GLOWSTONE_DUST), 15.0);
@@ -533,7 +531,7 @@ public class Recipes extends Registered<Recipe> {
                 new ItemStack(Items.RESISTOR, 2),
                 new ItemStack(Items.ONE_RED_ALLOY_WIRE, 2),
                 new ItemStack(Items.VACUUM_TUBE, 2),
-                new ItemStack(Items.MOLTEN_LEAD, 2)
+                new ItemStack(Items.MOLTEN_LEAD, 2*0.144)
             ),
             List.of(
                 new ItemStack(Items.ELECTRIC_CIRCUIT, 1)

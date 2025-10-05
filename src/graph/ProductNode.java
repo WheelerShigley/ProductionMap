@@ -55,13 +55,16 @@ public class ProductNode {
             generatedSourceNode = new RecipeNode(generatedSource);
             generatedSourceNode.addOutput(this);
             generatedSourceNode.setUpTime(
-                generatedSourceNode.getUptime()
+                this.getUnmetDemandRate()/generatedSource.getProductionRate(this.product)
             );
         }
 
-        this.addSource(generatedSourceNode);
-        updateSourceUptimes();
-        return graph.addTransformer(generatedSourceNode);
+        if( graph.addTransformer(generatedSourceNode) ) {
+            this.addSource(generatedSourceNode);
+            updateSourceUptimes();
+            return true;
+        }
+        return false;
     }
 
     private void updateSourceUptimes() {
@@ -116,7 +119,7 @@ public class ProductNode {
     private double getProductionRate() {
         double production_rate = 0.0;
         for(RecipeNode source : sources) {
-            production_rate += source.getProductionRate(product);
+            production_rate += source.getUptime()*source.getProductionRate(product);
         }
         return production_rate;
     }
@@ -144,7 +147,14 @@ public class ProductNode {
         if( sources.isEmpty() ) {
             productNodeStringBuilder.append(" (no source)");
         } else {
-            productNodeStringBuilder.append(" @ ").append( 20.0*this.getProductionRate() ).append("/second");
+            productNodeStringBuilder.append(" @ ");
+            double rate = 20.0*this.getProductionRate();
+            if(rate%1.0 == 0.0) {
+                productNodeStringBuilder.append( (int)rate );
+            } else {
+                productNodeStringBuilder.append( Math.round(rate*10000.0)/10000.0 );
+            }
+            productNodeStringBuilder.append("/second");
         }
 
         if(

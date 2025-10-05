@@ -1,5 +1,7 @@
+import graph.NodeGraph;
 import graph.NodeGraphs;
 import graph.export.CSAcademy;
+import items.Items;
 import map.Maps;
 import recipes.Recipes;
 
@@ -21,8 +23,10 @@ public class Main {
      * Refactor Map.toString() helper functions to be easier(?) to understand
      */
     public static void main(String[] args) {
-        System.out.println( Maps.ELECTRONIC_CIRCUIT );
+        //System.out.println( Maps.ELECTRONIC_CIRCUIT );
         //Recipes.printAllComplexities();
         //System.out.println( CSAcademy.getGraphData(NodeGraphs.electronicCircuitGraph) );
+        NodeGraph test = new NodeGraph(Items.OXYGEN_GAS, 1);
+        System.out.println(test);
     }
 }
