@@ -1,5 +1,7 @@
 package recipes;
 
+import graph.evaluations.Fastest;
+import graph.evaluations.RecipeComparison;
 import items.Item;
 import items.ItemStack;
 import items.Items;
@@ -12,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import static graph.evaluations.RecipeComparisons.FASTEST;
 
 public class Recipes extends Registered<Recipe> {
     private static Recipes instance;
@@ -65,48 +69,8 @@ public class Recipes extends Registered<Recipe> {
         return result;
     }
     public static void calculateOptimalRecipes() {
-        HashMap<Item, List<Recipe> > itemSources = new HashMap<>();
-
-        //get all sources of each Item that can be processed
-        for(Recipe recipe : Recipes.registry) {
-            for(ItemStack output : recipe.outputs) {
-                if( itemSources.containsKey(output.item) ) {
-                    itemSources.get(output.item).add(recipe);
-                } else {
-                    List<Recipe> thisRecipe = new ArrayList<>();
-                    thisRecipe.add(recipe);
-                    itemSources.put(output.item, thisRecipe);
-                }
-            }
-        }
-
-        //for each item, find the "best" (fastest rate) recipe; TODO: implement multiple metrics for optimization
-        Recipe fastest_producing_recipe_for_item;
-        double fastest_production_rate_for_item, current_recipe_production_rate_for_item;
-        for( Item item : itemSources.keySet() ) {
-            fastest_producing_recipe_for_item = Recipes.DUMMY;
-            fastest_production_rate_for_item = 0.0;
-
-            for(Recipe sourceOfItem : itemSources.get(item) ) {
-                current_recipe_production_rate_for_item = getItemStackOfSpecificItem(sourceOfItem.outputs, item).quantity;
-                current_recipe_production_rate_for_item /= sourceOfItem.time_seconds;
-
-                if(fastest_production_rate_for_item < current_recipe_production_rate_for_item) {
-                    fastest_production_rate_for_item = current_recipe_production_rate_for_item;
-                    fastest_producing_recipe_for_item = sourceOfItem;
-                }
-            }
-
-            optimalRecipes.put(item, fastest_producing_recipe_for_item);
-        }
-
-        //ensure there exists a manual source, if there isn't any source
-        for(Item item : Items.registry) {
-            if( !optimalRecipes.containsKey(item) ) {
-                Recipe playerSourcedItemRecipe = new Recipe(MachineTypes.PLAYER, Double.MAX_VALUE, new ItemStack(item), Double.MAX_VALUE);
-                optimalRecipes.put(item, playerSourcedItemRecipe);
-            }
-        }
+        //TODO: more options
+        optimalRecipes = RecipeComparison.getBestRecipes(FASTEST);
     }
 
     public static Recipe getFastestProducingRecipe(Item ofItem) {

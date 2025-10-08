@@ -1,4 +1,7 @@
+import graph.NodeGraph;
 import graph.NodeGraphs;
+import graph.export.CSAcademy;
+import items.Items;
 
 public class Main {
     /* TODO
@@ -10,7 +13,11 @@ public class Main {
      */
     public static void main(String[] args) {
         //Recipes.printAllComplexities();
-        //System.out.println( CSAcademy.getGraphData(NodeGraphs.electronicCircuitGraph) );
-        System.out.println(NodeGraphs.electronicCircuitGraph);
+        System.out.println(
+            CSAcademy.getGraphData(
+                new NodeGraph(Items.OXYGEN_GAS, 1)
+            )
+        );
+        //System.out.println(NodeGraphs.electronicCircuitGraph);
     }
 }
