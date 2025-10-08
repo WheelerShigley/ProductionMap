@@ -54,8 +54,10 @@ public enum MachineConfiguration {
     ProgrammedBioCircuitTwentyFour,
 
     MoldBall,
+    MoldBlock,
 
-    ExtrudeShapeRod;
+    ExtrudeShapeRod
+    ;
 
     @Override
     public String toString() {

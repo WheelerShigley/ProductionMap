@@ -94,11 +94,28 @@ public class Recipes extends Registered<Recipe> {
     //of nothing
     public static final Recipe ANY_WOOD = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.ANY_WOOD), 1.0);
     public static final Recipe COBBLESTONE = new Recipe(MachineTypes.ROCK_BREAKER, 30.0, new ItemStack(Items.COBBLESTONE), 0.8);
+    public static final Recipe DRIED_DIRT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(Items.DIRT), new ItemStack(Items.DRIED_DIRT), 6.4);
     public static final Recipe EMPTY_CELL_CYCLED = new Recipe(MachineTypes.CELL_CYCLING, 0.0, new ItemStack(Items.COMPRESSED_AIR), new ItemStack(Items.EMPTY_CELL), 1.0);
     public static final Recipe GLOW_FLOWER = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.GLOW_FLOWER), 1.0);
     public static final Recipe STICKY_RESIN = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.STICKY_RESIN), 1.0);
+    public static final Recipe WATERTANK_WATER = new Recipe(MachineTypes.WATERTANK, 0.0, new ItemStack(Items.WATER, 0.8/1000.0), 1.0);
+    public static final Recipe THIRSTYTANK_WATER = new Recipe(MachineTypes.THIRSTYTANK, 0.0, new ItemStack(Items.WATER, 1.0), 31.0/20.0);
+    //TODO: other sources of water
 
     //of^2 nothing
+    public static final Recipe CENTRIFUGED_DRIED_DIRT; static {
+        CENTRIFUGED_DRIED_DIRT = new Recipe(
+            MachineTypes.CENTRIFUGE,
+            30.0,
+            List.of( new ItemStack(Items.DRIED_DIRT) ),
+            List.of(
+                new ItemStack(Items.SMALL_PILE_OF_CLAY_DUST, 0.9),
+                new ItemStack(Items.SAND, 0.5),
+                new ItemStack(Items.ASHES, 2.77/100.0)
+            ),
+            5.0
+        );
+    }
     public static final Recipe COMPRESSED_AIR = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Items.EMPTY_CELL), new ItemStack(Items.COMPRESSED_AIR), 15.0);
     public static final Recipe COPPER_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(Items.COPPER_DUST), new ItemStack(Items.COPPER_INGOT, 1), 6.4);
     public static final Recipe GRAVEL = new Recipe(MachineTypes.FORGE_HAMMER, 16.0, new ItemStack(Items.COBBLESTONE), new ItemStack(Items.GRAVEL), 0.5);
@@ -119,6 +136,7 @@ public class Recipes extends Registered<Recipe> {
             0.05
         );
     }
+    public static final Recipe STONE_DUST = new Recipe(MachineTypes.MACERATOR, 4.0, new ItemStack(Items.COBBLESTONE), new ItemStack(Items.STONE_DUST, 1), 4.9);
     public static final Recipe WOOD_PULP = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Items.ANY_WOOD), new ItemStack(Items.WOOD_PULP, 6), 20.0);
 
     //of^3 nothing
@@ -146,6 +164,25 @@ public class Recipes extends Registered<Recipe> {
                 48.8
         );
     }
+    public static final Recipe CENTRIFUGED_STONE_DUST; static {
+        CENTRIFUGED_STONE_DUST = new Recipe(
+            MachineTypes.CENTRIFUGE,
+            30.0,
+            List.of(
+                new ItemStack(Items.STONE_DUST, 36)
+            ),
+            List.of(
+                new ItemStack(Items.QUARTZITE_DUST, 9),
+                new ItemStack(Items.POTASSIUM_FELDSPAR_DUST, 9),
+                new ItemStack(Items.MARBLE_DUST, 8),
+                new ItemStack(Items.BIOTITE_DUST, 4),
+                new ItemStack(Items.METAL_MIXTURE_DUST, 3),
+                new ItemStack(Items.SODALITE_DUST, 2)
+            ),
+            432.0
+        );
+    }
+    public static final Recipe CLAY_DUST = new Recipe(MachineTypes.AUTO_WORKBENCH, 0.0, new ItemStack(Items.SMALL_PILE_OF_CLAY_DUST, 4), new ItemStack(Items.CLAY_DUST), 0.1); //TODO: verify
     public static final Recipe COPPER_FOIL = new Recipe(MachineTypes.BENDING_MACHINE, MachineConfiguration.ProgrammedCircuitTen, 24.0, new ItemStack(Items.COPPER_INGOT), new ItemStack(Items.COPPER_FOIL, 4), 6.3);
     public static final Recipe FINE_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(Items.COPPER_INGOT), new ItemStack(Items.FINE_COPPER_WIRE, 4), 5.0);
     public static final Recipe FLINT = new Recipe(MachineTypes.SIFTER, 16.0, new ItemStack(Items.GRAVEL), new ItemStack(Items.FLINT, 1+0.9+0.8+0.6+0.33+0.25), 30.0);
@@ -196,7 +233,22 @@ public class Recipes extends Registered<Recipe> {
             80.0
         );
     }
+    public static final Recipe CENTRIFUGED_MARBLE_DUST; static {
+        CENTRIFUGED_MARBLE_DUST = new Recipe(
+            MachineTypes.CENTRIFUGE,
+            10.0,
+            List.of(
+                new ItemStack(Items.MARBLE_DUST, 8)
+            ),
+            List.of(
+                new ItemStack(Items.MAGNESIUM_DUST, 1),
+                new ItemStack(Items.CALCITE_DUST, 7)
+            ),
+            32.0
+        );
+    }
     public static final Recipe FLINT_DUST = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Items.FLINT, 2), new ItemStack(Items.FLINT_DUST), 10.0);
+    public static final Recipe LIGHT_CONCRETE = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBlock, 4.0, new ItemStack(Items.WET_CONCRETE, 144.0/1000.0), new ItemStack(Items.LIGHT_CONCRETE), 0.6  );
     public static final Recipe MOLTEN_REDSTONE = new Recipe(MachineTypes.FLUID_EXTRACTOR, 30.0, new ItemStack(Items.REDSTONE_DUST), new ItemStack(Items.MOLTEN_REDSTONE, 144.0/1000.0), 1.2);
     public static final Recipe RED_ALLOY_INGOT; static {
         RED_ALLOY_INGOT = new Recipe(
@@ -248,6 +300,24 @@ public class Recipes extends Registered<Recipe> {
     }
 
     //of^5 nothing
+    public static final Recipe CALCITE_DUST; static {
+        CALCITE_DUST = new Recipe(
+                MachineTypes.MIXER,
+                MachineConfiguration.ProgrammedCircuitTwo,
+                16.0,
+                List.of(
+                        new ItemStack(Items.CALCITE_DUST, 2),
+                        new ItemStack(Items.CLAY_DUST, 1),
+                        new ItemStack(Items.STONE_DUST, 1),
+                        new ItemStack(Items.QUARTZ_SAND, 1),
+                        new ItemStack(Items.WATER, 2)
+                ),
+                List.of(
+                        new ItemStack(Items.WET_CONCRETE, 2.304)
+                ),
+                5.0
+        );
+    }
     public static final Recipe GLASS_DUST; static {
         GLASS_DUST = new Recipe(
             MachineTypes.MIXER,

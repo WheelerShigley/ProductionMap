@@ -264,6 +264,13 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Fluid Extractor", "Liquefying Sucker")
         ); //TODO: Large Fluid Extractor
     }
+    public static final MachineType FLUID_SOLIDIFIER; static {
+        FLUID_SOLIDIFIER = new MachineType(
+            GREGTECH,
+            "Fluid Solidifier",
+            getCommonMachineData("Fluid Solidifier", "Fluid Petrificator")
+        ); //TODO: Large Processing Factory
+    }
     public static final MachineType FLUID_TANK; static {
         HashMap<Voltage, List<MachineData> > fluidTanksData = new HashMap<>();
         for(Voltage voltage : Voltage.getVoltagesBetweenInclusive(Voltage.UltraLow, Voltage.High) ) {
@@ -328,6 +335,38 @@ public class MachineTypes extends Registered<MachineType> {
             "Sifter",
             getCommonMachineData("Sifting Machine", "Pulsation Filter")
         ); //TODO: Large Sifter Control Block
+    }
+    public static final MachineType THIRSTYTANK; static {
+        HashMap< Voltage, List<MachineData> > tanks = new HashMap<>(); {
+            List<MachineData> guzzlersData = new ArrayList();
+            String name;
+            for(int water_glyphs = 0; water_glyphs < 6; water_glyphs++) {
+                name = "Thirsty Tank ("+water_glyphs+" \"Glyph of Guzzler\"s)";
+                guzzlersData.add(
+                    new MachineData(name, 1.0/Math.pow(0.65,water_glyphs), 0.0)
+                );
+            }
+            tanks.put(Voltage.None, guzzlersData);
+        }
+
+        THIRSTYTANK = new MachineType(
+            GREGTECH,
+            "Thirsty Tank",
+            tanks
+        );
+    }
+    public static final MachineType WATERTANK; static {
+        HashMap< Voltage, List<MachineData> > tank = new HashMap<>();
+        tank.put(
+            Voltage.None,
+            List.of( new MachineData("Water Tank") )
+        );
+
+        WATERTANK = new MachineType(
+            RAILCRAFT,
+            "Water Tank",
+            tank
+        );
     }
     public static final MachineType WIREMILL; static {
         WIREMILL = new MachineType(
