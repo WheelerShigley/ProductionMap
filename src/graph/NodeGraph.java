@@ -251,7 +251,7 @@ public class NodeGraph {
         HashMap<Voltage, Double> powerMap = new HashMap<>();
         for(RecipeNode transformer : transformers) {
             //TODO: Account for non-eu power-types
-            double power_demand = transformer.recipe.eu_per_tick;
+            double power_demand = transformer.recipe.power_usage_per_tick;
             double average_power_demand = power_demand;
             if(isMaximum) {
                 average_power_demand *= Math.ceil( transformer.getUptime() );
@@ -276,7 +276,7 @@ public class NodeGraph {
     private double getPollutionRate(boolean isMaximum) {
         double pollution_rate = 0.0;
         for(RecipeNode transformer : transformers) {
-            double current_pollution = transformer.recipe.machineType.getPollution(transformer.recipe.eu_per_tick);
+            double current_pollution = transformer.recipe.machineType.getPollution(transformer.recipe.power_usage_per_tick);
             if(!isMaximum) {
                 current_pollution *= transformer.getUptime();
             }
@@ -297,7 +297,7 @@ public class NodeGraph {
         HashMap<Machine, Integer> machineCounts = new HashMap<>();
         Machine currentMachine;
         for(RecipeNode transformer : transformers) {
-            currentMachine = new Machine(transformer.recipe.machineType, transformer.recipe.eu_per_tick);
+            currentMachine = new Machine(transformer.recipe.machineType, transformer.recipe.power_usage_per_tick);
             currentMachine = getMachineMatchInMap(machineCounts, currentMachine);
             if( currentMachine.machineType.equals(MachineTypes.PLAYER) ) {
                 continue;
@@ -317,7 +317,7 @@ public class NodeGraph {
         HashMap<Machine, Double> uptimes = new HashMap<>();
         Machine currentMachine;
         for(RecipeNode transformer : transformers) {
-            currentMachine = new Machine(transformer.recipe.machineType, transformer.recipe.eu_per_tick);
+            currentMachine = new Machine(transformer.recipe.machineType, transformer.recipe.power_usage_per_tick);
             currentMachine = getMachineMatchInMap(uptimes, currentMachine);
             if( currentMachine.machineType.equals(MachineTypes.PLAYER) ) {
                 continue;

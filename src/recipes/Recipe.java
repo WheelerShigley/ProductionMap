@@ -4,6 +4,7 @@ import items.Item;
 import items.ItemStack;
 import machines.MachineConfiguration;
 import machines.MachineType;
+import power.PowerType;
 import register.Identified;
 
 import java.util.ArrayList;
@@ -13,22 +14,19 @@ import java.util.logging.Logger;
 
 public class Recipe extends Identified {
     public MachineType machineType;
-    public double eu_per_tick;
+    public PowerType powerType; //optional
+    public double power_usage_per_tick;
     public final MachineConfiguration configuration; //optional
 
-    public List<ItemStack> inputs; //optional
-    public final List<ItemStack> outputs;
+    public List<ItemStack> inputs; //optional, of single/list
+    public final List<ItemStack> outputs; //of single/list
     public final double time_seconds;
 
     public final int complexity;
-    public boolean isConsolidated; //TODO: rework
-
     private final static Logger LOGGER = Logger.getLogger("RecipeLogger");
 
-    public Recipe(
-        MachineType machine, MachineConfiguration configuration, double eu_per_tick,
-        List<ItemStack> inputs, List<ItemStack> outputs, double time_seconds
-    ) {
+    //MachineConfiguration: 1, inputs: 1, powerType: 1, Lists   (1)
+    public Recipe(MachineType machine, MachineConfiguration configuration, PowerType powerType, double power_per_tick, List<ItemStack> inputs, List<ItemStack> outputs, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -39,7 +37,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = configuration;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = inputs;
         this.outputs = outputs;
         this.time_seconds = time_seconds;
@@ -47,10 +46,8 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
-    public Recipe(
-        MachineType machine, double eu_per_tick,
-        List<ItemStack> inputs, List<ItemStack> outputs, double time_seconds
-    ) {
+    //MachineConfiguration: 0, inputs: 1, powerType: 1, Lists   (1)
+    public Recipe(MachineType machine, PowerType powerType, double power_per_tick, List<ItemStack> inputs, List<ItemStack> outputs, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -61,7 +58,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = MachineConfiguration.None;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = inputs;
         this.outputs = outputs;
         this.time_seconds = time_seconds;
@@ -69,10 +67,8 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
-    public Recipe(
-        MachineType machine, MachineConfiguration configuration, double eu_per_tick,
-        List<ItemStack> outputs, double time_seconds
-    ) {
+    //MachineConfiguration: 1, inputs: 0, powerType: 1, Lists   (1)
+    public Recipe(MachineType machine, MachineConfiguration configuration, PowerType powerType, double power_per_tick, List<ItemStack> outputs, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -83,7 +79,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = configuration;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = new ArrayList<>();
         this.outputs = outputs;
         this.time_seconds = time_seconds;
@@ -91,10 +88,8 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
-    public Recipe(
-        MachineType machine, double eu_per_tick,
-        List<ItemStack> outputs, double time_seconds
-    ) {
+    //MachineConfiguration: 0, inputs: 0, powerType: 1, Lists   (1)
+    public Recipe(MachineType machine, PowerType powerType, double power_per_tick, List<ItemStack> outputs, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -105,7 +100,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = MachineConfiguration.None;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = new ArrayList<>();
         this.outputs = outputs;
         this.time_seconds = time_seconds;
@@ -113,10 +109,8 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
-    public Recipe(
-        MachineType machine, MachineConfiguration configuration, double eu_per_tick,
-        ItemStack input, ItemStack output, double time_seconds
-    ) {
+    //MachineConfiguration: 1, inputs: 1, powerType: 1, Singles (0)
+    public Recipe(MachineType machine, MachineConfiguration configuration, PowerType powerType, double power_per_tick, ItemStack input, ItemStack output, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -127,7 +121,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = configuration;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = List.of(input);
         this.outputs = List.of(output);
         this.time_seconds = time_seconds;
@@ -135,10 +130,8 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
-    public Recipe(
-        MachineType machine, double eu_per_tick,
-        ItemStack input, ItemStack output, double time_seconds
-    ) {
+    //MachineConfiguration: 0, inputs: 1, powerType: 1, Singles (0)
+    public Recipe(MachineType machine, PowerType powerType, double power_per_tick, ItemStack input, ItemStack output, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -149,7 +142,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = MachineConfiguration.None;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = List.of(input);
         this.outputs = List.of(output);
         this.time_seconds = time_seconds;
@@ -157,10 +151,8 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
-    public Recipe(
-        MachineType machine, MachineConfiguration configuration, double eu_per_tick,
-        ItemStack output, double time_seconds
-    ) {
+    //MachineConfiguration: 1, inputs: 0, powerType: 1, Singles (0)
+    public Recipe(MachineType machine, MachineConfiguration configuration, PowerType powerType, double power_per_tick, ItemStack output, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -171,7 +163,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = configuration;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = new ArrayList<>();
         this.outputs = List.of(output);
         this.time_seconds = time_seconds;
@@ -179,10 +172,8 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
-    public Recipe(
-        MachineType machine, double eu_per_tick,
-        ItemStack output, double time_seconds
-    ) {
+    //MachineConfiguration: 0, inputs: 0, powerType: 1, Singles (0)
+    public Recipe(MachineType machine, PowerType powerType, double power_per_tick, ItemStack output, double time_seconds) {
         super(
             machine.getNamespace(),
             getUniqueRecipeName(
@@ -193,7 +184,8 @@ public class Recipe extends Identified {
 
         this.machineType = machine;
         this.configuration = MachineConfiguration.None;
-        this.eu_per_tick = eu_per_tick;
+        this.powerType = powerType;
+        this.power_usage_per_tick = power_per_tick;
         this.inputs = new ArrayList<>();
         this.outputs = List.of(output);
         this.time_seconds = time_seconds;
@@ -201,24 +193,194 @@ public class Recipe extends Identified {
         this.complexity = calculateComplexity(this);
         Recipes.register(this);
     }
+
+    //MachineConfiguration: 1, inputs: 1, powerType: 0, Lists   (1)
+    public Recipe(MachineType machine, MachineConfiguration configuration, double power_per_tick, List<ItemStack> inputs, List<ItemStack> outputs, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = configuration;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = inputs;
+        this.outputs = outputs;
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+    //MachineConfiguration: 0, inputs: 1, powerType: 0, Lists   (1)
+    public Recipe(MachineType machine, double power_per_tick, List<ItemStack> inputs, List<ItemStack> outputs, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = MachineConfiguration.None;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = inputs;
+        this.outputs = outputs;
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+    //MachineConfiguration: 1, inputs: 0, powerType: 0, Lists   (1)
+    public Recipe(MachineType machine, MachineConfiguration configuration, double power_per_tick, List<ItemStack> outputs, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = configuration;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = new ArrayList<>();
+        this.outputs = outputs;
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+    //MachineConfiguration: 0, inputs: 0, powerType: 0, Lists   (1)
+    public Recipe(MachineType machine, double power_per_tick, List<ItemStack> outputs, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                getFirstItem(outputs),
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = MachineConfiguration.None;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = new ArrayList<>();
+        this.outputs = outputs;
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+    //MachineConfiguration: 1, inputs: 1, powerType: 0, Singles (0)
+    public Recipe(MachineType machine, MachineConfiguration configuration, double power_per_tick, ItemStack input, ItemStack output, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                output.item,
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = configuration;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = List.of(input);
+        this.outputs = List.of(output);
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+    //MachineConfiguration: 0, inputs: 1, powerType: 0, Singles (0)
+    public Recipe(MachineType machine, double power_per_tick, ItemStack input, ItemStack output, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                output.item,
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = MachineConfiguration.None;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = List.of(input);
+        this.outputs = List.of(output);
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+    //MachineConfiguration: 1, inputs: 0, powerType: 0, Singles (0)
+    public Recipe(MachineType machine, MachineConfiguration configuration, double power_per_tick, ItemStack output, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                output.item,
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = configuration;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = new ArrayList<>();
+        this.outputs = List.of(output);
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+    //MachineConfiguration: 0, inputs: 0, powerType: 0, Singles (0)
+    public Recipe(MachineType machine, double power_per_tick, ItemStack output, double time_seconds) {
+        super(
+            machine.getNamespace(),
+            getUniqueRecipeName(
+                output.item,
+                machine.getNamespace()
+            )
+        );
+
+        this.machineType = machine;
+        this.configuration = MachineConfiguration.None;
+        this.powerType = PowerType.EU;
+        this.power_usage_per_tick = power_per_tick;
+        this.inputs = new ArrayList<>();
+        this.outputs = List.of(output);
+        this.time_seconds = time_seconds;
+
+        this.complexity = calculateComplexity(this);
+        Recipes.register(this);
+    }
+
 
     //# Setter(s)
-    public void setEUPerTick(double eu_per_tick) {
-        if(eu_per_tick <= 0.0) {
-            eu_per_tick = 0.0;
+    public void setPowerUsageRate(double power_per_tick) {
+        if(power_per_tick <= 0.0) {
+            power_per_tick = 0.0;
             return;
         }
 
-        double maximum_EU_rate = ( this.machineType.getMinimumVoltageForLimit(eu_per_tick).EULimit() );
-        if(maximum_EU_rate < eu_per_tick) {
+        double maximum_power_rate = ( this.machineType.getMinimumVoltageForLimit(power_per_tick).EULimit() );
+        if(maximum_power_rate < power_per_tick) {
             Recipe.LOGGER.log(
                 Level.WARNING,
-                "EU-rate for \""+this+"\", "+eu_per_tick+" above maximum rate of "+maximum_EU_rate+"; truncated."
+                "EU-rate for \""+this+"\", "+power_per_tick+" above maximum rate of "+maximum_power_rate+"; truncated."
             );
 
         }
 
-        this.eu_per_tick = Math.min(maximum_EU_rate, eu_per_tick);
+        this.power_usage_per_tick = Math.min(maximum_power_rate, power_per_tick);
     }
 
     //# Calculators + Helpers

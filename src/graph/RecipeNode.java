@@ -18,7 +18,6 @@ public class RecipeNode {
     public List<ProductNode> outputs = new ArrayList<>();
 
     PowerType powerType;
-    double power_rate;
     private double uptime;
 
     public RecipeNode(Recipe recipe) {
