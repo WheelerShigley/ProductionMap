@@ -1,4 +1,4 @@
-package recipes.minecraft.thaumcraft;
+package recipes.minecraft.GTNH.thaumcraft;
 
 import items.ItemStack;
 import items.Items;
@@ -6,7 +6,7 @@ import recipes.Recipe;
 
 import java.util.List;
 
-import static items.minecraft.thaumcraft.Aspects.*;
+import static items.minecraft.GTNH.thaumcraft.Aspects.*;
 import static machines.MachineTypes.*;
 
 public class Aspects {
@@ -20,7 +20,7 @@ public class Aspects {
         return new Recipe(ALCHEMICAL_FURNACE, 0.0, item, aspects, 5.0);
     }
 
-    public static final Recipe CHISELED_STONE_BRICKS = getAlchemicalFurnaceRecipe(new ItemStack(Items.CHISELED_STONE_BRICKS), new ItemStack(items.minecraft.thaumcraft.Aspects.ORDO));
+    public static final Recipe CHISELED_STONE_BRICKS = getAlchemicalFurnaceRecipe(new ItemStack(Items.CHISELED_STONE_BRICKS), new ItemStack(items.minecraft.GTNH.thaumcraft.Aspects.ORDO));
     public static final Recipe SUGAR_CANE; static {
         SUGAR_CANE = getAlchemicalFurnaceRecipe(
             new ItemStack(Items.SUGAR_CANE),

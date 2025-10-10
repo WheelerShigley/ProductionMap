@@ -1,15 +1,14 @@
-package recipes.minecraft.thaumcraft;
+package recipes.minecraft.GTNH.thaumcraft;
 
 import items.ItemStack;
 import items.Items;
-import items.minecraft.thaumcraft.Aspects;
-import machines.MachineType;
+import items.minecraft.GTNH.thaumcraft.Aspects;
 import machines.MachineTypes;
 import recipes.Recipe;
 
 import java.util.List;
 
-public class Crafting {
+public class Cauldron {
     public static final Recipe SALIS_MUNDUS; static {
         SALIS_MUNDUS = new Recipe(
             MachineTypes.CAULDRON,

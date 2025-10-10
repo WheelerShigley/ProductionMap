@@ -1,4 +1,4 @@
-package items.minecraft.thaumcraft;
+package items.minecraft.GTNH.thaumcraft;
 
 import items.Item;
 

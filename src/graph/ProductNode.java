@@ -51,7 +51,14 @@ public class ProductNode {
             return false;
         }
 
-        //TODO: check if RecipeNode already exists, and add to it if it does
+        //Check if RecipeNode already exists
+        for(RecipeNode recipeNode : graph.transformers) {
+            if( recipeNode.recipe.equals(generatedSource) ) {
+                recipeNode.addOutput(this);
+                updateSourceUptimes();
+                return true;
+            }
+        }
 
         RecipeNode generatedSourceNode; {
             generatedSourceNode = new RecipeNode(generatedSource);

@@ -1,14 +1,13 @@
 package recipes;
 
-import graph.evaluations.Fastest;
 import graph.evaluations.RecipeComparison;
 import items.Item;
 import items.ItemStack;
 import items.Items;
 import machines.MachineConfiguration;
 import machines.MachineTypes;
-import recipes.minecraft.thaumcraft.Aspects;
-import recipes.minecraft.thaumcraft.Crafting;
+import recipes.minecraft.GTNH.thaumcraft.Aspects;
+import recipes.minecraft.GTNH.thaumcraft.Cauldron;
 import register.Registered;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class Recipes extends Registered<Recipe> {
         if(instance == null) {
             instance = new Recipes();
             //TODO: redo recipes organization
-            new Crafting();
+            new Cauldron();
             new Aspects();
         }
 
@@ -282,6 +281,7 @@ public class Recipes extends Registered<Recipe> {
     public static final Recipe LIGHT_CONCRETE = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBlock, 4.0, new ItemStack(Items.WET_CONCRETE, 144.0/1000.0), new ItemStack(Items.LIGHT_CONCRETE), 0.6  );
     public static final Recipe MARBLE = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Items.MARBLE_DUST, 9), new ItemStack(Items.MARBLE), 15);
     public static final Recipe MOLTEN_REDSTONE = new Recipe(MachineTypes.FLUID_EXTRACTOR, 30.0, new ItemStack(Items.REDSTONE_DUST), new ItemStack(Items.MOLTEN_REDSTONE, 144.0/1000.0), 1.2);
+    public static final Recipe SANDSTONE = new Recipe(MachineTypes.AUTO_WORKBENCH, 16.0, new ItemStack(Items.SAND, 4), new ItemStack(Items.SANDSTONE), 3.2);
     public static final Recipe RED_ALLOY_INGOT; static {
         RED_ALLOY_INGOT = new Recipe(
             MachineTypes.ALLOY_SMELTER,
@@ -382,6 +382,7 @@ public class Recipes extends Registered<Recipe> {
             0.1
         );
     }
+    public static final Recipe SMOOTH_SANDSTONE = new Recipe(MachineTypes.ASSEMBLER, MachineConfiguration.ProgrammedCircuitTwentyThree, 16.0, new ItemStack(Items.SANDSTONE), new ItemStack(Items.SMOOTH_SANDSTONE), 2.5);
 
     //of^6 nothing
     public static final Recipe ANNEALED_COPPER_INGOT; static {
@@ -432,6 +433,7 @@ public class Recipes extends Registered<Recipe> {
             25.0
         );
     }
+    public static final Recipe CHISELED_SANDSTONE = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.GlassLens, 16.0, new ItemStack(Items.SMOOTH_SANDSTONE), new ItemStack(Items.CHISELED_SANDSTONE), 2.5);
     public static final Recipe WROUGHT_IRON_INGOT; static {
         WROUGHT_IRON_INGOT = new Recipe(
             MachineTypes.ARC_FURNACE,
