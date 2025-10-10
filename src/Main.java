@@ -1,11 +1,6 @@
 import graph.NodeGraph;
-import graph.NodeGraphs;
 import graph.export.CSAcademy;
-import items.Items;
-import recipes.Recipe;
-import recipes.Recipes;
-
-import java.util.List;
+import items.minecraft.GTNH.GregTech;
 
 public class Main {
     /* TODO
@@ -15,9 +10,10 @@ public class Main {
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
     public static void main(String[] args) {
-        NodeGraph graph = new NodeGraph(Items.SALIS_MUNDUS, 1.0/60.0);
+        NodeGraph graph = new NodeGraph(GregTech.OXYGEN_CELL, 1.0/60.0);
         //Recipes.printAllComplexities();
         System.out.println(graph);
+        System.out.println("\r\n");
         System.out.println( CSAcademy.getGraphData(graph) );
     }
 }

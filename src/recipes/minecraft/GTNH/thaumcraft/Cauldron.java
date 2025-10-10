@@ -2,7 +2,7 @@ package recipes.minecraft.GTNH.thaumcraft;
 
 import items.ItemStack;
 import items.Items;
-import items.minecraft.GTNH.thaumcraft.Aspects;
+import items.minecraft.GTNH.Thaumcraft;
 import machines.MachineTypes;
 import recipes.Recipe;
 
@@ -15,13 +15,13 @@ public class Cauldron {
             0.0,
             List.of(
                 new ItemStack(Items.SALIS_MUNDUS, 1),
-                new ItemStack(Aspects.AER, 4),
-                new ItemStack(Aspects.AQUA, 4),
-                new ItemStack(Aspects.IGNIS, 4),
-                new ItemStack(Aspects.PRAECANTATIO, 4),
-                new ItemStack(Aspects.ORDO, 4),
-                new ItemStack(Aspects.PERDITIO, 4),
-                new ItemStack(Aspects.TERRA, 4)
+                new ItemStack(Thaumcraft.AER, 4),
+                new ItemStack(Thaumcraft.AQUA, 4),
+                new ItemStack(Thaumcraft.IGNIS, 4),
+                new ItemStack(Thaumcraft.PRAECANTATIO, 4),
+                new ItemStack(Thaumcraft.ORDO, 4),
+                new ItemStack(Thaumcraft.PERDITIO, 4),
+                new ItemStack(Thaumcraft.TERRA, 4)
             ),
             List.of(
                 new ItemStack(Items.SALIS_MUNDUS, 2)

@@ -1,0 +1,71 @@
+package items.minecraft.GTNH;
+
+import items.Item;
+
+import static register.Namespaces.GREGTECH;
+
+public class GregTech {
+    private static Item getGregTechItem(String name) {
+        return new Item(GREGTECH, name);
+    }
+
+    public static final Item AIR_GAS = getGregTechItem("air");
+    public static final Item ANNEALED_COPPER_INGOT = getGregTechItem("annealed_copper_ingot");
+    public static final Item ASHES = getGregTechItem("ashes");
+    public static final Item BIOTITE_DUST = getGregTechItem("biotite_dust");
+    public static final Item CALCITE_DUST = getGregTechItem("calcite_dust");
+    public static final Item CIRCUIT_BOARD = getGregTechItem("circuit_board");
+    public static final Item CLAY_DUST = getGregTechItem("clay_dust");
+    public static final Item COAL_DUST = getGregTechItem("coal_dust");
+    public static final Item COMPRESSED_AIR = getGregTechItem("compressed_air");
+    public static final Item COPPER_FOIL = getGregTechItem("copper_foil");
+    public static final Item COPPER_DUST = getGregTechItem("copper_dust");
+    public static final Item COPPER_INGOT = getGregTechItem("copper_ingot");
+    public static final Item EMPTY_CELL = getGregTechItem("empty_cell");
+    public static final Item FINE_COPPER_WIRE = getGregTechItem("fine_copper_wire");
+    public static final Item FLINT_DUST = getGregTechItem("flint_dust");
+    public static final Item GLASS_DUST = getGregTechItem("glass_dust");
+    public static final Item GLASS_TUBE = getGregTechItem("glass_tube");
+    public static final Item GOLD_DUST = getGregTechItem("gold_dust");
+    public static final Item IRON_DUST = getGregTechItem("iron_dust");
+    public static final Item LEAD_INGOT = getGregTechItem("lead_ingot");
+    public static final Item LIGHT_CONCRETE = getGregTechItem("light_concrete");
+    public static final Item MAGNESIUM_DUST = getGregTechItem("magnesium_dust");
+    public static final Item MARBLE_DUST = getGregTechItem("marble_dust");
+    public static final Item METAL_MIXTURE_DUST = getGregTechItem("metal_mixture_dust");
+    public static final Item MOLTEN_LEAD = getGregTechItem("molten_lead");
+    public static final Item MOLTEN_RED_ALLOY = getGregTechItem("molten_red_alloy");
+    public static final Item MOLTEN_REDSTONE = getGregTechItem("molten_redstone");
+    public static final Item MOLTEN_REDSTONE_ALLOY = getGregTechItem("molten_redstone_alloy");
+    public static final Item NITROGEN_GAS = getGregTechItem("nitrogen");
+    public static final Item OBSIDIAN_DUST = getGregTechItem("obsidian_dust");
+    public static final Item ONE_ANNEALED_COPPER_WIRE = getGregTechItem("1x_annealed_copper_wire");
+    public static final Item ONE_RED_ALLOY_WIRE = getGregTechItem("1x_red_alloy_wire");
+    public static final Item ONE_COPPER_WIRE = getGregTechItem("1x_copper_wire");
+    public static final Item OXYGEN_CELL = getGregTechItem("oxygen_cell");
+    public static final Item OXYGEN_GAS = getGregTechItem("oxygen");
+    public static final Item POTASSIUM_FELDSPAR_DUST = getGregTechItem("potassium_feldspar_dust");
+    public static final Item QUARTZ_SAND = getGregTechItem("quartz_sand");
+    public static final Item QUARTZITE_DUST = getGregTechItem("quartzite_dust");
+    public static final Item RAW_RUBBER_DUST = getGregTechItem("raw_rubber_dust");
+    public static final Item RAW_SILICON_DUST = getGregTechItem("raw_silicon_dust");
+    public static final Item REDSTONE_ALLOY_DUST = getGregTechItem("redstone_alloy_dust");
+    public static final Item REDSTONE_ALLOY_INGOT = getGregTechItem("redstone_alloy_ingot");
+    public static final Item RED_ALLOY_INGOT = getGregTechItem("red_alloy_ingot");
+    public static final Item REFINED_GLUE = getGregTechItem("refined_glue");
+    public static final Item RESISTOR = getGregTechItem("resistor");
+    public static final Item SMALL_PILE_OF_CLAY_DUST = getGregTechItem("small_pile_of_clay_dust");
+    public static final Item SMALL_PILE_OF_STEEL_DUST = getGregTechItem("small_pile_of_steel_dust");
+    public static final Item SODALITE_DUST = getGregTechItem("sodalite_dust");
+    public static final Item STEEL_DUST = getGregTechItem("steel_dust");
+    public static final Item STEEL_INGOT = getGregTechItem("steel_ingot");
+    public static final Item STEEL_ROD = getGregTechItem("steel_rod");
+    public static final Item STONE_DUST = getGregTechItem("stone_dust");
+    public static final Item VACUUM_TUBE = getGregTechItem("vacuum_tube");
+    public static final Item WATER = getGregTechItem("water");
+    public static final Item WET_CONCRETE = getGregTechItem("wet_concrete");
+    public static final Item WOOD_PLANK = getGregTechItem("wood_plank");
+    public static final Item WOOD_PULP = getGregTechItem("wood_pulp");
+    public static final Item WROUGHT_IRON_DUST = getGregTechItem("wrought_iron_dust");
+    public static final Item WROUGHT_IRON_INGOT = getGregTechItem("wrought_iron_ingot");
+}

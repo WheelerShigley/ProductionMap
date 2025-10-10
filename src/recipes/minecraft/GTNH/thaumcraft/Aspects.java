@@ -1,12 +1,13 @@
 package recipes.minecraft.GTNH.thaumcraft;
 
 import items.ItemStack;
-import items.Items;
+import items.minecraft.GTNH.Vanilla;
+import items.minecraft.GTNH.Thaumcraft;
 import recipes.Recipe;
 
 import java.util.List;
 
-import static items.minecraft.GTNH.thaumcraft.Aspects.*;
+import static items.minecraft.GTNH.Thaumcraft.*;
 import static machines.MachineTypes.*;
 
 public class Aspects {
@@ -20,19 +21,19 @@ public class Aspects {
         return new Recipe(ALCHEMICAL_FURNACE, 0.0, item, aspects, 5.0);
     }
 
-    public static final Recipe CHISELED_STONE_BRICKS = getAlchemicalFurnaceRecipe(new ItemStack(Items.CHISELED_STONE_BRICKS), new ItemStack(items.minecraft.GTNH.thaumcraft.Aspects.ORDO));
+    public static final Recipe CHISELED_STONE_BRICKS = getAlchemicalFurnaceRecipe(new ItemStack(Vanilla.CHISELED_STONE_BRICKS), new ItemStack(Thaumcraft.ORDO));
     public static final Recipe SUGAR_CANE; static {
         SUGAR_CANE = getAlchemicalFurnaceRecipe(
-            new ItemStack(Items.SUGAR_CANE),
+            new ItemStack(Vanilla.SUGAR_CANE),
             List.of(
                 new ItemStack(AER), new ItemStack(AQUA), new ItemStack(HERBA)
             )
         );
     }
-    public static final Recipe NETHER_COBBLE_SLAB = getAlchemicalFurnaceRecipe(new ItemStack(Items.NETHER_COBBLESTONE_SLAB), new ItemStack(IGNIS));
+    public static final Recipe NETHER_COBBLE_SLAB = getAlchemicalFurnaceRecipe(new ItemStack(items.Items.NETHER_COBBLESTONE_SLAB), new ItemStack(IGNIS));
     public static final Recipe CHISELED_SANDSTONE; static {
         CHISELED_SANDSTONE = getAlchemicalFurnaceRecipe(
-            new ItemStack(Items.CHISELED_SANDSTONE),
+            new ItemStack(Vanilla.CHISELED_SANDSTONE),
             List.of(
                 new ItemStack(PERDITIO, 3),
                 new ItemStack(TERRA, 2),
