@@ -51,6 +51,8 @@ public class ProductNode {
             return false;
         }
 
+        //TODO: check if RecipeNode already exists, and add to it if it does
+
         RecipeNode generatedSourceNode; {
             generatedSourceNode = new RecipeNode(generatedSource);
             generatedSourceNode.addOutput(this);

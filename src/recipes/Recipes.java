@@ -7,6 +7,8 @@ import items.ItemStack;
 import items.Items;
 import machines.MachineConfiguration;
 import machines.MachineTypes;
+import recipes.minecraft.thaumcraft.Aspects;
+import recipes.minecraft.thaumcraft.Crafting;
 import register.Registered;
 
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class Recipes extends Registered<Recipe> {
     public static boolean register(Recipe recipe) {
         if(instance == null) {
             instance = new Recipes();
+            //TODO: redo recipes organization
+            new Crafting();
+            new Aspects();
         }
 
         boolean wasSuccessfullyRegistered = instance.registerInstance(recipe);
@@ -92,17 +97,21 @@ public class Recipes extends Registered<Recipe> {
     public static final Recipe DUMMY = new Recipe(MachineTypes.PLAYER, 0.0, new ArrayList<>(), Double.MIN_VALUE);
 
     //of nothing
+    //TODO: abstract and rework CropManager
     public static final Recipe ANY_WOOD = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.ANY_WOOD), 1.0);
     public static final Recipe COBBLESTONE = new Recipe(MachineTypes.ROCK_BREAKER, 30.0, new ItemStack(Items.COBBLESTONE), 0.8);
     public static final Recipe DRIED_DIRT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(Items.DIRT), new ItemStack(Items.DRIED_DIRT), 6.4);
     public static final Recipe EMPTY_CELL_CYCLED = new Recipe(MachineTypes.CELL_CYCLING, 0.0, new ItemStack(Items.COMPRESSED_AIR), new ItemStack(Items.EMPTY_CELL), 1.0);
     public static final Recipe GLOW_FLOWER = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.GLOW_FLOWER), 1.0);
+    public static final Recipe NETHERRACK = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.NETHERRACK), 1.0);
+    public static final Recipe STONE = new Recipe(MachineTypes.ROCK_BREAKER, 30.0, new ItemStack(Items.STONE), 0.8);
     public static final Recipe STICKY_RESIN = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.STICKY_RESIN), 1.0);
+    public static final Recipe SUGAR_CANE = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.SUGAR_CANE), 1.0);
     public static final Recipe WATERTANK_WATER = new Recipe(MachineTypes.WATERTANK, 0.0, new ItemStack(Items.WATER, 0.8/1000.0), 1.0);
     public static final Recipe THIRSTYTANK_WATER = new Recipe(MachineTypes.THIRSTYTANK, 0.0, new ItemStack(Items.WATER, 1.0), 31.0/20.0);
-    //TODO: other sources of water
 
     //of^2 nothing
+    //TODO: abstract crafting tasks
     public static final Recipe CENTRIFUGED_DRIED_DIRT; static {
         CENTRIFUGED_DRIED_DIRT = new Recipe(
             MachineTypes.CENTRIFUGE,
@@ -116,11 +125,24 @@ public class Recipes extends Registered<Recipe> {
             5.0
         );
     }
+    public static final Recipe CHISELED_STONE_BRICKS = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.GlassLens, 16.0, new ItemStack(Items.STONE), new ItemStack(Items.CHISELED_STONE_BRICKS), 2.5);
     public static final Recipe COMPRESSED_AIR = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Items.EMPTY_CELL), new ItemStack(Items.COMPRESSED_AIR), 15.0);
     public static final Recipe COPPER_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(Items.COPPER_DUST), new ItemStack(Items.COPPER_INGOT, 1), 6.4);
     public static final Recipe GRAVEL = new Recipe(MachineTypes.FORGE_HAMMER, 16.0, new ItemStack(Items.COBBLESTONE), new ItemStack(Items.GRAVEL), 0.5);
     public static final Recipe GLOWSTONE_DUST = new Recipe(MachineTypes.FLUID_EXTRACTOR, 2.0, new ItemStack(Items.GLOW_FLOWER, 2), new ItemStack(Items.GLOWSTONE_DUST), 15.0);
     public static final Recipe MOLTEN_LEAD = new Recipe(MachineTypes.FLUID_EXTRACTOR, 34.0, new ItemStack(Items.LEAD_INGOT), new ItemStack(Items.MOLTEN_LEAD, 144.0/1000.0), 1.2);
+    public static final Recipe NETHER_COBBLESTONE; static {
+        NETHER_COBBLESTONE = new Recipe(
+            MachineTypes.AUTO_WORKBENCH,
+            16.0,
+            List.of(
+                new ItemStack(Items.NETHERRACK, 2),
+                new ItemStack(Items.COBBLESTONE, 2)
+            ),
+            List.of( new ItemStack(Items.NETHER_COBBLESTONE, 4) ),
+            3.2
+        );
+    }
     public static final Recipe REFINED_GLUE; static {
         REFINED_GLUE = new Recipe(
             MachineTypes.CENTRIFUGE,
@@ -198,6 +220,15 @@ public class Recipes extends Registered<Recipe> {
             48.8
         );
     }
+    public static final Recipe NETHER_COBBLESTONE_SLAB; static {
+        NETHER_COBBLESTONE_SLAB = new Recipe(
+            MachineTypes.AUTO_WORKBENCH,
+            16.0,
+            new ItemStack(Items.NETHER_COBBLESTONE, 3),
+            new ItemStack(Items.NETHER_COBBLESTONE_SLAB, 6),
+            3.2
+        );
+    }
     public static final Recipe ONE_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitOne, 4.0, new ItemStack(Items.COPPER_INGOT), new ItemStack(Items.ONE_COPPER_WIRE, 2), 5.0);
     public static final Recipe SAND = new Recipe(MachineTypes.FORGE_HAMMER, 16.0, new ItemStack(Items.GRAVEL), new ItemStack(Items.SAND), 0.5);
     public static final Recipe WOOD_PLANK; static {
@@ -249,6 +280,7 @@ public class Recipes extends Registered<Recipe> {
     }
     public static final Recipe FLINT_DUST = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Items.FLINT, 2), new ItemStack(Items.FLINT_DUST), 10.0);
     public static final Recipe LIGHT_CONCRETE = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBlock, 4.0, new ItemStack(Items.WET_CONCRETE, 144.0/1000.0), new ItemStack(Items.LIGHT_CONCRETE), 0.6  );
+    public static final Recipe MARBLE = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Items.MARBLE_DUST, 9), new ItemStack(Items.MARBLE), 15);
     public static final Recipe MOLTEN_REDSTONE = new Recipe(MachineTypes.FLUID_EXTRACTOR, 30.0, new ItemStack(Items.REDSTONE_DUST), new ItemStack(Items.MOLTEN_REDSTONE, 144.0/1000.0), 1.2);
     public static final Recipe RED_ALLOY_INGOT; static {
         RED_ALLOY_INGOT = new Recipe(

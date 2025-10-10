@@ -151,6 +151,19 @@ public class MachineTypes extends Registered<MachineType> {
     //## Machine Types
 
     //TODO: Power Sources (Steam & RF); also, Steam-Singleblocks + Steam-Multiblocks
+    public static final MachineType ALCHEMICAL_FURNACE; static {
+        HashMap<Voltage, List<MachineData> > alchemicalFurnace = new HashMap<>();
+        alchemicalFurnace.put(
+            Voltage.None,
+            List.of( new MachineData("Alchemical Furnace") )
+        );
+
+        ALCHEMICAL_FURNACE =  new MachineType(
+            THAUMCRAFT,
+            "Alchemical Furnace",
+            alchemicalFurnace
+        );
+    }
     public static final MachineType ALLOY_SMELTER; static {
         ALLOY_SMELTER =  new MachineType(
             GREGTECH,
@@ -186,6 +199,21 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Bending Machine", "Bending Unit")
         ); //TODO: Industrial Material Press
     }
+    public static final MachineType CAULDRON; static {
+        HashMap<Voltage, List<MachineData> > alchemicalConstruct = new HashMap<>();
+        alchemicalConstruct.put(
+            Voltage.None,
+            List.of(
+                new MachineData("Alchemical Construct")
+            )
+        );
+
+        CAULDRON = new MachineType(
+            THAUMCRAFT,
+            "Cauldron",
+            alchemicalConstruct
+        );
+    }
     public static final MachineType CENTRIFUGE; static {
         CENTRIFUGE = new MachineType(
             GREGTECH,
@@ -219,6 +247,19 @@ public class MachineTypes extends Registered<MachineType> {
                 GREGTECH,
                 "Crop Manager",
                 getCommonPlusPlusMachineData("Crop Manager")
+        );
+    }
+    public static final MachineType CRUCIBLE; static {
+        HashMap< Voltage, List<MachineData> > crucible = new HashMap<>();
+        crucible.put(
+            Voltage.None,
+            List.of( new MachineData("Crucible") )
+        );
+
+        CRUCIBLE = new MachineType(
+            THAUMCRAFT,
+            "Crucible",
+            crucible
         );
     }
     public static final MachineType ELECTRIC_BLAST_FURNACE; static {
@@ -297,6 +338,13 @@ public class MachineTypes extends Registered<MachineType> {
             "Lathe",
             getCommonMachineData("Lathe", "Turn-O-Matic")
         ); //TODO: Industrial Precision Lathe
+    }
+    public static final MachineType LASER_ENGRAVER; static {
+        LASER_ENGRAVER = new MachineType(
+            GREGTECH,
+            "Laser Engraver",
+            getCommonMachineData("Laser Engraver", "Exact Photon Cannon")
+        ); //TODO: Large Processing Factory, Hyper-Intensity Laser Engraver
     }
     public static final MachineType MACERATOR; static {
         MACERATOR = new MachineType(

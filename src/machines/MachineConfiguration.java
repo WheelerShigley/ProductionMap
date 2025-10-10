@@ -56,7 +56,9 @@ public enum MachineConfiguration {
     MoldBall,
     MoldBlock,
 
-    ExtrudeShapeRod
+    ExtrudeShapeRod,
+
+    GlassLens
     ;
 
     @Override
