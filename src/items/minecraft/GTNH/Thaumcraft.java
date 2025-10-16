@@ -10,6 +10,7 @@ public class Thaumcraft {
     }
 
     //Items
+    public static final Item SALIS_MUNDUS = new Item(THAUMCRAFT,"salis_mundus");
     //TODO
 
     //Aspects

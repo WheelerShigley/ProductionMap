@@ -146,7 +146,8 @@ public class MachineTypes extends Registered<MachineType> {
     //## Multi-Typed Machines
         //TODO: account for unique properties of multi-block
         //TODO: add Blast-Furnace Machine-Type
-    public static final MachineData ELECTRIC_BLAST_FURNACE_DATA = new MachineData("Electric Blast Furnace", 400.0);
+    private static final MachineData ELECTRIC_BLAST_FURNACE_DATA = new MachineData("Electric Blast Furnace", 400.0);
+    private static final MachineData DISTILLATION_TOWER_DATA = new MachineData("Distillation Tower");
 
     //## Machine Types
 
@@ -221,6 +222,14 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Centrifuge", "Molecular Tornado")
         ); //TODO: Industrial Centrifuge
     }
+    public static final MachineType CHEMICAL_REACTOR; static {
+        CHEMICAL_REACTOR = new MachineType(
+            GREGTECH,
+            "Chemical Reactor",
+            getCommonMachineData("Chemical Reactor", "Chemical Performer")
+        );
+        //TODO: Mega Chemical Reactor
+    }
     public static final MachineType CIRCUIT_ASSEMBLER; static {
         HashMap<Voltage, List<MachineData> > circuitAssemblersData = getCommonMachineData("Circuit Assembler", "Circuit Assembling Machine");
         circuitAssemblersData.put(
@@ -235,6 +244,20 @@ public class MachineTypes extends Registered<MachineType> {
 
         CIRCUIT_ASSEMBLER = new MachineType(GREGTECH, "Circuit Assembler", circuitAssemblersData);
     }
+    public static final MachineType COKE_OVEN; static {
+        HashMap< Voltage, List<MachineData> > ovens = new HashMap<>();
+        ovens.put(
+            Voltage.None,
+            List.of( new MachineData("Pyrolyze Oven", 300.0) )
+        );
+        //TODO: Coke Oven, Industrial Coke Oven
+
+        COKE_OVEN = new MachineType(
+            GREGTECH,
+            "Coke Oven",
+            ovens
+        );
+    }
     public static final MachineType COMPRESSOR; static {
         COMPRESSOR = new MachineType(
             GREGTECH,
@@ -247,6 +270,21 @@ public class MachineTypes extends Registered<MachineType> {
                 GREGTECH,
                 "Crop Manager",
                 getCommonPlusPlusMachineData("Crop Manager")
+        );
+    }
+    //TODO: DISTILLERY
+    public static final MachineType DISTILLATION_TOWER; static {
+        HashMap< Voltage, List<MachineData> > towers = new HashMap<>();
+        towers.put(
+            Voltage.None,
+            List.of(DISTILLATION_TOWER_DATA)
+        );
+        //TODO: Dangote Distillus, Mega Distillation Tower
+
+        DISTILLATION_TOWER = new MachineType(
+            GREGTECH,
+            "Distillation Tower",
+            towers
         );
     }
     public static final MachineType CRUCIBLE; static {
@@ -291,12 +329,44 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineDataWithDifferentIVName("Electrolyzer", "Electrolyzer", "Molecular Disintegrator E-4908")
         ); //TODO: Industrial Electrolyzer
     }
+    public static final MachineType EXTRACTOR; static {
+        EXTRACTOR = new MachineType(
+            GREGTECH,
+            "Extractor",
+            getCommonMachineDataWithDifferentIVName("Extractor", "Shape Driver", "Vaccum Extractor")
+        ); //TODO: Large Processing Factory, Dissection Apparatus, Steam Machines
+    }
     public static final MachineType EXTRUDER; static {
         EXTRUDER = new MachineType(
             GREGTECH,
             "Extruder",
             getCommonMachineData("Extruder", "Shape Driver")
         ); //TODO: Industrial Extrusion Machine
+    }
+    public static final MachineType FLUID_CANNER; static {
+        HashMap<Voltage, List<MachineData> > cannersDatas = new HashMap<>(); {
+            final String BASIC_NAME  = "Fluid Canner";
+            final String ADVANCED_NAME = "Liquid Can Actuator";
+
+            cannersDatas.put(  Voltage.Low,                     List.of(new MachineData("Basic "    +BASIC_NAME) )  );
+            cannersDatas.put(  Voltage.Medium,                  List.of(new MachineData("Advanced " +BASIC_NAME) )  );
+            cannersDatas.put(  Voltage.High,                    List.of(new MachineData("Quick "    +BASIC_NAME) )  );
+            cannersDatas.put(  Voltage.Extreme,                 List.of(new MachineData("Turbo "    +BASIC_NAME) )  );
+            cannersDatas.put(  Voltage.Insane,                  List.of(new MachineData("Instant "  +BASIC_NAME) )  );
+            cannersDatas.put(  Voltage.Ludicrous,               List.of(new MachineData("Elite "    +BASIC_NAME) )  );
+            cannersDatas.put(  Voltage.ZPM,                     List.of(new MachineData("Elite "    +BASIC_NAME+" II") )  );
+            cannersDatas.put(  Voltage.Ultimate,                List.of(new MachineData("Ultimate " +ADVANCED_NAME) )  );
+            cannersDatas.put(  Voltage.HighlyUltimate,          List.of(new MachineData("Epic "     +ADVANCED_NAME) )  );
+            cannersDatas.put(  Voltage.ExtremelyUltimate,       List.of(new MachineData("Epic "     +ADVANCED_NAME+" II") )  );
+            cannersDatas.put(  Voltage.InsanelyUltimate,        List.of(new MachineData("Epic "     +ADVANCED_NAME+" III") )  );
+            cannersDatas.put(  Voltage.ExtendedMegaUltimate,    List.of(new MachineData("Epic "     +ADVANCED_NAME+" IV") )  );
+        }
+
+        FLUID_CANNER = new MachineType(
+            GREGTECH,
+            "Fluid Canner",
+            cannersDatas
+        ); //TODO: TurboCan Pro
     }
     public static final MachineType FLUID_EXTRACTOR; static {
         FLUID_EXTRACTOR = new MachineType(
@@ -386,7 +456,7 @@ public class MachineTypes extends Registered<MachineType> {
     }
     public static final MachineType THIRSTYTANK; static {
         HashMap< Voltage, List<MachineData> > tanks = new HashMap<>(); {
-            List<MachineData> guzzlersData = new ArrayList();
+            List<MachineData> guzzlersData = new ArrayList<>();
             String name;
             for(int water_glyphs = 0; water_glyphs < 6; water_glyphs++) {
                 name = "Thirsty Tank ("+water_glyphs+" \"Glyph of Guzzler\"s)";

@@ -9,13 +9,14 @@ public class Item extends Identified {
     }
 
     public boolean equals(Item otherItem) {
-        if(
-           otherItem.getNamespace().equals( this.getNamespace() )
-            && otherItem.getName().equals( this.getName() )
-        ) {
-            return true;
+        if(otherItem == null) {
+            return false;
         }
-        return false;
+
+        return
+            otherItem.getNamespace().equals( this.getNamespace() )
+            && otherItem.getName().equals( this.getName() )
+        ;
     }
 
     @Override

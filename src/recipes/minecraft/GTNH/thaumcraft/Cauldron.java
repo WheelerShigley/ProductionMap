@@ -14,7 +14,7 @@ public class Cauldron {
             MachineTypes.CAULDRON,
             0.0,
             List.of(
-                new ItemStack(Items.SALIS_MUNDUS, 1),
+                new ItemStack(Thaumcraft.SALIS_MUNDUS, 1),
                 new ItemStack(Thaumcraft.AER, 4),
                 new ItemStack(Thaumcraft.AQUA, 4),
                 new ItemStack(Thaumcraft.IGNIS, 4),
@@ -24,7 +24,7 @@ public class Cauldron {
                 new ItemStack(Thaumcraft.TERRA, 4)
             ),
             List.of(
-                new ItemStack(Items.SALIS_MUNDUS, 2)
+                new ItemStack(Thaumcraft.SALIS_MUNDUS, 2)
             ),
             5.0 //TODO
         );

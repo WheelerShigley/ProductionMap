@@ -37,6 +37,25 @@ public class NodeGraph {
         //back-calculate production-map
         constructNodeGraph();
     }
+    public NodeGraph(Item finalProduct, Recipe finalRecipe, double items_per_second) {
+        this.finalProduct = finalProduct;
+
+        //create original recipe-node and product-node
+        ProductNode ultimateSink = new ProductNode(finalProduct);
+        RecipeNode ultimateSource = new RecipeNode(finalRecipe);
+
+        ultimateSource.setUpTime(
+            items_per_second/ultimateSource.recipe.getProductionRate(finalProduct)
+        );
+
+        ultimateSource.addOutput(ultimateSink);
+        ultimateSink.addSource(ultimateSource);
+        this.addProduct(ultimateSink);
+        this.addTransformer(ultimateSource);
+
+        //back-calculate production-map
+        constructNodeGraph();
+    }
 
     private List<RecipeNode> getUnsourcedRecipeNodes() {
         List<RecipeNode> unsourcedRecipeNodes = new ArrayList<>();
@@ -332,5 +351,15 @@ public class NodeGraph {
             }
         }
         return uptimes;
+    }
+
+    public List<ProductNode> getLeafProductNodes() {
+        List<ProductNode> leafProductNodes = new ArrayList<>();
+        for(ProductNode originalSource : products) {
+            if( originalSource.sources.isEmpty() ) {
+                leafProductNodes.add(originalSource);
+            }
+        }
+        return leafProductNodes;
     }
 }

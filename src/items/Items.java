@@ -40,5 +40,5 @@ public class Items extends Registered<Item> {
     public static final Item MARBLE = new Item(CHISEL,"marble");
     public static final Item NETHER_COBBLESTONE = new Item(RAILCRAFT,"nether_cobblestone");
     public static final Item NETHER_COBBLESTONE_SLAB = new Item(RAILCRAFT,"nether_cobblestone_slab");
-    public static final Item SALIS_MUNDUS = new Item(THAUMCRAFT,"salis_mundus");
+    public static final Item SUGAR_BEET = new Item("Crops++","sugar_beet");
 }

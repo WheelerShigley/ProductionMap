@@ -42,11 +42,11 @@ public class Recipes extends Registered<Recipe> {
         }
 
         boolean wasSuccessfullyRegistered = instance.registerInstance(recipe);
-        if(wasSuccessfullyRegistered) {
+        /*if(wasSuccessfullyRegistered) {
             //TODO: make this run only when it's done adding recipes
             optimalRecipes = new HashMap<>();
             calculateOptimalRecipes();
-        }
+        }*/
         return wasSuccessfullyRegistered;
     }
     public static boolean isLeafRecipe(Recipe recipe) {
@@ -77,8 +77,14 @@ public class Recipes extends Registered<Recipe> {
         return result;
     }
     public static void calculateOptimalRecipes() {
+        //Calculate optimal-recipes for sources first
+
         //TODO: more options
-        optimalRecipes = RecipeComparison.getBestRecipes(FASTEST);
+        optimalRecipes =
+            RecipeComparison.getBestRecipes(FASTEST)
+            //RecipeComparison.getBestRecipes(POWER_EFFICIENT)
+            //RecipeComparison.getBestRecipes(RESOURCE_EFFICIENT)
+        ;
     }
 
     public static Recipe getFastestProducingRecipe(Item ofItem) {
@@ -109,6 +115,7 @@ public class Recipes extends Registered<Recipe> {
     public static final Recipe NETHERRACK = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Vanilla.NETHERRACK), 1.0);
     public static final Recipe STONE = new Recipe(MachineTypes.ROCK_BREAKER, 30.0, new ItemStack(Vanilla.STONE), 0.8);
     public static final Recipe STICKY_RESIN = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(IndustrialCraft.STICKY_RESIN), 1.0);
+    public static final Recipe SUGAR_BEET = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.SUGAR_BEET), 1.0);
     public static final Recipe SUGAR_CANE = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Vanilla.SUGAR_CANE), 1.0);
     public static final Recipe WATERTANK_WATER = new Recipe(MachineTypes.WATERTANK, 0.0, new ItemStack(GregTech.WATER, 0.8/1000.0), 1.0);
     public static final Recipe THIRSTYTANK_WATER = new Recipe(MachineTypes.THIRSTYTANK, 0.0, new ItemStack(GregTech.WATER, 1.0), 31.0/20.0);
@@ -126,6 +133,21 @@ public class Recipes extends Registered<Recipe> {
                 new ItemStack(GregTech.ASHES, 2.77/100.0)
             ),
             5.0
+        );
+    }
+    public static final Recipe CHARCOAL_WOOD_GAS; static {
+        CHARCOAL_WOOD_GAS = new Recipe(
+            MachineTypes.COKE_OVEN,
+            MachineConfiguration.ProgrammedCircuitFive,
+            64.0,
+            List.of(
+                new ItemStack(Items.ANY_WOOD, 16)
+            ),
+            List.of(
+                new ItemStack(Vanilla.CHARCOAL, 16),
+                new ItemStack(GregTech.WOOD_GAS, 1500.0/144.0)
+            ),
+            32
         );
     }
     public static final Recipe CHISELED_STONE_BRICKS = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.GlassLens, 16.0, new ItemStack(Vanilla.STONE), new ItemStack(Vanilla.CHISELED_STONE_BRICKS), 2.5);
@@ -162,6 +184,7 @@ public class Recipes extends Registered<Recipe> {
         );
     }
     public static final Recipe STONE_DUST = new Recipe(MachineTypes.MACERATOR, 4.0, new ItemStack(Vanilla.COBBLESTONE), new ItemStack(GregTech.STONE_DUST, 1), 4.9);
+    public static final Recipe EXTRACTED_SUGAR_BEET = new Recipe(MachineTypes.EXTRACTOR, 4.0, new ItemStack(Items.SUGAR_BEET), new ItemStack(Vanilla.SUGAR, 8), 6.4);
     public static final Recipe WOOD_PULP = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Items.ANY_WOOD), new ItemStack(GregTech.WOOD_PULP, 6), 20.0);
 
     //of^3 nothing
@@ -208,6 +231,40 @@ public class Recipes extends Registered<Recipe> {
         );
     }
     public static final Recipe CLAY_DUST = new Recipe(MachineTypes.AUTO_WORKBENCH, 0.0, new ItemStack(GregTech.SMALL_PILE_OF_CLAY_DUST, 4), new ItemStack(GregTech.CLAY_DUST), 0.1); //TODO: verify
+    public static final Recipe DISTILLED_WOOD_GAS; static {
+        DISTILLED_WOOD_GAS = new Recipe(
+            MachineTypes.DISTILLATION_TOWER,
+            MachineConfiguration.ProgrammedCircuitOne,
+            256.0,
+            List.of(
+                new ItemStack(GregTech.WOOD_GAS, 1000.0/144.0)
+            ),
+            List.of(
+                new ItemStack(GregTech.METHANE, 130.0/144.0),
+                new ItemStack(GregTech.CARBON_MONOXIDE, 240.0/144.0),
+                new ItemStack(GregTech.HYDROGEN, 120.0/144.0),
+                new ItemStack(GregTech.CARBON_DIOXIDE, 390.0/144.0),
+                new ItemStack(GregTech.ETHYLENE, 120.0/144.0)
+            ),
+            2.0
+        );
+    }
+    public static final Recipe ELECTROLYZED_SUGAR; static {
+        ELECTROLYZED_SUGAR = new Recipe(
+            MachineTypes.ELECTROLYZER,
+            60.0,
+            List.of(
+                new ItemStack(Vanilla.SUGAR, 32),
+                new ItemStack(GregTech.EMPTY_CELL, 25)
+            ),
+            List.of(
+                new ItemStack(GregTech.CARBON_DUST, 2),
+                new ItemStack(GregTech.OXYGEN_CELL, 25),
+                new ItemStack(GregTech.WATER, 5)
+            ),
+            22.4
+        );
+    }
     public static final Recipe COPPER_FOIL = new Recipe(MachineTypes.BENDING_MACHINE, MachineConfiguration.ProgrammedCircuitTen, 24.0, new ItemStack(GregTech.COPPER_INGOT), new ItemStack(GregTech.COPPER_FOIL, 4), 6.3);
     public static final Recipe FINE_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GregTech.COPPER_INGOT), new ItemStack(GregTech.FINE_COPPER_WIRE, 4), 5.0);
     public static final Recipe FLINT = new Recipe(MachineTypes.SIFTER, 16.0, new ItemStack(Vanilla.GRAVEL), new ItemStack(Vanilla.FLINT, 1+0.9+0.8+0.6+0.33+0.25), 30.0);
@@ -284,8 +341,24 @@ public class Recipes extends Registered<Recipe> {
     public static final Recipe FLINT_DUST = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Vanilla.FLINT, 2), new ItemStack(GregTech.FLINT_DUST), 10.0);
     public static final Recipe LIGHT_CONCRETE = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBlock, 4.0, new ItemStack(GregTech.WET_CONCRETE, 144.0/1000.0), new ItemStack(GregTech.LIGHT_CONCRETE), 0.6  );
     public static final Recipe MARBLE = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(GregTech.MARBLE_DUST, 9), new ItemStack(Items.MARBLE), 15);
+    public static final Recipe MOLTEN_POLYETHYLENE; static {
+        MOLTEN_POLYETHYLENE = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitOne,
+            30.0,
+            List.of(
+                new ItemStack(GregTech.OXYGEN_CELL),
+                new ItemStack(GregTech.ETHYLENE, 144.0/1000.0)
+            ),
+            List.of(
+                new ItemStack(GregTech.EMPTY_CELL),
+                new ItemStack(GregTech.MOLTEN_POLYETHYLENE, 216.0/144.0)
+            ),
+            8
+        );
+    }
     public static final Recipe MOLTEN_REDSTONE = new Recipe(MachineTypes.FLUID_EXTRACTOR, 30.0, new ItemStack(Vanilla.REDSTONE_DUST), new ItemStack(GregTech.MOLTEN_REDSTONE, 144.0/1000.0), 1.2);
-    public static final Recipe SANDSTONE = new Recipe(MachineTypes.AUTO_WORKBENCH, 16.0, new ItemStack(Vanilla.SAND, 4), new ItemStack(Vanilla.SANDSTONE), 3.2);
+    public static final Recipe SANDSTONE = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Vanilla.SAND, 4), new ItemStack(Vanilla.SANDSTONE), 15);
     public static final Recipe RED_ALLOY_INGOT; static {
         RED_ALLOY_INGOT = new Recipe(
             MachineTypes.ALLOY_SMELTER,
@@ -301,8 +374,8 @@ public class Recipes extends Registered<Recipe> {
         );
     }
     public static final Recipe REDSTONE_DUST_OBSIDIAN = new Recipe(MachineTypes.ROCK_BREAKER, MachineConfiguration.ProgrammedCircuitOne, 30.0, new ItemStack(Vanilla.REDSTONE_DUST), new ItemStack(Vanilla.OBSIDIAN), 6.4);
-    public static final Recipe OXYGEN_CELL; static {
-        OXYGEN_CELL = new Recipe(
+    public static final Recipe CENTRIFUGED_AIR; static {
+        CENTRIFUGED_AIR = new Recipe(
             MachineTypes.CENTRIFUGE,
             8.0,
             List.of(
@@ -386,6 +459,7 @@ public class Recipes extends Registered<Recipe> {
             0.1
         );
     }
+    public static final Recipe POLYETHYLENE_BAR = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldIngot, 8, new ItemStack(GregTech.MOLTEN_POLYETHYLENE), new ItemStack(GregTech.POLYETHYLENE_BAR), 1.6);
     public static final Recipe SMOOTH_SANDSTONE = new Recipe(MachineTypes.ASSEMBLER, MachineConfiguration.ProgrammedCircuitTwentyThree, 16.0, new ItemStack(Vanilla.SANDSTONE), new ItemStack(Vanilla.SMOOTH_SANDSTONE), 2.5);
 
     //of^6 nothing

@@ -55,6 +55,7 @@ public enum MachineConfiguration {
 
     MoldBall,
     MoldBlock,
+    MoldIngot,
 
     ExtrudeShapeRod,
 

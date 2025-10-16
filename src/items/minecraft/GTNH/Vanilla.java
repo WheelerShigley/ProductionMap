@@ -9,6 +9,7 @@ public class Vanilla {
         return new Item(VANILLA, name);
     }
 
+    public static final Item CHARCOAL = getVanillaItem("charcoal");
     public static final Item CHISELED_SANDSTONE = getVanillaItem("chiseled_sandstone");
     public static final Item CHISELED_STONE_BRICKS = getVanillaItem("chiseled_stone_bricks");
     public static final Item COBBLESTONE = getVanillaItem("cobblestone");
@@ -24,5 +25,6 @@ public class Vanilla {
     public static final Item SANDSTONE = getVanillaItem("sandstone");
     public static final Item SMOOTH_SANDSTONE = getVanillaItem("smooth_sandstone");
     public static final Item STONE = getVanillaItem("stone");
+    public static final Item SUGAR = getVanillaItem("sugar");
     public static final Item SUGAR_CANE = getVanillaItem("sugar_cane");
 }

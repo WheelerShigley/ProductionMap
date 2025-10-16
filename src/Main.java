@@ -1,6 +1,9 @@
 import graph.NodeGraph;
 import graph.export.CSAcademy;
 import items.minecraft.GTNH.GregTech;
+import items.minecraft.GTNH.Thaumcraft;
+import recipes.Recipes;
+import recipes.minecraft.GTNH.thaumcraft.Cauldron;
 
 public class Main {
     /* TODO
@@ -10,7 +13,9 @@ public class Main {
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
     public static void main(String[] args) {
-        NodeGraph graph = new NodeGraph(GregTech.OXYGEN_CELL, 1.0/60.0);
+        Recipes.calculateOptimalRecipes();
+
+        NodeGraph graph = new NodeGraph(GregTech.POLYETHYLENE_BAR, 1.0/60.0);
         //Recipes.printAllComplexities();
         System.out.println(graph);
         System.out.println("\r\n");

@@ -1,7 +1,9 @@
 package graph.evaluations;
 
 import items.Item;
+import items.ItemStack;
 import items.Items;
+import items.minecraft.GTNH.GregTech;
 import recipes.Recipe;
 import recipes.Recipes;
 
@@ -31,11 +33,15 @@ public abstract class RecipeComparison implements Comparator<Recipe> {
         return bestRecipes;
     }
 
-    private static Recipe getBestRecipe(RecipeComparison comparator, Item ofItem) {
+    static Recipe getBestRecipe(RecipeComparison comparator, Item ofItem) {
+        if( Recipes.optimalRecipes.containsKey(ofItem) ) {
+            return Recipes.optimalRecipes.get(ofItem);
+        }
+
         List<Recipe> recipes; {
             recipes = new ArrayList<>();
             for(Recipe recipe : Recipes.registry) {
-                if( recipe.outputs.contains(ofItem) ) {
+                if( itemStacksContainItem(recipe.outputs, ofItem) ) {
                     recipes.add(recipe);
                 }
             }
@@ -49,5 +55,18 @@ public abstract class RecipeComparison implements Comparator<Recipe> {
         }
 
         return bestRecipe;
+    }
+
+    public static boolean itemStacksContainItem(List<ItemStack> stacks, Item item) {
+        if(item == null) {
+            return false;
+        }
+
+        for(ItemStack stack : stacks) {
+            if( stack.item.equals(item) ) {
+                return true;
+            }
+        }
+        return false;
     }
 }
