@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
         Recipes.calculateOptimalRecipes();
 
-        NodeGraph graph = new NodeGraph(GregTech.POLYETHYLENE_BAR, 1.0/60.0);
+        NodeGraph graph = new NodeGraph(GregTech.POLYETHYLENE_BAR, 32.55207);
         //Recipes.printAllComplexities();
         System.out.println(graph);
         System.out.println("\r\n");

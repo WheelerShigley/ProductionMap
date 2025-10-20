@@ -272,7 +272,13 @@ public class MachineTypes extends Registered<MachineType> {
                 getCommonPlusPlusMachineData("Crop Manager")
         );
     }
-    //TODO: DISTILLERY
+    public static final MachineType DISTILLERY; static {
+        DISTILLERY = new MachineType(
+            GREGTECH,
+            "Distillery",
+            getCommonMachineData("Distillery", "Distillation Tower")
+        ); //TODO: Distillation Tower, Mega Distillation Tower, Dangote Distillus
+    }
     public static final MachineType DISTILLATION_TOWER; static {
         HashMap< Voltage, List<MachineData> > towers = new HashMap<>();
         towers.put(

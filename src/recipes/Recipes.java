@@ -150,6 +150,22 @@ public class Recipes extends Registered<Recipe> {
             32
         );
     }
+    public static final Recipe CHARCOAL_WOOD_GAS_FAST; static {
+        CHARCOAL_WOOD_GAS_FAST = new Recipe(
+            MachineTypes.COKE_OVEN,
+            MachineConfiguration.ProgrammedCircuitFive,
+            64.0,
+            List.of(
+                new ItemStack(Items.ANY_WOOD, 16),
+                new ItemStack(GregTech.NITROGEN_GAS)
+            ),
+            List.of(
+                new ItemStack(Vanilla.CHARCOAL, 16),
+                new ItemStack(GregTech.WOOD_GAS, 1500.0/144.0)
+            ),
+            32
+        );
+    }
     public static final Recipe CHISELED_STONE_BRICKS = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.GlassLens, 16.0, new ItemStack(Vanilla.STONE), new ItemStack(Vanilla.CHISELED_STONE_BRICKS), 2.5);
     public static final Recipe COMPRESSED_AIR = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(GregTech.EMPTY_CELL), new ItemStack(GregTech.COMPRESSED_AIR), 15.0);
     public static final Recipe COPPER_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(GregTech.COPPER_DUST), new ItemStack(GregTech.COPPER_INGOT, 1), 6.4);
@@ -231,7 +247,7 @@ public class Recipes extends Registered<Recipe> {
         );
     }
     public static final Recipe CLAY_DUST = new Recipe(MachineTypes.AUTO_WORKBENCH, 0.0, new ItemStack(GregTech.SMALL_PILE_OF_CLAY_DUST, 4), new ItemStack(GregTech.CLAY_DUST), 0.1); //TODO: verify
-    public static final Recipe DISTILLED_WOOD_GAS; static {
+    /*public static final Recipe DISTILLED_WOOD_GAS; static {
         DISTILLED_WOOD_GAS = new Recipe(
             MachineTypes.DISTILLATION_TOWER,
             MachineConfiguration.ProgrammedCircuitOne,
@@ -247,6 +263,16 @@ public class Recipes extends Registered<Recipe> {
                 new ItemStack(GregTech.ETHYLENE, 120.0/144.0)
             ),
             2.0
+        );
+    }*/
+    public static final Recipe DISTILLED_WOOD_GAS_SINGLE; static {
+        DISTILLED_WOOD_GAS_SINGLE = new Recipe(
+            MachineTypes.DISTILLERY,
+            MachineConfiguration.ProgrammedCircuitTwo,
+            64.0,
+            new ItemStack(GregTech.WOOD_GAS, 200.0/144.0),
+            new ItemStack(GregTech.ETHYLENE, 24.0/144.0),
+            0.8
         );
     }
     public static final Recipe ELECTROLYZED_SUGAR; static {
