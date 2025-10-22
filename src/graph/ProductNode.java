@@ -47,7 +47,11 @@ public class ProductNode {
 
     public boolean generateSource(NodeGraph graph) {
         Recipe generatedSource = Recipes.getFastestProducingRecipe(this.product);
-        if( generatedSource == null || generatedSource.equals(Recipes.DUMMY) ) {
+        if(
+            generatedSource == null
+            || generatedSource.equals(Recipes.DUMMY)
+            || generatedSource.machineType.equals(MachineTypes.DUMMY)
+        ) {
             return false;
         }
 

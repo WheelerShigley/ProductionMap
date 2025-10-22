@@ -61,7 +61,7 @@ public class GregTech {
     public static final Item ONE_RED_ALLOY_WIRE = getGregTechItem("1x_red_alloy_wire");
     public static final Item ONE_COPPER_WIRE = getGregTechItem("1x_copper_wire");
     public static final Item OXYGEN_CELL = getGregTechItem("oxygen_cell");
-    public static final Item OXYGEN_GAS = getGregTechItem("oxygen");
+    public static final Item OXYGEN = getGregTechItem("oxygen");
     public static final Item PHOSPHORIC_ACID = getGregTechItem("phosphoric_acid");
     public static final Item PHOSPHORIC_ACID_CELL = getGregTechItem("phosphoric_acid_cell");
     public static final Item PHOSPHORUS_DUST = getGregTechItem("phosphorus_dust");

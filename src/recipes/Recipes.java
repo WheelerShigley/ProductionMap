@@ -197,7 +197,7 @@ public class Recipes extends Registered<Recipe> {
             30.0,
             List.of(
                 new ItemStack(GregTech.PHOSPHORUS_DUST, 4),
-                new ItemStack(GregTech.OXYGEN_GAS, 10)
+                new ItemStack(GregTech.OXYGEN, 10)
             ),
             List.of(
                 new ItemStack(GregTech.PHOSPHOROUS_PENTOXIDE_DUST, 14)
@@ -595,7 +595,7 @@ public class Recipes extends Registered<Recipe> {
             ),
             List.of(
                 new ItemStack(GregTech.EMPTY_CELL),
-                new ItemStack(GregTech.OXYGEN_GAS)
+                new ItemStack(GregTech.OXYGEN)
             ),
             0.1
         );
@@ -656,7 +656,7 @@ public class Recipes extends Registered<Recipe> {
             3.0*30.0,
             List.of(
                 new ItemStack(GregTech.COPPER_INGOT),
-                new ItemStack(GregTech.OXYGEN_GAS, 63.0/1000.0)
+                new ItemStack(GregTech.OXYGEN, 63.0/1000.0)
             ),
             List.of(
                 new ItemStack(GregTech.ANNEALED_COPPER_INGOT, 1)
@@ -691,7 +691,7 @@ public class Recipes extends Registered<Recipe> {
                 new ItemStack(GregTech.MAGNESIUM_DUST, 1),
                 new ItemStack(GregTech.IRON_DUST, 1),
                 new ItemStack(GregTech.RAW_SILICON_DUST, 2),
-                new ItemStack(GregTech.OXYGEN_GAS, 8)
+                new ItemStack(GregTech.OXYGEN, 8)
             ),
             12.0
         );
@@ -704,7 +704,7 @@ public class Recipes extends Registered<Recipe> {
             120.0,
             List.of(
                 new ItemStack(GregTech.IRON_DUST),
-                new ItemStack(GregTech.OXYGEN_GAS)
+                new ItemStack(GregTech.OXYGEN)
             ),
             List.of(
                 new ItemStack(GregTech.STEEL_INGOT, 1),
@@ -720,7 +720,7 @@ public class Recipes extends Registered<Recipe> {
             90.0,
             List.of(
                 new ItemStack(GregTech.IRON_DUST),
-                new ItemStack(GregTech.OXYGEN_GAS, 56.0/1000.0)
+                new ItemStack(GregTech.OXYGEN, 56.0/1000.0)
             ),
             List.of(
                 new ItemStack(GregTech.WROUGHT_IRON_INGOT, 1)
@@ -774,7 +774,7 @@ public class Recipes extends Registered<Recipe> {
             120.0,
             List.of(
                 new ItemStack(GregTech.REDSTONE_ALLOY_DUST),
-                new ItemStack(GregTech.OXYGEN_GAS)
+                new ItemStack(GregTech.OXYGEN)
             ),
             List.of(
                 new ItemStack(GregTech.REDSTONE_ALLOY_INGOT)
@@ -789,7 +789,7 @@ public class Recipes extends Registered<Recipe> {
             30.0,
             List.of(
                 new ItemStack(GregTech.TETRAFLUOROETHYLENE_CELL),
-                new ItemStack(GregTech.OXYGEN_GAS, 7)
+                new ItemStack(GregTech.OXYGEN, 7)
             ),
             List.of(
                 new ItemStack(GregTech.EMPTY_CELL),
@@ -805,7 +805,7 @@ public class Recipes extends Registered<Recipe> {
             120.0,
             List.of(
                 new ItemStack(GregTech.WROUGHT_IRON_DUST),
-                new ItemStack(GregTech.OXYGEN_GAS)
+                new ItemStack(GregTech.OXYGEN)
             ),
             List.of(
                 new ItemStack(GregTech.STEEL_INGOT, 1),
@@ -843,7 +843,7 @@ public class Recipes extends Registered<Recipe> {
             120.0,
             List.of(
                 new ItemStack(GregTech.STEEL_DUST),
-                new ItemStack(GregTech.OXYGEN_GAS)
+                new ItemStack(GregTech.OXYGEN)
             ),
             List.of(
                 new ItemStack(GregTech.STEEL_INGOT)

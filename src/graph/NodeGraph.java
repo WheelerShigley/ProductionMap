@@ -12,11 +12,23 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NodeGraph {
-    private final Item finalProduct;
+    private Item finalProduct;
     public final List<ProductNode> products = new ArrayList<>();
     public final List<RecipeNode> transformers = new ArrayList<>();
+    private final List<Item> exclusions = new ArrayList<>();
 
+    public NodeGraph(Item finalProduct, double items_per_second, Item exclusion) {
+        this.exclusions.add(exclusion);
+        initialize(finalProduct, items_per_second);
+    }
+    public NodeGraph(Item finalProduct, double items_per_second, List<Item> exclusions) {
+        this.exclusions.addAll(exclusions);
+        initialize(finalProduct, items_per_second);
+    }
     public NodeGraph(Item finalProduct, double items_per_second) {
+        initialize(finalProduct, items_per_second);
+    }
+    public void initialize(Item finalProduct, double items_per_second) {
         this.finalProduct = finalProduct;
 
         //create original recipe-node and product-node
@@ -37,6 +49,7 @@ public class NodeGraph {
         //back-calculate production-map
         constructNodeGraph();
     }
+    @Deprecated
     public NodeGraph(Item finalProduct, Recipe finalRecipe, double items_per_second) {
         this.finalProduct = finalProduct;
 
@@ -78,6 +91,7 @@ public class NodeGraph {
                 /*&& !MachineTypes.isLeafMachine(
                     Recipes.optimalRecipes.get(potentiallyUnsourcedProductNode.product).machineType
                 )*/
+                && !exclusions.contains(potentiallyUnsourcedProductNode.product)
             ) {
                 unsourcedProductNode.add(potentiallyUnsourcedProductNode);
             }
