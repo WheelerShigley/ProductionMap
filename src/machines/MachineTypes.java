@@ -143,6 +143,8 @@ public class MachineTypes extends Registered<MachineType> {
      *  + Elecrtric Blast Furnace
      */
 
+    public static final MachineType DUMMY = new MachineType("Dummy", "Dummy");
+
     //## Multi-Typed Machines
         //TODO: account for unique properties of multi-block
         //TODO: add Blast-Furnace Machine-Type
@@ -152,6 +154,19 @@ public class MachineTypes extends Registered<MachineType> {
     //## Machine Types
 
     //TODO: Power Sources (Steam & RF); also, Steam-Singleblocks + Steam-Multiblocks
+    public static final MachineType ADVANCED_COKE_OVEN; static {
+        HashMap<Voltage, List<MachineData> > AdvancedCokeOvenData = new HashMap<>();
+        AdvancedCokeOvenData.put(
+            Voltage.None,
+            List.of( new MachineData("Advanced Coke Oven") )
+        );
+
+        ADVANCED_COKE_OVEN = new MachineType(
+            THAUMCRAFT,
+            "Advanced Coke Oven",
+            AdvancedCokeOvenData
+        );
+    }
     public static final MachineType ALCHEMICAL_FURNACE; static {
         HashMap<Voltage, List<MachineData> > alchemicalFurnace = new HashMap<>();
         alchemicalFurnace.put(
@@ -159,7 +174,7 @@ public class MachineTypes extends Registered<MachineType> {
             List.of( new MachineData("Alchemical Furnace") )
         );
 
-        ALCHEMICAL_FURNACE =  new MachineType(
+        ALCHEMICAL_FURNACE = new MachineType(
             THAUMCRAFT,
             "Alchemical Furnace",
             alchemicalFurnace
@@ -229,6 +244,14 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Chemical Reactor", "Chemical Performer")
         );
         //TODO: Mega Chemical Reactor
+    }
+    public static final MachineType CHEMICAL_BATH; static {
+        CHEMICAL_BATH = new MachineType(
+            GREGTECH,
+            "Chemical Bath",
+            getCommonMachineData("Chemical Bath", "Chemical Dunkatron")
+        );
+        //TODO: Ore Washing Plant
     }
     public static final MachineType CIRCUIT_ASSEMBLER; static {
         HashMap<Voltage, List<MachineData> > circuitAssemblersData = getCommonMachineData("Circuit Assembler", "Circuit Assembling Machine");

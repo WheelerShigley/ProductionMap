@@ -10,6 +10,7 @@ public class GregTech {
     }
 
     public static final Item AIR_GAS = getGregTechItem("air");
+    public static final Item ALUMINA_DUST = getGregTechItem("alumina_dust");
     public static final Item ANNEALED_COPPER_INGOT = getGregTechItem("annealed_copper_ingot");
     public static final Item ASHES = getGregTechItem("ashes");
     public static final Item BIOTITE_DUST = getGregTechItem("biotite_dust");
@@ -17,6 +18,9 @@ public class GregTech {
     public static final Item CARBON_DIOXIDE = getGregTechItem("carbon_dioxide");
     public static final Item CARBON_DUST = getGregTechItem("carbon_dust");
     public static final Item CARBON_MONOXIDE = getGregTechItem("carbon_monoxide");
+    public static final Item CHARCOAL_DUST = getGregTechItem("charcoal_dust");
+    public static final Item CHLORINE = getGregTechItem("chlorine");
+    public static final Item CHLOROFORM_CELL = getGregTechItem("chloroform_cell");
     public static final Item CIRCUIT_BOARD = getGregTechItem("circuit_board");
     public static final Item CLAY_DUST = getGregTechItem("clay_dust");
     public static final Item COAL_DUST = getGregTechItem("coal_dust");
@@ -29,10 +33,14 @@ public class GregTech {
     public static final Item ETHYLENE_CELL = getGregTechItem("ethylene_cell");
     public static final Item FINE_COPPER_WIRE = getGregTechItem("fine_copper_wire");
     public static final Item FLINT_DUST = getGregTechItem("flint_dust");
+    public static final Item FLUORINE = getGregTechItem("fluorine");
     public static final Item GLASS_DUST = getGregTechItem("glass_dust");
     public static final Item GLASS_TUBE = getGregTechItem("glass_tube");
     public static final Item GOLD_DUST = getGregTechItem("gold_dust");
+    public static final Item HYDROCHLORIC_ACID = getGregTechItem("hydrochloric_acid");
+    public static final Item HYDROFLUORIC_ACID = getGregTechItem("hydrofluoric_acid");
     public static final Item HYDROGEN = getGregTechItem("hydrogen");
+    public static final Item HYDROGEN_CELL = getGregTechItem("hydrogen_cell");
     public static final Item IRON_DUST = getGregTechItem("iron_dust");
     public static final Item LEAD_INGOT = getGregTechItem("lead_ingot");
     public static final Item LIGHT_CONCRETE = getGregTechItem("light_concrete");
@@ -40,8 +48,10 @@ public class GregTech {
     public static final Item MARBLE_DUST = getGregTechItem("marble_dust");
     public static final Item METAL_MIXTURE_DUST = getGregTechItem("metal_mixture_dust");
     public static final Item METHANE = getGregTechItem("methane_gas");
+    public static final Item METHANE_CELL = getGregTechItem("methane_cell");
     public static final Item MOLTEN_LEAD = getGregTechItem("molten_lead");
     public static final Item MOLTEN_POLYETHYLENE = getGregTechItem("molten_polyethylene");
+    public static final Item MOLTEN_POLYTETRAFLUOROETHYLENE = getGregTechItem("molten_polytetrafluoroethylene");
     public static final Item MOLTEN_RED_ALLOY = getGregTechItem("molten_red_alloy");
     public static final Item MOLTEN_REDSTONE = getGregTechItem("molten_redstone");
     public static final Item MOLTEN_REDSTONE_ALLOY = getGregTechItem("molten_redstone_alloy");
@@ -52,7 +62,13 @@ public class GregTech {
     public static final Item ONE_COPPER_WIRE = getGregTechItem("1x_copper_wire");
     public static final Item OXYGEN_CELL = getGregTechItem("oxygen_cell");
     public static final Item OXYGEN_GAS = getGregTechItem("oxygen");
+    public static final Item PHOSPHORIC_ACID = getGregTechItem("phosphoric_acid");
+    public static final Item PHOSPHORIC_ACID_CELL = getGregTechItem("phosphoric_acid_cell");
+    public static final Item PHOSPHORUS_DUST = getGregTechItem("phosphorus_dust");
+    public static final Item PHOSPHOROUS_PENTOXIDE_DUST = getGregTechItem("phosphorous_pentoxide_dust");
     public static final Item POLYETHYLENE_BAR = getGregTechItem("polyethylene_bar");
+    public static final Item POLYTETRAFLUOROETHYLENE_BAR = getGregTechItem("polytetrafluoroethylene_bar");
+    public static final Item POTASSIUM_DUST = getGregTechItem("potassium_dust");
     public static final Item POTASSIUM_FELDSPAR_DUST = getGregTechItem("potassium_feldspar_dust");
     public static final Item QUARTZ_SAND = getGregTechItem("quartz_sand");
     public static final Item QUARTZITE_DUST = getGregTechItem("quartzite_dust");
@@ -63,13 +79,18 @@ public class GregTech {
     public static final Item RED_ALLOY_INGOT = getGregTechItem("red_alloy_ingot");
     public static final Item REFINED_GLUE = getGregTechItem("refined_glue");
     public static final Item RESISTOR = getGregTechItem("resistor");
+    public static final Item ROCK_SALT = getGregTechItem("rock_salt");
+    public static final Item SALT = getGregTechItem("salt");
+    public static final Item SALTPETER_DUST = getGregTechItem("saltpeter_dust");
     public static final Item SMALL_PILE_OF_CLAY_DUST = getGregTechItem("small_pile_of_clay_dust");
     public static final Item SMALL_PILE_OF_STEEL_DUST = getGregTechItem("small_pile_of_steel_dust");
     public static final Item SODALITE_DUST = getGregTechItem("sodalite_dust");
+    public static final Item SODIUM_DUST = getGregTechItem("sodium_dust");
     public static final Item STEEL_DUST = getGregTechItem("steel_dust");
     public static final Item STEEL_INGOT = getGregTechItem("steel_ingot");
     public static final Item STEEL_ROD = getGregTechItem("steel_rod");
     public static final Item STONE_DUST = getGregTechItem("stone_dust");
+    public static final Item TETRAFLUOROETHYLENE_CELL = getGregTechItem("tetrafluoroethylene_cell");
     public static final Item VACUUM_TUBE = getGregTechItem("vacuum_tube");
     public static final Item WATER = getGregTechItem("water");
     public static final Item WET_CONCRETE = getGregTechItem("wet_concrete");

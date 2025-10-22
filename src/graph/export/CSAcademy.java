@@ -7,12 +7,15 @@ import graph.RecipeNode;
 public class CSAcademy {
     public static String getGraphData(NodeGraph graph) {
         StringBuilder markUpBuilder = new StringBuilder();
+        //list all products
         for(ProductNode product : graph.products) {
             markUpBuilder.append('"').append( product.product.getName() ).append("\"\r\n");
         }
+        //list all transformations
         for(RecipeNode transformation : graph.transformers) {
             markUpBuilder.append('"').append( transformation.toString() ).append("\"\r\n");
         }
+        //list all connections
         for(ProductNode product : graph.products) {
             for(RecipeNode input : product.sources) {
                 markUpBuilder
