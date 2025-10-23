@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 
 public class ProductNode {
     public final Item product;
+    public double default_demand = 0.0;
     public final List<RecipeNode> sources = new ArrayList<>();
     public final List<RecipeNode> sinks = new ArrayList<>();
 
@@ -140,14 +141,14 @@ public class ProductNode {
         return getProductionRate() - getDemandRate();
     }
     public double getDemandRate() {
-        double demand_rate = 0.0;
+        double demand_rate = default_demand;
         for(RecipeNode sink : sinks) {
             demand_rate += sink.getUsageRate(product);
         }
         return demand_rate;
     }
     public double getUnmetDemandRate() {
-        return getDemandRate() - getProductionRate();
+        return ( default_demand + getDemandRate() ) - getProductionRate();
     }
     public int getSourceCount() {
         return sources.size();

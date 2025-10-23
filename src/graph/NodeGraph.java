@@ -13,8 +13,8 @@ import java.util.List;
 
 public class NodeGraph {
     private Item finalProduct;
-    public final List<ProductNode> products = new ArrayList<>();
-    public final List<RecipeNode> transformers = new ArrayList<>();
+    public List<ProductNode> products = new ArrayList<>();
+    public List<RecipeNode> transformers = new ArrayList<>();
     private final List<Item> exclusions = new ArrayList<>();
 
     public NodeGraph(Item finalProduct, double items_per_second, Item exclusion) {
@@ -30,6 +30,8 @@ public class NodeGraph {
     }
     public void initialize(Item finalProduct, double items_per_second) {
         this.finalProduct = finalProduct;
+        this.products = new ArrayList<>();
+        this.transformers = new ArrayList<>();
 
         //create original recipe-node and product-node
         ProductNode ultimateSink = new ProductNode(finalProduct);

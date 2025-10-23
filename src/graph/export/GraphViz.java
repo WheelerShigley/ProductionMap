@@ -119,31 +119,61 @@ public class GraphViz {
             .append("\r\n")
         ;
 
-        //subgraphs
-        for(Item cluster : clusters) {
-            NodeGraph clusterGraph; {
-                double demand = 0.0;
-                if(graph.getProduct(cluster) != null) {
-                    demand = graph.getProduct(cluster).getDemandRate();
+        /* subGraphs */ {
+            //create subGraphs
+            for(Item cluster : clusters) {
+                double default_demand = 0.0;
+                if( graph.getProduct(cluster) != null) {
+                    default_demand = graph.getProduct(cluster).getDemandRate();
                 }
+                NodeGraph clusterGraph; {
+                    List<Item> exclusions; {
+                        exclusions = new ArrayList<>(clusters);
+                        exclusions.remove(cluster);
+                    }
 
-                List<Item> exclusions; {
-                    exclusions = new ArrayList<>(clusters);
-                    exclusions.remove(cluster);
+                    clusterGraph = new NodeGraph(cluster, default_demand, exclusions);
                 }
-
-                clusterGraph = new NodeGraph(cluster, demand, exclusions);
+                subGraphs.put(clusterGraph, cluster.getName() );
             }
-            subGraphs.put(clusterGraph, cluster.getName() );
 
-            dotBuilder
-                .append("\t")
-                .append(
-                    getDot( clusterGraph, "subgraph cluster_"+cluster.getName(), "}\r\n", cluster.getName() )
+            //TODO: populate subGraphs demand-rates
+            for( NodeGraph mainGraph : subGraphs.keySet() ) {
+                if( mainGraph.equals(graph) ) {
+                    continue;
+                }
+
+                ProductNode mainOutput = mainGraph.getProduct( mainGraph.getFinalProduct() );
+                double demand = mainOutput.default_demand;
+                for( NodeGraph subGraph : subGraphs.keySet() ) {
+                    if( mainGraph.equals(subGraph) ) {
+                        continue;
+                    }
+                    if( subGraph.getProduct(mainOutput.product) != null ) {
+                        demand += subGraph.getProduct(mainOutput.product).getDemandRate();
+                    }
+                }
+                //reinitialize with new demand
+                mainGraph.initialize(mainGraph.getFinalProduct(), demand);
+            }
+
+            //append subGraphs data
+            for( NodeGraph subGraph : subGraphs.keySet() ) {
+                String name = subGraphs.get(subGraph);
+                dotBuilder
+                    .append("\t")
+                    .append(
+                        getDot(
+                            subGraph,
+                            "subgraph cluster_"+name,
+                            "}\r\n",
+                            name
+                        )
                         .replace("\r\n", "\r\n\t")
-                )
-                .append("\r\n")
-            ;
+                    )
+                    .append("\r\n")
+                ;
+            }
         }
 
         /*Inter-subGraph connections*/ {
