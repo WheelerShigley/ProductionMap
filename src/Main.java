@@ -16,6 +16,8 @@ public class Main {
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
     public static void main(String[] args) {
+        Recipes.calculateOptimalRecipes();
+
         List<Item> subGraphHeads = new ArrayList<>(); {
             subGraphHeads.add(GregTech.HYDROGEN_CELL);
             subGraphHeads.add(GregTech.CHLOROFORM_CELL);
@@ -23,7 +25,7 @@ public class Main {
             subGraphHeads.add(GregTech.OXYGEN);
         }
 
-        NodeGraph mainGraph = new NodeGraph(GregTech.POLYTETRAFLUOROETHYLENE_BAR, 1.0/60.0, subGraphHeads);
+        NodeGraph mainGraph = new NodeGraph(GregTech.POLYTETRAFLUOROETHYLENE_BAR, 1, subGraphHeads);
         printGraphData(mainGraph, subGraphHeads);
     }
 

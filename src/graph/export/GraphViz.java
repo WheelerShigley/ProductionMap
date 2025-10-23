@@ -4,6 +4,7 @@ import graph.NodeGraph;
 import graph.ProductNode;
 import graph.RecipeNode;
 import items.Item;
+import machines.MachineTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,11 +120,19 @@ public class GraphViz {
 
         //subgraphs
         for(Item cluster : clusters) {
-            List<Item> exclusions; {
-                exclusions = new ArrayList<>(clusters);
-                exclusions.remove(cluster);
+            NodeGraph clusterGraph; {
+                double demand = 0.0;
+                if(graph.getProduct(cluster) != null) {
+                    demand = graph.getProduct(cluster).getDemandRate();
+                }
+
+                List<Item> exclusions; {
+                    exclusions = new ArrayList<>(clusters);
+                    exclusions.remove(cluster);
+                }
+
+                clusterGraph = new NodeGraph(cluster, demand, exclusions);
             }
-            NodeGraph clusterGraph = new NodeGraph(cluster, graph.getProduct(cluster).getDemandRate() );
             subGraphs.put(clusterGraph, cluster.getName() );
 
             dotBuilder
@@ -219,7 +228,10 @@ public class GraphViz {
                 dotBuilder
                     .append("\t")
                     .append( names.getName(transformation) )
-                    .append(" [shape=box, label=\"").append( transformation.recipe.machineType.getName() ).append("\"]")
+                    .append(" [")
+                        .append("shape=record, ")
+                        .append("label=\"").append( getRecipeNodeAsMachineRecord(transformation) ).append("\"")
+                    .append("]")
                     .append("\r\n")
                 ;
             }
@@ -285,5 +297,68 @@ public class GraphViz {
     }
     private static boolean isOutput(ProductNode product) {
         return !product.sources.isEmpty() && product.sinks.isEmpty();
+    }
+
+    private static String getRecipeNodeAsMachineRecord(RecipeNode recipe) {
+        /* Formatting
+        "{ {u|v|w}|NAME|{x|y|z} }", where
+            u is the minimum voltage,
+            v is the entry-point,
+            w is the average up-time (%),
+            x is the machine-configuration,
+            y is padding (whitespace),
+            z is the minimum (integer) machine-count
+         */
+
+        StringBuilder recordBuilder = new StringBuilder();
+        recordBuilder.append("{ ");
+
+        //top
+        double single_machine_power_consumption = recipe.recipe.power_usage_per_tick;
+        String minimumVoltageAbbreviatedName = recipe.recipe.machineType.getMinimumVoltageForLimit(single_machine_power_consumption).toString();
+        int minimum_count; {
+            minimum_count = (int)Math.ceil( recipe.getUptime() );
+            minimum_count = Math.max(minimum_count, 1);
+        }
+        boolean isUptimeApproximate;
+        double average_uptime_percent; {
+            average_uptime_percent = Math.round(  10000.0 * recipe.getUptime() / ( (double)minimum_count )  ) / 100.0;
+            if(average_uptime_percent < 0.01) {
+                isUptimeApproximate = true;
+            } else {
+                isUptimeApproximate = (average_uptime_percent%0.01 != 0.0);
+            }
+            average_uptime_percent = Math.max(average_uptime_percent, 0.01); //minimum % for display
+        }
+        recordBuilder
+            .append("{")
+                .append(single_machine_power_consumption).append(" EU/t (").append(minimumVoltageAbbreviatedName).append(")")
+            .append("|")
+                .append("<here>")
+            .append("|")
+                .append(isUptimeApproximate ? "~" : "").append(average_uptime_percent).append("%")
+            .append("}")
+        ;
+
+        //middle
+        recordBuilder
+            .append("|")
+            .append( recipe.recipe.machineType.getName() )
+            .append("|")
+        ;
+
+        //bottom
+        recordBuilder
+            .append("{")
+                .append( recipe.recipe.configuration ) //TODO: check that this is convertible to String, readable
+            .append("|")
+                .append("")
+            .append("|")
+                .append("×").append(minimum_count)
+            .append("}")
+        ;
+
+        recordBuilder.append(" }");
+        return recordBuilder.toString();
     }
 }
