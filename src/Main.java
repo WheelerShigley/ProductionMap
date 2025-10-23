@@ -1,5 +1,6 @@
 import graph.NodeGraph;
 import graph.export.CSAcademy;
+import graph.export.GraphViz;
 import items.Item;
 import items.minecraft.GTNH.GregTech;
 import recipes.Recipes;
@@ -28,7 +29,7 @@ public class Main {
         NodeGraph mainGraph = new NodeGraph(GregTech.POLYTETRAFLUOROETHYLENE_BAR, 1.0/60.0, subGraphHeads);
         printGraphData(mainGraph);
 
-        for(Item subGraphHead : subGraphHeads) {
+        /*for(Item subGraphHead : subGraphHeads) {
             List<Item> exclusionsWithoutCurrentHead; {
                 exclusionsWithoutCurrentHead = new ArrayList<>(subGraphHeads);
                 exclusionsWithoutCurrentHead.remove(subGraphHead);
@@ -41,13 +42,15 @@ public class Main {
 
             System.out.println("\r\n");
             printGraphData(subGraph, "\t");
-        }
+        }*/
     }
 
     private static void printGraphData(NodeGraph graph) {
-        System.out.println(graph);
-        System.out.println("\r\n");
-        System.out.println( CSAcademy.getGraphData(graph) );
+        //System.out.println(graph);
+        //System.out.println("\r\n");
+        //System.out.println( CSAcademy.getGraphData(graph) );
+        //System.out.println("\r\n");
+        System.out.println( GraphViz.getDot(graph) );
     }
     private static void printGraphData(NodeGraph graph, String prefix) {
         String graphData = prefix + graph.toString();
