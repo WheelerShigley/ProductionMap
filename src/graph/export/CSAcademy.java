@@ -48,21 +48,24 @@ public class CSAcademy {
 
     public static String getGraphWithSubGraphs(NodeGraph graph, List<Item> subGraphHeads) {
         StringBuilder graphString = new StringBuilder();
-        graphString.append( getGraphData(graph) );
+        graphString.append( getGraphData(graph) ).append("\r\n");
 
         for(Item subGraphHead : subGraphHeads) {
+            ProductNode subGraphHeadNode = graph.getProduct(subGraphHead);
+            if(subGraphHeadNode == null) {
+                continue;
+            }
             List<Item> exclusionsWithoutCurrentHead; {
                 exclusionsWithoutCurrentHead = new ArrayList<>(subGraphHeads);
                 exclusionsWithoutCurrentHead.remove(subGraphHead);
             }
             NodeGraph subGraph = new NodeGraph(
                 subGraphHead,
-                graph.getProduct(subGraphHead).getDemandRate(),
+                    subGraphHeadNode.getDemandRate(),
                 exclusionsWithoutCurrentHead
             );
 
-            System.out.println("\r\n");
-            graphString.append( getGraphData(subGraph) );
+            graphString.append( getGraphData(subGraph) ).append("\r\n");
         }
 
         return graphString.toString();

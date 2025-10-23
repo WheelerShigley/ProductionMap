@@ -4,6 +4,7 @@ import items.Item;
 import items.ItemStack;
 import items.minecraft.GTNH.GregTech;
 import items.minecraft.GTNH.IndustrialCraft;
+import items.minecraft.GTNH.Vanilla;
 import recipes.Recipe;
 import recipes.Recipes;
 
@@ -48,6 +49,7 @@ public class NodeGraphs {
         final HashMap<Item, Recipe> CIRCUIT_LOOP_RECIPES; {
             CIRCUIT_LOOP_RECIPES = new HashMap<>();
 
+            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, Recipes.SAND);
             CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, Recipes.PERFECT_RAW_SILICON_DUST);
             CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, Recipes.ELECTROLYZED_MAGNESIA);
         }
@@ -55,7 +57,9 @@ public class NodeGraphs {
         ELECTRONIC_CIRCUIT = new dividedNodeGraph(IndustrialCraft.ELECTRONIC_CIRCUIT, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
     }
     public static final dividedNodeGraph POLYTETRAFLUOROETHYLENE_BAR; static {
-        final List<Item> ptfeSubGraphs = new ArrayList<>(); {
+        final List<Item> ptfeSubGraphs; {
+            ptfeSubGraphs = new ArrayList<>();
+
             ptfeSubGraphs.add(GregTech.HYDROGEN_CELL);
             ptfeSubGraphs.add(GregTech.CHLOROFORM_CELL);
             ptfeSubGraphs.add(GregTech.FLUORINE);

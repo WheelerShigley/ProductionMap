@@ -1,4 +1,5 @@
 import graph.NodeGraph;
+import graph.export.CSAcademy;
 import graph.export.GraphViz;
 import items.Item;
 import items.minecraft.GTNH.GregTech;
@@ -12,7 +13,7 @@ import static graph.NodeGraphs.*;
 
 public class Main {
     /* TODO
-     * BUGFIX: ensure preferred-recipes are respected when instantiating multiple (primary) NodeGraphs    
+     * BUGFIX: ensure preferred-recipes are respected when instantiating multiple (primary) NodeGraphs
      * Account for multiple power-types
      * Add README.md output-style [for NodeGraph]
      * Populate Recipes (more)
@@ -42,9 +43,13 @@ public class Main {
     }
 
     private static void printGraphData(NodeGraph graph) {
+        //System.out.println( graph.toString() );
+        //System.out.println(CSAcademy.getGraphData(graph) );
         System.out.println( GraphViz.getDot(graph) );
     }
     private static void printGraphData(NodeGraph graph, List<Item> subGraphHeads) {
+        //System.out.println( graph.toString() );
+        //System.out.println(CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) );
         System.out.println( GraphViz.getDot(graph, subGraphHeads) );
     }
 }
