@@ -3,6 +3,7 @@ package graph.export;
 import graph.NodeGraph;
 import graph.ProductNode;
 import graph.RecipeNode;
+import graph.StringHelper;
 import items.Item;
 import machines.MachineTypes;
 
@@ -209,15 +210,28 @@ public class GraphViz {
                 isInput = isInput(product);
                 isOutput = isOutput(product);
 
+                String color; {
+                    color = "ivory2";
+                    if(isInput) {
+                        color = "lightskyblue";
+                    }
+                    if(isOutput) {
+                        color = "lightgoldenrod1";
+                    }
+
+                    //primary output
+                    if( graph.getFinalProduct().equals(product.product) ) {
+                        color = "gold";
+                    }
+                }
                 dotBuilder
                     .append("\t")
                     .append( names.getName(product) )
                     .append(" [")
-                        .append("shape=box,")
-                        .append("style=\"rounded").append( isInput || isOutput ? ", filled" : "" ).append("\",")
-                        .append("label=\"").append( product.product.getName() ).append("\"")
-                        .append( isInput ? ", fillcolor=\"darkslategray2\"" : "" )
-                        .append( isOutput ? ", fillcolor=\"darkgoldenrod2\"" : "" )
+                        .append("shape=box, ")
+                        .append("style=\"rounded,filled\"")
+                        .append("fillcolor=\"").append(color).append("\"")
+                        .append("label=\"").append( product.product.getName() ).append("\", ")
                     .append("]\r\n")
                 ;
             }
@@ -225,11 +239,19 @@ public class GraphViz {
 
             //recipes nodes
             for(RecipeNode transformation : names.transformationIdentifiers.keySet() ) {
+                String color; {
+                    color = "lavenderblush";
+                    if( isInput(transformation) ) {
+                        color = "lavenderblush2";
+                    }
+                }
                 dotBuilder
                     .append("\t")
                     .append( names.getName(transformation) )
                     .append(" [")
                         .append("shape=record, ")
+                        .append("style=\"filled\", ")
+                        .append("fillcolor=\"").append(color).append("\", ")
                         .append("label=\"").append( getRecipeNodeAsMachineRecord(transformation) ).append("\"")
                     .append("]")
                     .append("\r\n")
@@ -295,18 +317,19 @@ public class GraphViz {
     private static boolean isInput(ProductNode product) {
         return product.sources.isEmpty() && !product.sinks.isEmpty();
     }
+    private static boolean isInput(RecipeNode transformer) {
+        return transformer.inputs.isEmpty();
+    }
     private static boolean isOutput(ProductNode product) {
         return !product.sources.isEmpty() && product.sinks.isEmpty();
     }
 
     private static String getRecipeNodeAsMachineRecord(RecipeNode recipe) {
         /* Formatting
-        "{ {u|v|w}|NAME|{x|y|z} }", where
+        "{ {u| |w}|NAME|{x| |z} }", where
             u is the minimum voltage,
-            v is the entry-point,
             w is the average up-time (%),
             x is the machine-configuration,
-            y is padding (whitespace),
             z is the minimum (integer) machine-count
          */
 
@@ -320,23 +343,13 @@ public class GraphViz {
             minimum_count = (int)Math.ceil( recipe.getUptime() );
             minimum_count = Math.max(minimum_count, 1);
         }
-        boolean isUptimeApproximate;
-        double average_uptime_percent; {
-            average_uptime_percent = Math.round(  10000.0 * recipe.getUptime() / ( (double)minimum_count )  ) / 100.0;
-            if(average_uptime_percent < 0.01) {
-                isUptimeApproximate = true;
-            } else {
-                isUptimeApproximate = (average_uptime_percent%0.01 != 0.0);
-            }
-            average_uptime_percent = Math.max(average_uptime_percent, 0.01); //minimum % for display
-        }
         recordBuilder
             .append("{")
                 .append(single_machine_power_consumption).append(" EU/t (").append(minimumVoltageAbbreviatedName).append(")")
             .append("|")
-                .append("<here>")
+                //.append("")
             .append("|")
-                .append(isUptimeApproximate ? "~" : "").append(average_uptime_percent).append("%")
+                .append( StringHelper.getNumberString( 100.0*recipe.getUptime() ) ).append("%")
             .append("}")
         ;
 
@@ -350,9 +363,9 @@ public class GraphViz {
         //bottom
         recordBuilder
             .append("{")
-                .append( recipe.recipe.configuration ) //TODO: check that this is convertible to String, readable
+                .append( recipe.recipe.configuration.toString() )
             .append("|")
-                .append("")
+                //.append("")
             .append("|")
                 .append("×").append(minimum_count)
             .append("}")

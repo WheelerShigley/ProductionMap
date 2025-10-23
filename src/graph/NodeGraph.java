@@ -280,6 +280,10 @@ public class NodeGraph {
         nodeGraphStringBuilder.append("}");
         return nodeGraphStringBuilder.toString();
     }
+
+    public Item getFinalProduct() {
+        return this.finalProduct;
+    }
     private HashMap<Voltage, Double> getPowerDemand(boolean isMaximum) {
         HashMap<Voltage, Double> powerMap = new HashMap<>();
         for(RecipeNode transformer : transformers) {
