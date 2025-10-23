@@ -62,6 +62,7 @@ public class NodeGraphs {
 
             ptfeSubGraphs.add(GregTech.HYDROGEN_CELL);
             ptfeSubGraphs.add(GregTech.CHLOROFORM_CELL);
+            ptfeSubGraphs.add(GregTech.CHLORINE);
             ptfeSubGraphs.add(GregTech.FLUORINE);
             ptfeSubGraphs.add(GregTech.OXYGEN);
         }

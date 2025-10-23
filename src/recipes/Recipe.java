@@ -440,8 +440,15 @@ public class Recipe extends Identified {
                 production_rate += output.quantity;
             }
         }
-        production_rate /= (time_seconds/20.0);
+        if(production_rate <= 0.0) {
+            if(time_seconds == 0.0) {
+                return Double.POSITIVE_INFINITY;
+            } else {
+                return 0.0;
+            }
+        }
 
+        production_rate /= (time_seconds / 20.0);
         return production_rate;
     }
 

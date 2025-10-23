@@ -37,7 +37,7 @@ public class NodeGraph {
         ProductNode ultimateSink = new ProductNode(finalProduct);
 
         RecipeNode ultimateSource = new RecipeNode(
-            Recipes.getFastestProducingRecipe(finalProduct)
+            Recipes.optimalRecipes.get(finalProduct)
         );
         ultimateSource.setUpTime(
             items_per_second/ultimateSource.recipe.getProductionRate(finalProduct)

@@ -14,14 +14,16 @@ import static graph.NodeGraphs.*;
 public class Main {
     /* TODO
      * BUGFIX: ensure preferred-recipes are respected when instantiating multiple (primary) NodeGraphs
+     * Refactor for "abstract" NodeGraphs (main + subgraphs)
      * Account for multiple power-types
      * Add README.md output-style [for NodeGraph]
      * Populate Recipes (more)
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
-    private static final dividedNodeGraph GRAPH_DATA = ELECTRONIC_CIRCUIT;
+    private static final dividedNodeGraph GRAPH_DATA = POLYTETRAFLUOROETHYLENE_BAR;
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
+        Recipe empty_cells = Recipes.optimalRecipes.get(GregTech.EMPTY_CELL);
 
         final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, 1, GRAPH_DATA.subGraphHeads);
         printGraphData(GRAPH, GRAPH_DATA.subGraphHeads);

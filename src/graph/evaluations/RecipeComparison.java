@@ -49,7 +49,8 @@ public abstract class RecipeComparison implements Comparator<Recipe> {
 
         Recipe bestRecipe = Recipes.DUMMY;
         for(Recipe recipe : recipes) {
-            if( comparator.compare(bestRecipe, recipe, ofItem) == 1) {
+            int comparison = comparator.compare(bestRecipe, recipe, ofItem);
+            if(comparator.compare(bestRecipe, recipe, ofItem) < 0) {
                 bestRecipe = recipe;
             }
         }

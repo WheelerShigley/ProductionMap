@@ -159,6 +159,11 @@ public class GraphViz {
 
             //append subGraphs data
             for( NodeGraph subGraph : subGraphs.keySet() ) {
+                if( subGraph.equals(graph) ) {
+                    //already printed
+                    continue;
+                }
+
                 String name = subGraphs.get(subGraph);
                 dotBuilder
                     .append("\t")
