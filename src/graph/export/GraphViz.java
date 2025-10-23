@@ -3,7 +3,9 @@ package graph.export;
 import graph.NodeGraph;
 import graph.ProductNode;
 import graph.RecipeNode;
+import items.Item;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -73,14 +75,14 @@ public class GraphViz {
             return new String(alphabeticalCharacterArray);
         }
     }
-    private static NodesNameMap getNodeIdentifiers(NodeGraph graph) {
+    private static NodesNameMap getNodeIdentifiers(NodeGraph graph, String metaName) {
 
         final HashMap<ProductNode, String> productIdentifiers = new HashMap<>();
         //products
         int identifier_length = getIdentifiersLengthForGraphNodes(graph.products);
         String identifier = "a";
         for(ProductNode productNode : graph.products) {
-            productIdentifiers.put(productNode, "p_"+identifier);
+            productIdentifiers.put(productNode, "p_"+metaName+"_"+identifier);
             identifier = incrementAlphabeticalString(identifier);
         }
 
@@ -89,7 +91,7 @@ public class GraphViz {
         identifier_length = getIdentifiersLengthForGraphNodes(graph.transformers);
         identifier = "a";
         for(RecipeNode recipeNode : graph.transformers) {
-            transformationIdentifiers.put(recipeNode, "t_"+identifier);
+            transformationIdentifiers.put(recipeNode, "t_"+metaName+"_"+identifier);
             identifier = incrementAlphabeticalString(identifier);
         }
 
@@ -97,10 +99,99 @@ public class GraphViz {
     }
 
     public static String getDot(NodeGraph graph) {
-        NodesNameMap names = getNodeIdentifiers(graph);
+        return getDot(graph, "digraph", "}\r\n", "");
+    }
+    public static String getDot(NodeGraph graph, List<Item> clusters) {
+        StringBuilder dotBuilder = new StringBuilder();
+        HashMap<NodeGraph, String> subGraphs = new HashMap<>();
+
+        //main graph
+        subGraphs.put(graph, "main");
+        dotBuilder.append("digraph {\r\n").append("\tcompound=true\r\n").append("\r\n");
+        dotBuilder
+            .append("\t")
+            .append(
+                getDot(graph, "subgraph cluster_"+subGraphs.get(graph), "}\r\n", subGraphs.get(graph) )
+                    .replace("\r\n", "\r\n\t")
+            )
+            .append("\r\n")
+        ;
+
+        //subgraphs
+        for(Item cluster : clusters) {
+            List<Item> exclusions; {
+                exclusions = new ArrayList<>(clusters);
+                exclusions.remove(cluster);
+            }
+            NodeGraph clusterGraph = new NodeGraph(cluster, graph.getProduct(cluster).getDemandRate() );
+            subGraphs.put(clusterGraph, cluster.getName() );
+
+            dotBuilder
+                .append("\t")
+                .append(
+                    getDot( clusterGraph, "subgraph cluster_"+cluster.getName(), "}\r\n", cluster.getName() )
+                        .replace("\r\n", "\r\n\t")
+                )
+                .append("\r\n")
+            ;
+        }
+
+        /*Inter-subGraph connections*/ {
+            HashMap< Item, List<String> > inputAndOutputsGraphVizNodeNames = new HashMap<>(); {
+                String nodeName; NodesNameMap graphNames;
+                for( NodeGraph subGraph : subGraphs.keySet() ) {
+                    graphNames = getNodeIdentifiers( subGraph, subGraphs.get(subGraph) );
+                    for(ProductNode product: subGraph.products) {
+                        nodeName = graphNames.getName(product);
+                        if( isInput(product) || isOutput(product) ) {
+                            if( inputAndOutputsGraphVizNodeNames.containsKey(product.product) ) {
+                                List<String> newNames = new ArrayList<>( inputAndOutputsGraphVizNodeNames.get(product.product) );
+                                newNames.add(nodeName);
+
+                                inputAndOutputsGraphVizNodeNames.replace(product.product, newNames);
+                            } else {
+                                inputAndOutputsGraphVizNodeNames.put( product.product, List.of(nodeName) );
+                            }
+                        }
+                    }
+                }
+            }
+            //TODO: make this less of a mess (?)
+            for( Item potentialAnalogousItems : inputAndOutputsGraphVizNodeNames.keySet() ) {
+                String[] names = inputAndOutputsGraphVizNodeNames.get(potentialAnalogousItems).toArray(new String[0]);
+                if( names.length <= 1 ) {
+                    continue;
+                }
+
+                String appendedNames; {
+                    appendedNames = "{";
+                    for(int index = 0; index < names.length; index++) {
+                        appendedNames += names[index];
+                        if(index < names.length-1) {
+                            appendedNames += ", ";
+                        }
+                    }
+                    appendedNames += "}";
+                }
+                dotBuilder
+                    .append("\t")
+                    .append(appendedNames)
+                    .append(" -> ")
+                    .append(appendedNames)
+                    .append(" [style=invis]\r\n")
+                ;
+            }
+            dotBuilder.append("\r\n");
+        }
+
+        dotBuilder.append("}\r\n");
+        return dotBuilder.toString();
+    }
+    private static String getDot(NodeGraph graph, String prefix, String postfix, String nodeNamePrefix) {
+        NodesNameMap names = getNodeIdentifiers(graph, nodeNamePrefix);
 
         StringBuilder dotBuilder = new StringBuilder();
-        dotBuilder.append("digraph {\r\n");
+        dotBuilder.append(prefix).append(" {\r\n");
 
         /* Nodes */ {
             //product nodes
@@ -114,10 +205,10 @@ public class GraphViz {
                     .append( names.getName(product) )
                     .append(" [")
                         .append("shape=box,")
-                        .append("style=\"rounded").append( isInput || isOutput ? ", filled" : "").append("\",")
+                        .append("style=\"rounded").append( isInput || isOutput ? ", filled" : "" ).append("\",")
                         .append("label=\"").append( product.product.getName() ).append("\"")
-                        .append( isInput ? ", fillcolor=\"darkslategray2\"" : "")
-                        .append( isOutput ? ", fillcolor=\"darkgoldenrod2\"" : "")
+                        .append( isInput ? ", fillcolor=\"darkslategray2\"" : "" )
+                        .append( isOutput ? ", fillcolor=\"darkgoldenrod2\"" : "" )
                     .append("]\r\n")
                 ;
             }
@@ -147,15 +238,18 @@ public class GraphViz {
                     if(index < productNode.sinks.size()-1 ) {
                         connectionsBuilder.append(',');
                     }
-
-                    dotBuilder
-                        .append("\t")
-                        .append( names.getName(productNode) )
-                        .append(" -> {")
-                        .append( connectionsBuilder.toString() )
-                        .append("}\r\n")
-                    ;
                 }
+                if( connectionsBuilder.length() <= 0 ) {
+                    continue;
+                }
+
+                dotBuilder
+                    .append("\t")
+                    .append( names.getName(productNode) )
+                    .append(" -> {")
+                    .append( connectionsBuilder.toString() )
+                    .append("}\r\n")
+                ;
             }
             dotBuilder.append("\r\n");
 
@@ -168,6 +262,9 @@ public class GraphViz {
                         connectionsBuilder.append(',');
                     }
                 }
+                if( connectionsBuilder.length() <= 0 ) {
+                    continue;
+                }
 
                 dotBuilder
                     .append("\t")
@@ -179,7 +276,7 @@ public class GraphViz {
             }
         }
 
-        dotBuilder.append("}\r\n");
+        dotBuilder.append(postfix);
         return dotBuilder.toString();
     }
 

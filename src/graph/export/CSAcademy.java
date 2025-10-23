@@ -3,6 +3,10 @@ package graph.export;
 import graph.NodeGraph;
 import graph.ProductNode;
 import graph.RecipeNode;
+import items.Item;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CSAcademy {
     public static String getGraphData(NodeGraph graph) {
@@ -40,5 +44,27 @@ public class CSAcademy {
         }
          */
         return markUpBuilder.toString();
+    }
+
+    public static String getGraphWithSubGraphs(NodeGraph graph, List<Item> subGraphHeads) {
+        StringBuilder graphString = new StringBuilder();
+        graphString.append( getGraphData(graph) );
+
+        for(Item subGraphHead : subGraphHeads) {
+            List<Item> exclusionsWithoutCurrentHead; {
+                exclusionsWithoutCurrentHead = new ArrayList<>(subGraphHeads);
+                exclusionsWithoutCurrentHead.remove(subGraphHead);
+            }
+            NodeGraph subGraph = new NodeGraph(
+                subGraphHead,
+                graph.getProduct(subGraphHead).getDemandRate(),
+                exclusionsWithoutCurrentHead
+            );
+
+            System.out.println("\r\n");
+            graphString.append( getGraphData(subGraph) );
+        }
+
+        return graphString.toString();
     }
 }
