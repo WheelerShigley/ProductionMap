@@ -44,6 +44,7 @@ public class GregTech {
     public static final Item IRON_DUST = getGregTechItem("iron_dust");
     public static final Item LEAD_INGOT = getGregTechItem("lead_ingot");
     public static final Item LIGHT_CONCRETE = getGregTechItem("light_concrete");
+    public static final Item MAGNESIA_DUST = getGregTechItem("magnesia_dust");
     public static final Item MAGNESIUM_DUST = getGregTechItem("magnesium_dust");
     public static final Item MARBLE_DUST = getGregTechItem("marble_dust");
     public static final Item METAL_MIXTURE_DUST = getGregTechItem("metal_mixture_dust");
@@ -82,6 +83,7 @@ public class GregTech {
     public static final Item ROCK_SALT = getGregTechItem("rock_salt");
     public static final Item SALT = getGregTechItem("salt");
     public static final Item SALTPETER_DUST = getGregTechItem("saltpeter_dust");
+    public static final Item SILICON_DIOXIDE = getGregTechItem("silicon_dioxide");
     public static final Item SMALL_PILE_OF_CLAY_DUST = getGregTechItem("small_pile_of_clay_dust");
     public static final Item SMALL_PILE_OF_STEEL_DUST = getGregTechItem("small_pile_of_steel_dust");
     public static final Item SODALITE_DUST = getGregTechItem("sodalite_dust");

@@ -46,7 +46,7 @@ public class ProductNode {
     }
 
     public boolean generateSource(NodeGraph graph) {
-        Recipe generatedSource = Recipes.getFastestProducingRecipe(this.product);
+        Recipe generatedSource = Recipes.optimalRecipes.get(this.product);
         if(
             generatedSource == null
             || generatedSource.equals(Recipes.DUMMY)
@@ -119,7 +119,7 @@ public class ProductNode {
             }
             if(mostEfficientProducer == null) {
                 //no producer is found
-                Logger.getLogger("ProductNode<"+this.product.getName()+">").log(Level.WARNING, "No sources found.");
+                Logger.getLogger("ProductNode<"+this.product.getName()+">").log(Level.INFO, "No sources found.");
                 return;
             }
         }

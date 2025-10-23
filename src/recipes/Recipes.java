@@ -205,7 +205,6 @@ public class Recipes extends Registered<Recipe> {
             2
         );
     }
-
     public static final Recipe GRAVEL = new Recipe(MachineTypes.FORGE_HAMMER, 16.0, new ItemStack(Vanilla.COBBLESTONE), new ItemStack(Vanilla.GRAVEL), 0.5);
     public static final Recipe GLOWSTONE_DUST = new Recipe(MachineTypes.FLUID_EXTRACTOR, 2.0, new ItemStack(Items.GLOW_FLOWER, 2), new ItemStack(Vanilla.GLOWSTONE_DUST), 15.0);
     public static final Recipe MOLTEN_LEAD = new Recipe(MachineTypes.FLUID_EXTRACTOR, 34.0, new ItemStack(GregTech.LEAD_INGOT), new ItemStack(GregTech.MOLTEN_LEAD, 144.0/1000.0), 1.2);
@@ -500,6 +499,7 @@ public class Recipes extends Registered<Recipe> {
     }
     public static final Recipe MOLTEN_REDSTONE = new Recipe(MachineTypes.FLUID_EXTRACTOR, 30.0, new ItemStack(Vanilla.REDSTONE_DUST), new ItemStack(GregTech.MOLTEN_REDSTONE, 144.0/1000.0), 1.2);
     public static final Recipe SANDSTONE = new Recipe(MachineTypes.COMPRESSOR, 2.0, new ItemStack(Vanilla.SAND, 4), new ItemStack(Vanilla.SANDSTONE), 15);
+    public static final Recipe SILICON_DIOXIDE = new Recipe(MachineTypes.ELECTROLYZER, 25.0, new ItemStack(Vanilla.SAND, 8), new ItemStack(GregTech.SILICON_DIOXIDE), 25);
     public static final Recipe RED_ALLOY_INGOT; static {
         RED_ALLOY_INGOT = new Recipe(
             MachineTypes.ALLOY_SMELTER,
@@ -630,6 +630,22 @@ public class Recipes extends Registered<Recipe> {
             3
         );
     }
+    public static final Recipe PERFECT_RAW_SILICON_DUST; static {
+        PERFECT_RAW_SILICON_DUST = new Recipe(
+            MachineTypes.FLUID_SOLIDIFIER,
+            MachineConfiguration.MoldIngot,
+            8,
+            List.of(
+                new ItemStack(GregTech.SILICON_DIOXIDE, 3),
+                new ItemStack(GregTech.MAGNESIUM_DUST, 2)
+            ),
+            List.of(
+                new ItemStack(GregTech.RAW_SILICON_DUST),
+                new ItemStack(GregTech.MAGNESIA_DUST, 4)
+            ),
+            5
+        );
+    }
     public static final Recipe POLYETHYLENE_BAR = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldIngot, 8, new ItemStack(GregTech.MOLTEN_POLYETHYLENE), new ItemStack(GregTech.POLYETHYLENE_BAR), 1.6);
     public static final Recipe SIMPLE_METHANE; static {
         SIMPLE_METHANE = new Recipe(
@@ -678,6 +694,20 @@ public class Recipes extends Registered<Recipe> {
                 new ItemStack(GregTech.HYDROCHLORIC_ACID, 3)
             ),
             4
+        );
+    }
+    public static final Recipe ELECTROLYZED_MAGNESIA; static {
+        ELECTROLYZED_MAGNESIA = new Recipe(
+            MachineTypes.ELECTROLYZER,
+            30.0,
+            List.of(
+                new ItemStack(GregTech.MAGNESIA_DUST,2)
+            ),
+            List.of(
+                new ItemStack(GregTech.MAGNESIUM_DUST),
+                new ItemStack(GregTech.OXYGEN)
+            ),
+            2
         );
     }
     public static final Recipe ELECTROLYZED_OBSIDIAN_DUST; static {
