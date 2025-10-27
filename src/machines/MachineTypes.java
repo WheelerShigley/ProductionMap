@@ -367,7 +367,7 @@ public class MachineTypes extends Registered<MachineType> {
     public static final MachineType ELECTRIC_FURNACE; static {
         ELECTRIC_FURNACE = new MachineType(
                 GREGTECH,
-                "Compressor",
+                "Electric Furnace",
                 getCommonMachineDataWithDifferentIVName("Electric Furnace", "Atom Stimulator", "Electron Excitement Processor")
             ); //TODO: Microwaves & Ovens; Multi Smelter
         }
