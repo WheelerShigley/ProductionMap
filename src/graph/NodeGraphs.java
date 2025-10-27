@@ -56,6 +56,29 @@ public class NodeGraphs {
 
         ELECTRONIC_CIRCUIT = new dividedNodeGraph(IndustrialCraft.ELECTRONIC_CIRCUIT, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
     }
+    public static final dividedNodeGraph INTEGRATED_LOGIC_CIRCUIT_LV; static {
+        final List<Item> CIRCUIT_SUB_GRAPHS; {
+            CIRCUIT_SUB_GRAPHS = new ArrayList<>();
+
+            CIRCUIT_SUB_GRAPHS.add(GregTech.CIRCUIT_BOARD);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.INTEGRATED_LOGIC_CIRCUIT);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.WAFER);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.RESISTOR);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.DIODE);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.FINE_COPPER_WIRE);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.TIN_BOLT);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_LEAD);
+        }
+        final HashMap<Item, Recipe> CIRCUIT_LOOP_RECIPES; {
+            CIRCUIT_LOOP_RECIPES = new HashMap<>();
+
+            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, Recipes.SAND);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, Recipes.PERFECT_RAW_SILICON_DUST);
+        }
+
+        INTEGRATED_LOGIC_CIRCUIT_LV = new dividedNodeGraph(GregTech.INTEGRATED_LOGIC_CIRCUIT_LV, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
+    }
     public static final dividedNodeGraph POLYTETRAFLUOROETHYLENE_BAR; static {
         final List<Item> ptfeSubGraphs; {
             ptfeSubGraphs = new ArrayList<>();

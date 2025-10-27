@@ -20,10 +20,9 @@ public class Main {
      * Populate Recipes (more)
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
-    private static final dividedNodeGraph GRAPH_DATA = POLYTETRAFLUOROETHYLENE_BAR;
+    private static final dividedNodeGraph GRAPH_DATA = INTEGRATED_LOGIC_CIRCUIT_LV;
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
-        Recipe empty_cells = Recipes.optimalRecipes.get(GregTech.EMPTY_CELL);
 
         final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, 1, GRAPH_DATA.subGraphHeads);
         printGraphData(GRAPH, GRAPH_DATA.subGraphHeads);

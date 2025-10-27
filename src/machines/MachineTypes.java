@@ -215,6 +215,19 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Bending Machine", "Bending Unit")
         ); //TODO: Industrial Material Press
     }
+    public static final MachineType BLAST_FURNACE; static {
+        HashMap<Voltage, List<MachineData> > blastFurnaceDatas = new HashMap<>();
+        for(Voltage voltage : Voltage.getVoltagesBetweenInclusive(Voltage.Low, Voltage.Maximum) ) {
+            blastFurnaceDatas.put(
+                voltage, List.of(ELECTRIC_BLAST_FURNACE_DATA)
+            );
+        }
+        BLAST_FURNACE = new MachineType(
+            GREGTECH,
+            "Bending Machine",
+            blastFurnaceDatas
+        ); //TODO: Volcanus, Mega Blast Furnace, Helioflare Power Forge
+    }
     public static final MachineType CAULDRON; static {
         HashMap<Voltage, List<MachineData> > alchemicalConstruct = new HashMap<>();
         alchemicalConstruct.put(
@@ -293,6 +306,13 @@ public class MachineTypes extends Registered<MachineType> {
                 GREGTECH,
                 "Crop Manager",
                 getCommonPlusPlusMachineData("Crop Manager")
+        );
+    }
+    public static final MachineType CUTTING_MACHINE; static {
+        CUTTING_MACHINE = new MachineType(
+            GREGTECH,
+            "Cutting Machine",
+            getCommonMachineData("Cutting Machine", "Object Divider")
         );
     }
     public static final MachineType DISTILLERY; static {

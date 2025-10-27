@@ -54,12 +54,15 @@ public enum MachineConfiguration {
     ProgrammedBioCircuitTwentyFour,
 
     MoldBall,
+    MoldBolt,
     MoldBlock,
     MoldIngot,
 
+    ExtrudeShapeBolt,
     ExtrudeShapeRod,
 
-    GlassLens
+    GlassLens,
+    RubyLens
     ;
 
     @Override

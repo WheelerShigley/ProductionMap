@@ -2,6 +2,10 @@ package graph;
 
 public class StringHelper {
     public static String getNumberString(double number) {
+        if(number < 0.0001) {
+            return "~0%";
+        }
+
         if(number%1.0 == 0.0) {
             return Integer.toString( (int)number );
         } else {
