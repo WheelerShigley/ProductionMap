@@ -10,7 +10,7 @@ import java.util.List;
 import static items.minecraft.GTNH.Thaumcraft.*;
 import static machines.MachineTypes.*;
 
-public class Aspects {
+public class AspectsRecipes {
     private static Recipe getAlchemicalFurnaceRecipe(ItemStack item, ItemStack aspect) {
         return getAlchemicalFurnaceRecipe(List.of(item), List.of(aspect));
     }

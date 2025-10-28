@@ -7,6 +7,7 @@ import items.minecraft.GTNH.IndustrialCraft;
 import items.minecraft.GTNH.Vanilla;
 import recipes.Recipe;
 import recipes.Recipes;
+import recipes.minecraft.GTNH.GregTechRecipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,9 +50,9 @@ public class NodeGraphs {
         final HashMap<Item, Recipe> CIRCUIT_LOOP_RECIPES; {
             CIRCUIT_LOOP_RECIPES = new HashMap<>();
 
-            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, Recipes.SAND);
-            CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, Recipes.PERFECT_RAW_SILICON_DUST);
-            CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, Recipes.ELECTROLYZED_MAGNESIA);
+            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, GregTechRecipes.SAND);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, GregTechRecipes.PERFECT_RAW_SILICON_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, GregTechRecipes.ELECTROLYZED_MAGNESIA);
         }
 
         ELECTRONIC_CIRCUIT = new dividedNodeGraph(IndustrialCraft.ELECTRONIC_CIRCUIT, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
@@ -74,10 +75,10 @@ public class NodeGraphs {
         final HashMap<Item, Recipe> CIRCUIT_LOOP_RECIPES; {
             CIRCUIT_LOOP_RECIPES = new HashMap<>();
 
-            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, Recipes.SAND);
-            CIRCUIT_LOOP_RECIPES.put(GregTech.SILICON_SOLAR_GRADE_DUST, Recipes.SILICON_SOLAR_GRADE_DUST);
-            CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, Recipes.PERFECT_RAW_SILICON_DUST);
-            CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, Recipes.ELECTROLYZED_MAGNESIA);
+            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, GregTechRecipes.SAND);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.SILICON_SOLAR_GRADE_DUST, GregTechRecipes.SILICON_SOLAR_GRADE_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, GregTechRecipes.PERFECT_RAW_SILICON_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, GregTechRecipes.ELECTROLYZED_MAGNESIA);
         }
 
         INTEGRATED_LOGIC_CIRCUIT_LV = new dividedNodeGraph(GregTech.INTEGRATED_LOGIC_CIRCUIT_LV, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);

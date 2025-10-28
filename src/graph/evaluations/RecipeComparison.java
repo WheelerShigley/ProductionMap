@@ -6,6 +6,7 @@ import items.Items;
 import items.minecraft.GTNH.GregTech;
 import recipes.Recipe;
 import recipes.Recipes;
+import recipes.minecraft.GTNH.GregTechRecipes;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -47,7 +48,7 @@ public abstract class RecipeComparison implements Comparator<Recipe> {
             }
         }
 
-        Recipe bestRecipe = Recipes.DUMMY;
+        Recipe bestRecipe = GregTechRecipes.DUMMY;
         for(Recipe recipe : recipes) {
             int comparison = comparator.compare(bestRecipe, recipe, ofItem);
             if(comparator.compare(bestRecipe, recipe, ofItem) < 0) {

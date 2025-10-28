@@ -71,6 +71,7 @@ public class GregTech {
     public static final Item MOLTEN_REDSTONE_ALLOY = getGregTechItem("molten_redstone_alloy");
     public static final Item MOLTEN_TIN = getGregTechItem("molten_tin");
     public static final Item MONOCRYSTALLINE_SILICON_BOULE = getGregTechItem("monocrystalline_silicon_boule");
+    public static final Item NETHERRACK_DUST = getGregTechItem("netherrack_dust");
     public static final Item NITROGEN_GAS = getGregTechItem("nitrogen");
     public static final Item OBSIDIAN_DUST = getGregTechItem("obsidian_dust");
     public static final Item ONE_ANNEALED_COPPER_WIRE = getGregTechItem("1x_annealed_copper_wire");

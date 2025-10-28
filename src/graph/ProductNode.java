@@ -5,6 +5,7 @@ import machines.MachineType;
 import machines.MachineTypes;
 import recipes.Recipe;
 import recipes.Recipes;
+import recipes.minecraft.GTNH.GregTechRecipes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class ProductNode {
         Recipe generatedSource = Recipes.optimalRecipes.get(this.product);
         if(
             generatedSource == null
-            || generatedSource.equals(Recipes.DUMMY)
+            || generatedSource.equals(GregTechRecipes.DUMMY)
             || generatedSource.machineType.equals(MachineTypes.DUMMY)
         ) {
             return false;
