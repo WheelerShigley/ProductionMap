@@ -15,6 +15,7 @@ public class Vanilla {
     public static final Item COBBLESTONE = getVanillaItem("cobblestone");
     public static final Item DIRT = getVanillaItem("dirt");
     public static final Item FLINT = getVanillaItem("flint");
+    public static final Item GOLD_INGOT = getVanillaItem("gold_ingot");
     public static final Item GLOWSTONE_DUST = getVanillaItem("glowstone_dust");
     public static final Item GRAVEL = getVanillaItem("gravel");
     public static final Item LAVA = getVanillaItem("lava");

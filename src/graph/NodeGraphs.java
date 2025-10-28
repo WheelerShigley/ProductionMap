@@ -1,12 +1,10 @@
 package graph;
 
 import items.Item;
-import items.ItemStack;
 import items.minecraft.GTNH.GregTech;
 import items.minecraft.GTNH.IndustrialCraft;
 import items.minecraft.GTNH.Vanilla;
 import recipes.Recipe;
-import recipes.Recipes;
 import recipes.minecraft.GTNH.GregTechRecipes;
 
 import java.util.ArrayList;
@@ -57,6 +55,34 @@ public class NodeGraphs {
 
         ELECTRONIC_CIRCUIT = new dividedNodeGraph(IndustrialCraft.ELECTRONIC_CIRCUIT, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
     }
+    public static final dividedNodeGraph GOOD_INTEGRATED_CIRCUIT_MV; static {
+        final List<Item> CIRCUIT_SUB_GRAPHS; {
+            CIRCUIT_SUB_GRAPHS = new ArrayList<>();
+
+            CIRCUIT_SUB_GRAPHS.add(GregTech.GOOD_CIRCUIT_BOARD);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.PHENOLIC_CIRCUIT_BOARD);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.INTEGRATED_LOGIC_CIRCUIT);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.INTEGRATED_LOGIC_CIRCUIT_LV);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.WAFER);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.RESISTOR);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.DIODE);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_POLYETHYLENE);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.TIN_BOLT);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_LEAD);
+        }
+        final HashMap<Item, Recipe> CIRCUIT_LOOP_RECIPES; {
+            CIRCUIT_LOOP_RECIPES = new HashMap<>();
+
+            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, GregTechRecipes.SAND);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.SILICON_SOLAR_GRADE_DUST, GregTechRecipes.SILICON_SOLAR_GRADE_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, GregTechRecipes.PERFECT_RAW_SILICON_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, GregTechRecipes.ELECTROLYZED_MAGNESIA);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.HYDROCHLORIC_ACID, GregTechRecipes.HYDROCHLORIC_ACID);
+        }
+
+        GOOD_INTEGRATED_CIRCUIT_MV = new dividedNodeGraph(GregTech.GOOD_INTEGRATED_CIRCUIT_MV, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
+    }
     public static final dividedNodeGraph INTEGRATED_LOGIC_CIRCUIT_LV; static {
         final List<Item> CIRCUIT_SUB_GRAPHS; {
             CIRCUIT_SUB_GRAPHS = new ArrayList<>();
@@ -64,7 +90,7 @@ public class NodeGraphs {
             CIRCUIT_SUB_GRAPHS.add(GregTech.CIRCUIT_BOARD);
             CIRCUIT_SUB_GRAPHS.add(GregTech.INTEGRATED_LOGIC_CIRCUIT);
                 CIRCUIT_SUB_GRAPHS.add(GregTech.WAFER);
-                CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST); //TODO
+                CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST);
             CIRCUIT_SUB_GRAPHS.add(GregTech.RESISTOR);
             CIRCUIT_SUB_GRAPHS.add(GregTech.DIODE);
                 CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_POLYETHYLENE);

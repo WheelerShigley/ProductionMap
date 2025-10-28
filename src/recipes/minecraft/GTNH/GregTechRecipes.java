@@ -76,12 +76,14 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe SOLIDIFIED_TIN_BOLT = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBolt, 30.0, new ItemStack(GregTech.MOLTEN_TIN, 0.018), new ItemStack(GregTech.TIN_BOLT), 2.5);
+    public static final Recipe SOLIDIFIED_SILVER_BOLT = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBolt, 30.0, new ItemStack(GregTech.MOLTEN_SILVER, 0.018), new ItemStack(GregTech.SILVER_BOLT), 2.5);
 
     /* Wires */
     public static final Recipe ONE_ANNEALED_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitOne, 4.0, new ItemStack(GregTech.ANNEALED_COPPER_INGOT), new ItemStack(GregTech.ONE_ANNEALED_COPPER_WIRE, 2), 5.0);
     public static final Recipe ONE_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitOne, 4.0, new ItemStack(GregTech.COPPER_INGOT), new ItemStack(GregTech.ONE_COPPER_WIRE, 2), 5.0);
     public static final Recipe ONE_RED_ALLOY_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitOne, 4.0, new ItemStack(GregTech.RED_ALLOY_INGOT), new ItemStack(GregTech.ONE_RED_ALLOY_WIRE, 2), 5.0);
     public static final Recipe FINE_ANNEALED_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GregTech.ANNEALED_COPPER_INGOT), new ItemStack(GregTech.FINE_ANNEALED_COPPER_WIRE, 8), 5.0);
+    public static final Recipe FINE_GOLD_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GOLD_INGOT), new ItemStack(GregTech.FINE_GOLD_WIRE, 8), 5.0);
 
     /* Centrifuge */
     public static final Recipe CENTRIFUGED_AIR; static {
@@ -484,6 +486,7 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe EXTRUDED_TIN_BOLT = new Recipe(MachineTypes.EXTRUDER, MachineConfiguration.ExtrudeShapeBolt, 120.0, new ItemStack(GregTech.TIN_INGOT), new ItemStack(GregTech.TIN_BOLT, 8), 11.8);
+    public static final Recipe EXTRUDED_SILVER_BOLT = new Recipe(MachineTypes.EXTRUDER, MachineConfiguration.ExtrudeShapeBolt, 120.0, new ItemStack(GregTech.SILVER_INGOT), new ItemStack(GregTech.SILVER_BOLT, 8), 10.7);
     public static final Recipe EXTRUDER_STEEL_ROD = new Recipe(MachineTypes.EXTRUDER, MachineConfiguration.ExtrudeShapeRod, 90.0, new ItemStack(GregTech.STEEL_INGOT), new ItemStack(GregTech.STEEL_ROD, 2), 5.6);
     public static final Recipe FINE_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GregTech.COPPER_INGOT), new ItemStack(GregTech.FINE_COPPER_WIRE, 4), 5.0);
     public static final Recipe FLINT = new Recipe(MachineTypes.SIFTER, 16.0, new ItemStack(Vanilla.GRAVEL), new ItemStack(Vanilla.FLINT, 1+0.9+0.8+0.6+0.33+0.25), 30.0);
@@ -519,7 +522,23 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe GLASS_TUBE = new Recipe(MachineTypes.ALLOY_SMELTER, MachineConfiguration.MoldBall, 16.0, new ItemStack(GregTech.GLASS_DUST), new ItemStack(GregTech.GLASS_TUBE), 6.0);
-    public static final Recipe GRAVEL = new Recipe(MachineTypes.FORGE_HAMMER, 16.0, new ItemStack(Vanilla.COBBLESTONE), new ItemStack(Vanilla.GRAVEL), 0.5);
+    public static final Recipe GOLD_FOIL = new Recipe(MachineTypes.BENDING_MACHINE, MachineConfiguration.ProgrammedCircuitTen, 24, new ItemStack(Vanilla.GOLD_INGOT), new ItemStack(GregTech.GOLD_FOIL, 4), 19.6);
+    public static final Recipe HYDROCHLORIC_ACID; static {
+        HYDROCHLORIC_ACID = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitOne,
+            8,
+            List.of(
+                new ItemStack(GregTech.HYDROGEN_CELL),
+                new ItemStack(GregTech.CHLORINE)
+            ),
+            List.of(
+                new ItemStack(GregTech.EMPTY_CELL),
+                new ItemStack(GregTech.HYDROCHLORIC_ACID)
+            ),
+            3
+        );
+    }
     public static final Recipe HYDROFLUORIC_ACID; static {
         HYDROFLUORIC_ACID = new Recipe(
                 MachineTypes.CHEMICAL_REACTOR,
@@ -534,6 +553,58 @@ public class GregTechRecipes {
                         new ItemStack(GregTech.HYDROFLUORIC_ACID)
                 ),
                 3
+        );
+    }
+    public static final Recipe GRAVEL = new Recipe(MachineTypes.FORGE_HAMMER, 16.0, new ItemStack(Vanilla.COBBLESTONE), new ItemStack(Vanilla.GRAVEL), 0.5);
+    public static final Recipe GOOD_CIRCUIT_BOARD; static {
+        GOOD_CIRCUIT_BOARD = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            30,
+            List.of(
+                new ItemStack(GregTech.PHENOLIC_CIRCUIT_BOARD),
+                new ItemStack(GregTech.GOLD_FOIL, 4),
+                new ItemStack(GregTech.IRON_III_CHLORIDE, 0.1)
+            ),
+            List.of(
+                new ItemStack(GregTech.GOOD_CIRCUIT_BOARD)
+            ),
+            30
+        );
+    }
+    public static final Recipe GOOD_INTEGRATED_CIRCUIT_MV; static {
+        GOOD_INTEGRATED_CIRCUIT_MV = new Recipe(
+            MachineTypes.CIRCUIT_ASSEMBLER,
+            24,
+            List.of(
+                new ItemStack(GregTech.GOOD_CIRCUIT_BOARD),
+                new ItemStack(GregTech.INTEGRATED_LOGIC_CIRCUIT_LV, 2),
+                new ItemStack(GregTech.RESISTOR, 4),
+                new ItemStack(GregTech.DIODE, 4),
+                new ItemStack(GregTech.FINE_GOLD_WIRE, 4),
+                new ItemStack(GregTech.SILVER_BOLT, 4),
+                new ItemStack(GregTech.MOLTEN_LEAD, 2)
+            ),
+            List.of(
+                new ItemStack(GregTech.GOOD_INTEGRATED_CIRCUIT_MV)
+            ),
+            10
+        );
+    }
+    public static final Recipe IRON_III_CHLORIDE; static {
+        IRON_III_CHLORIDE = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitOne,
+            30,
+            List.of(
+                new ItemStack(GregTech.IRON_DUST),
+                new ItemStack(GregTech.EMPTY_CELL, 3),
+                new ItemStack(GregTech.HYDROCHLORIC_ACID, 3)
+            ),
+            List.of(
+                new ItemStack(GregTech.HYDROGEN_CELL, 3),
+                new ItemStack(GregTech.IRON_III_CHLORIDE)
+            ),
+            20
         );
     }
     public static final Recipe INTEGRATED_ELECTRONIC_CIRCUIT_LV; static {
@@ -689,6 +760,7 @@ public class GregTechRecipes {
                 8.0
         );
     }
+    public static final Recipe MOLTEN_SILVER = new Recipe(MachineTypes.FLUID_EXTRACTOR, 49.0, new ItemStack(GregTech.SILVER_DUST), new ItemStack(GregTech.MOLTEN_SILVER, 0.144), 1.2);
     public static final Recipe MOLTEN_TIN = new Recipe(MachineTypes.FLUID_EXTRACTOR, 30.0, new ItemStack(GregTech.TIN_DUST), new ItemStack(GregTech.MOLTEN_TIN, 0.144), 1.2);
     public static final Recipe MONOCRYSTALLINE_SILICON_BOULE; static {
         MONOCRYSTALLINE_SILICON_BOULE = new Recipe(
@@ -745,6 +817,20 @@ public class GregTechRecipes {
     }
     public static final Recipe POLYETHYLENE_BAR = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldIngot, 8, new ItemStack(GregTech.MOLTEN_POLYETHYLENE), new ItemStack(GregTech.POLYETHYLENE_BAR), 1.6);
     public static final Recipe POLYTETRAFLUOROETHYLENE_BAR = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldIngot, 8.0, new ItemStack(GregTech.MOLTEN_POLYTETRAFLUOROETHYLENE, 0.144), new ItemStack(GregTech.POLYTETRAFLUOROETHYLENE_BAR), 1.6);
+    public static final Recipe PHENOLIC_CIRCUIT_BOARD; static {
+        PHENOLIC_CIRCUIT_BOARD = new Recipe(
+            MachineTypes.ASSEMBLER,
+            16.0,
+            List.of(
+                new ItemStack(GregTech.WOOD_PULP, 8),
+                new ItemStack(GregTech.REFINED_GLUE, 2*0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.PHENOLIC_CIRCUIT_BOARD, 8)
+            ),
+            120
+        );
+    }
     public static final Recipe PHOSPHORIC_ACID_CELL; static {
         PHOSPHORIC_ACID_CELL = new Recipe(
                 MachineTypes.CHEMICAL_REACTOR,
@@ -853,6 +939,7 @@ public class GregTechRecipes {
                 20.0
         );
     }
+    public static final Recipe SILVER_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(GregTech.SILVER_DUST), new ItemStack(GregTech.SILVER_INGOT), 6.4);
     public static final Recipe STONE_DUST = new Recipe(MachineTypes.MACERATOR, 4.0, new ItemStack(Vanilla.COBBLESTONE), new ItemStack(GregTech.STONE_DUST, 1), 4.9);
     public static final Recipe TETRAFLUOROETHYLENE_CELL; static {
         TETRAFLUOROETHYLENE_CELL = new Recipe(
@@ -952,7 +1039,7 @@ public class GregTechRecipes {
                 120.0
         );
     }
-    public static final Recipe WOOD_PULP = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Items.ANY_WOOD), new ItemStack(GregTech.WOOD_PULP, 6), 20.0);
+    public static final Recipe WOOD_PULP = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Items.ANY_WOOD), new ItemStack(GregTech.WOOD_PULP, 6.8), 20.0);
     public static final Recipe WROUGHT_IRON_DUST = new Recipe(MachineTypes.MACERATOR, MachineConfiguration.ProgrammedCircuitEleven, 4.0, new ItemStack(GregTech.WROUGHT_IRON_INGOT), new ItemStack(GregTech.WROUGHT_IRON_DUST), 2.8);
     public static final Recipe WROUGHT_IRON_INGOT; static {
         WROUGHT_IRON_INGOT = new Recipe(

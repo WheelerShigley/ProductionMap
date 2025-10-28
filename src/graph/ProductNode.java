@@ -1,7 +1,6 @@
 package graph;
 
 import items.Item;
-import machines.MachineType;
 import machines.MachineTypes;
 import recipes.Recipe;
 import recipes.Recipes;
@@ -121,7 +120,7 @@ public class ProductNode {
             }
             if(mostEfficientProducer == null) {
                 //no producer is found
-                Logger.getLogger("ProductNode<"+this.product.getName()+">").log(Level.INFO, "No sources found.");
+                //Logger.getLogger("ProductNode<"+this.product.getName()+">").log(Level.INFO, "No sources found.");
                 return;
             }
         }

@@ -20,7 +20,7 @@ public class Main {
      * Populate Recipes (more)
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
-    private static final dividedNodeGraph GRAPH_DATA = INTEGRATED_LOGIC_CIRCUIT_LV;
+    private static final dividedNodeGraph GRAPH_DATA = GOOD_INTEGRATED_CIRCUIT_MV;
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
 
