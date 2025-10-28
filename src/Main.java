@@ -24,7 +24,7 @@ public class Main {
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
 
-        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, 1, GRAPH_DATA.subGraphHeads);
+        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, 2, GRAPH_DATA.subGraphHeads);
         printGraphData(GRAPH, GRAPH_DATA.subGraphHeads);
     }
 

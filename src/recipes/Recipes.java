@@ -116,6 +116,7 @@ public class Recipes extends Registered<Recipe> {
     public static final Recipe DECELLED_HYDROGEN = new Recipe(MachineTypes.FLUID_TANK, 0.0, new ItemStack(GregTech.HYDROGEN_CELL), new ItemStack(GregTech.HYDROGEN), 0.1);
     public static final Recipe EMPTY_CELL_CYCLED = new Recipe(MachineTypes.CELL_CYCLING, 0.0, new ItemStack(GregTech.COMPRESSED_AIR), new ItemStack(GregTech.EMPTY_CELL), 1.0);
     public static final Recipe GLOW_FLOWER = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(items.Items.GLOW_FLOWER), 1.0);
+    public static final Recipe LEAD_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(GregTech.LEAD_DUST), new ItemStack(GregTech.LEAD_INGOT), 6.4);
     public static final Recipe NETHERRACK = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Vanilla.NETHERRACK), 1.0);
     public static final Recipe STONE = new Recipe(MachineTypes.ROCK_BREAKER, 30.0, new ItemStack(Vanilla.STONE), 0.8);
     public static final Recipe STICKY_RESIN = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(IndustrialCraft.STICKY_RESIN), 1.0);
@@ -729,6 +730,7 @@ public class Recipes extends Registered<Recipe> {
             3.15
         );
     }
+    public static final Recipe CHISELED_SANDSTONE = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.GlassLens, 16.0, new ItemStack(Vanilla.SMOOTH_SANDSTONE), new ItemStack(Vanilla.CHISELED_SANDSTONE), 2.5);
     public static final Recipe CHLOROFORM_CELL; static {
         CHLOROFORM_CELL = new Recipe(
             MachineTypes.CHEMICAL_REACTOR,
@@ -776,7 +778,7 @@ public class Recipes extends Registered<Recipe> {
         );
     }
     public static final Recipe GLASS_TUBE = new Recipe(MachineTypes.ALLOY_SMELTER, MachineConfiguration.MoldBall, 16.0, new ItemStack(GregTech.GLASS_DUST), new ItemStack(GregTech.GLASS_TUBE), 6.0);
-    public static final Recipe INTEGRATED_LOGIC_CIRCUIT_WAFER = new Recipe(MachineTypes.ELECTRIC_BLAST_FURNACE, MachineConfiguration.RubyLens, 120.0, new ItemStack(GregTech.WAFER), new ItemStack(GregTech.INTEGRATED_LOGIC_CIRCUIT_WAFER), 60.0);
+    public static final Recipe INTEGRATED_LOGIC_CIRCUIT_WAFER = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.RubyLens, 120.0, new ItemStack(GregTech.WAFER), new ItemStack(GregTech.INTEGRATED_LOGIC_CIRCUIT_WAFER), 60.0);
     public static final Recipe IRON_STEEL_INGOT; static {
         IRON_STEEL_INGOT = new Recipe(
             MachineTypes.ELECTRIC_BLAST_FURNACE,
@@ -793,7 +795,21 @@ public class Recipes extends Registered<Recipe> {
             25.0
         );
     }
-    public static final Recipe CHISELED_SANDSTONE = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.GlassLens, 16.0, new ItemStack(Vanilla.SMOOTH_SANDSTONE), new ItemStack(Vanilla.CHISELED_SANDSTONE), 2.5);
+    public static final Recipe SILICON_TETRACHLORIDE; static {
+        SILICON_TETRACHLORIDE = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitTwo,
+            30.0,
+            List.of(
+                new ItemStack(GregTech.RAW_SILICON_DUST),
+                new ItemStack(GregTech.CHLORINE, 4)
+            ),
+            List.of(
+                new ItemStack(GregTech.SILICON_TETRACHLORIDE)
+            ),
+            20.0
+        );
+    }
     public static final Recipe WROUGHT_IRON_INGOT; static {
         WROUGHT_IRON_INGOT = new Recipe(
             MachineTypes.ARC_FURNACE,
@@ -810,22 +826,7 @@ public class Recipes extends Registered<Recipe> {
     }
 
     //of^7 nothing
-    public static final Recipe REDSTONE_ALLOY_DUST; static {
-        REDSTONE_ALLOY_DUST = new Recipe(
-            MachineTypes.MIXER,
-            MachineConfiguration.ProgrammedCircuitTwentyTwo,
-            8.0,
-            List.of(
-                new ItemStack(Vanilla.REDSTONE_DUST),
-                new ItemStack(GregTech.RAW_SILICON_DUST),
-                new ItemStack(GregTech.COAL_DUST)
-            ),
-            List.of(
-                new ItemStack(GregTech.REDSTONE_ALLOY_DUST, 3)
-            ),
-            5
-        );
-    }
+    public static final Recipe FINE_ANNEALED_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GregTech.ANNEALED_COPPER_INGOT), new ItemStack(GregTech.FINE_ANNEALED_COPPER_WIRE, 8), 5.0);
     public static final Recipe INTEGRATED_LOGIC_CIRCUIT; static {
         INTEGRATED_LOGIC_CIRCUIT = new Recipe(
             MachineTypes.CUTTING_MACHINE,
@@ -841,6 +842,38 @@ public class Recipes extends Registered<Recipe> {
         );
     }
     public static final Recipe ONE_ANNEALED_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitOne, 4.0, new ItemStack(GregTech.ANNEALED_COPPER_INGOT), new ItemStack(GregTech.ONE_ANNEALED_COPPER_WIRE, 2), 5.0);
+    public static final Recipe REDSTONE_ALLOY_DUST; static {
+        REDSTONE_ALLOY_DUST = new Recipe(
+                MachineTypes.MIXER,
+                MachineConfiguration.ProgrammedCircuitTwentyTwo,
+                8.0,
+                List.of(
+                        new ItemStack(Vanilla.REDSTONE_DUST),
+                        new ItemStack(GregTech.RAW_SILICON_DUST),
+                        new ItemStack(GregTech.COAL_DUST)
+                ),
+                List.of(
+                        new ItemStack(GregTech.REDSTONE_ALLOY_DUST, 3)
+                ),
+                5
+        );
+    }
+    public static final Recipe SILICON_SOLAR_GRADE_DUST; static {
+        SILICON_SOLAR_GRADE_DUST = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitOne,
+            30.0,
+            List.of(
+                new ItemStack(GregTech.SODIUM_DUST,4),
+                new ItemStack(GregTech.SILICON_TETRACHLORIDE)
+            ),
+            List.of(
+                new ItemStack(GregTech.SILICON_SOLAR_GRADE_DUST),
+                new ItemStack(GregTech.SALT, 8)
+            ),
+            5
+        );
+    }
     public static final Recipe TETRAFLUOROETHYLENE_CELL; static {
         TETRAFLUOROETHYLENE_CELL = new Recipe(
             MachineTypes.CHEMICAL_REACTOR,

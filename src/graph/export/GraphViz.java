@@ -380,7 +380,11 @@ public class GraphViz {
         }
         recordBuilder
             .append("{")
-                .append(single_machine_power_consumption).append(" EU/t (").append(minimumVoltageAbbreviatedName).append(")")
+        ;
+        if(single_machine_power_consumption != 0.0) {
+            recordBuilder.append(single_machine_power_consumption).append(" EU/t (").append(minimumVoltageAbbreviatedName).append(")");
+        }
+        recordBuilder
             .append("|")
                 //.append("")
             .append("|")

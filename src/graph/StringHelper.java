@@ -2,8 +2,9 @@ package graph;
 
 public class StringHelper {
     public static String getNumberString(double number) {
+        //enforce a minimum
         if(number < 0.0001) {
-            return "~0%";
+            return "~0";
         }
 
         if(number%1.0 == 0.0) {

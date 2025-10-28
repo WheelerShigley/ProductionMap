@@ -21,6 +21,7 @@ public class GregTech {
     public static final Item CARBON_MONOXIDE = getGregTechItem("carbon_monoxide");
     public static final Item CHARCOAL_DUST = getGregTechItem("charcoal_dust");
     public static final Item CHLORINE = getGregTechItem("chlorine");
+    public static final Item CHLORINE_CELL = getGregTechItem("chlorine_cell");
     public static final Item CHLOROFORM_CELL = getGregTechItem("chloroform_cell");
     public static final Item CIRCUIT_BOARD = getGregTechItem("circuit_board");
     public static final Item CLAY_DUST = getGregTechItem("clay_dust");
@@ -53,6 +54,7 @@ public class GregTech {
     public static final Item INTEGRATED_LOGIC_CIRCUIT_LV = getGregTechItem("integrated_logic_circuit_lv");
     public static final Item INTEGRATED_LOGIC_CIRCUIT_WAFER = getGregTechItem("integrated_logic_circuit_wafer");
     public static final Item IRON_DUST = getGregTechItem("iron_dust");
+    public static final Item LEAD_DUST = getGregTechItem("lead_dust");
     public static final Item LEAD_INGOT = getGregTechItem("lead_ingot");
     public static final Item LIGHT_CONCRETE = getGregTechItem("light_concrete");
     public static final Item MAGNESIA_DUST = getGregTechItem("magnesia_dust");
@@ -97,6 +99,7 @@ public class GregTech {
     public static final Item SALT = getGregTechItem("salt");
     public static final Item SALTPETER_DUST = getGregTechItem("saltpeter_dust");
     public static final Item SILICON_DIOXIDE = getGregTechItem("silicon_dioxide");
+    public static final Item SILICON_TETRACHLORIDE = getGregTechItem("silicon_tetrachloride");
     public static final Item SILICON_SOLAR_GRADE_DUST = getGregTechItem("si_solar_grade_dust");
     public static final Item SMALL_GALLIUM_ARSENIDE_CRYSTAL = getGregTechItem("small_gallium_arsenide_crystal");
     public static final Item SMALL_PILE_OF_CLAY_DUST = getGregTechItem("small_pile_of_clay_dust");

@@ -63,9 +63,10 @@ public class NodeGraphs {
             CIRCUIT_SUB_GRAPHS.add(GregTech.CIRCUIT_BOARD);
             CIRCUIT_SUB_GRAPHS.add(GregTech.INTEGRATED_LOGIC_CIRCUIT);
                 CIRCUIT_SUB_GRAPHS.add(GregTech.WAFER);
-                CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST); //TODO
             CIRCUIT_SUB_GRAPHS.add(GregTech.RESISTOR);
             CIRCUIT_SUB_GRAPHS.add(GregTech.DIODE);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_POLYETHYLENE);
             CIRCUIT_SUB_GRAPHS.add(GregTech.FINE_COPPER_WIRE);
             CIRCUIT_SUB_GRAPHS.add(GregTech.TIN_BOLT);
             CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_LEAD);
@@ -74,7 +75,9 @@ public class NodeGraphs {
             CIRCUIT_LOOP_RECIPES = new HashMap<>();
 
             CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, Recipes.SAND);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.SILICON_SOLAR_GRADE_DUST, Recipes.SILICON_SOLAR_GRADE_DUST);
             CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, Recipes.PERFECT_RAW_SILICON_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, Recipes.ELECTROLYZED_MAGNESIA);
         }
 
         INTEGRATED_LOGIC_CIRCUIT_LV = new dividedNodeGraph(GregTech.INTEGRATED_LOGIC_CIRCUIT_LV, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
