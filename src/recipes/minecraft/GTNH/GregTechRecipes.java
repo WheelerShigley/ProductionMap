@@ -1018,7 +1018,7 @@ public class GregTechRecipes {
                         new ItemStack(GregTech.WATER, 0.037)
                 ),
                 List.of(
-                        new ItemStack(GregTech.WAFER),
+                        new ItemStack(GregTech.WAFER, 16),
                         new ItemStack(GregTech.SILICON_SOLAR_GRADE_DUST, 4)
                 ),
                 10

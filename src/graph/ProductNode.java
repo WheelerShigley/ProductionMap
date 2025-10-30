@@ -8,8 +8,6 @@ import recipes.minecraft.GTNH.GregTechRecipes;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class ProductNode {
     public final Item product;
@@ -42,7 +40,6 @@ public class ProductNode {
         }
 
         sinks.add(sink);
-        updateSourceUptimes();
         return true;
     }
 
@@ -81,15 +78,16 @@ public class ProductNode {
         return false;
     }
 
-    private void updateSourceUptimes() {
+    private RecipeNode updateSourceUptimes() {
         double unmet_demand_rate = getUnmetDemandRate();
         if(unmet_demand_rate <= 0.0) {
-            return;
+            return null;
         }
         //adjust uptimes to the lowest interval of 100%s first (utilizing existing machine-time)
+        Recipe bestRecipe = Recipes.optimalRecipes.get(this.product);
         for(RecipeNode source : sources) {
-            if(unmet_demand_rate <= 0.0) {
-                return;
+            if( !source.recipe.equals(bestRecipe) ) {
+                continue;
             }
             //calculate required uptime to meet demand
             double required_uptime = source.getUptime() + unmet_demand_rate/getProductionRate();
@@ -100,37 +98,22 @@ public class ProductNode {
             //if available rate needed exceeds the nearest 100%, set the uptime to the nearest 100%; adjust demand
             if(required_uptime < next_uptime_centainterval) {
                 source.setUpTime(required_uptime);
-                return;
             } else {
                 source.setUpTime(next_uptime_centainterval);
                 unmet_demand_rate = getUnmetDemandRate();
             }
+            return null;
         }
-        //TODO: Make temporal-evaluation for "best"
-        //adjust the "best" producer to meet demand; in this case, the evaluation-criterion is merely production-speed
-        RecipeNode mostEfficientProducer = null; {
-            double mostEfficientProductionRate = 0.0;
-            double currentProductionRate;
-            for(RecipeNode source : sources) {
-                currentProductionRate = source.getProductionRate(this.product);
-                if(mostEfficientProductionRate < currentProductionRate) {
-                    mostEfficientProductionRate = currentProductionRate;
-                    mostEfficientProducer = source;
-                }
-            }
-            if(mostEfficientProducer == null) {
-                //no producer is found
-                //Logger.getLogger("ProductNode<"+this.product.getName()+">").log(Level.INFO, "No sources found.");
-                return;
-            }
-        }
-        mostEfficientProducer.setUpTime(
-            mostEfficientProducer.getUptime() + unmet_demand_rate/mostEfficientProducer.getProductionRate(this.product)
+        //meet demand
+        RecipeNode newProducer = new RecipeNode(bestRecipe);
+        newProducer.setUpTime(
+            unmet_demand_rate/newProducer.getProductionRate(this.product)
         );
-        return;
+        this.addSource(newProducer);
+        return newProducer;
     }
 
-    private double getProductionRate() {
+    public double getProductionRate() {
         double production_rate = 0.0;
         for(RecipeNode source : sources) {
             production_rate += source.getUptime()*source.getProductionRate(product);
@@ -162,13 +145,11 @@ public class ProductNode {
             productNodeStringBuilder.append(" (no source)");
         } else {
             productNodeStringBuilder.append(" @ ");
-            double rate = 20.0*this.getProductionRate();
-            if(rate%1.0 == 0.0) {
-                productNodeStringBuilder.append( (int)rate );
-            } else {
-                productNodeStringBuilder.append( Math.round(rate*10000.0)/10000.0 );
-            }
-            productNodeStringBuilder.append("/second");
+            double rate = this.getProductionRate();
+            productNodeStringBuilder
+                .append( StringHelper.getNumberString(rate) )
+                .append("/second")
+            ;
         }
 
         if(

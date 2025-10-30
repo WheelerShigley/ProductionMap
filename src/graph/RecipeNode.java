@@ -5,11 +5,8 @@ import items.ItemStack;
 import machines.MachineTypes;
 import power.PowerType;
 import recipes.Recipe;
-import recipes.Recipes;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class RecipeNode {

@@ -3,8 +3,6 @@ package recipes;
 import graph.evaluations.RecipeComparison;
 import items.Item;
 import items.ItemStack;
-import items.minecraft.GTNH.GregTech;
-import machines.MachineTypes;
 import recipes.minecraft.GTNH.GTNH;
 import recipes.minecraft.GTNH.GregTechRecipes;
 import register.Registered;

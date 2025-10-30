@@ -88,7 +88,8 @@ public class NodeGraph {
         List<ProductNode> unsourcedProductNode = new ArrayList<>();
         for(ProductNode potentiallyUnsourcedProductNode : products) {
             if(
-                potentiallyUnsourcedProductNode.getSourceCount() < 1
+                0.0 < potentiallyUnsourcedProductNode.getUnmetDemandRate()
+                //potentiallyUnsourcedProductNode.getSourceCount() < 1
                 && Recipes.optimalRecipes.containsKey(potentiallyUnsourcedProductNode.product)
                 /*&& !MachineTypes.isLeafMachine(
                     Recipes.optimalRecipes.get(potentiallyUnsourcedProductNode.product).machineType

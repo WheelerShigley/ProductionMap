@@ -1,11 +1,7 @@
 package graph.export;
 
-import graph.NodeGraph;
-import graph.ProductNode;
-import graph.RecipeNode;
-import graph.StringHelper;
+import graph.*;
 import items.Item;
-import machines.MachineTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,20 +99,16 @@ public class GraphViz {
     public static String getDot(NodeGraph graph) {
         return getDot(graph, "digraph", "}\r\n", "");
     }
-    public static String getDot(NodeGraph graph, List<Item> clusters) {
-        StringBuilder dotBuilder = new StringBuilder();
-            dotBuilder.append("\r\n");
+    public static String getDot(NodeGraph graph, NodeGraphs.dividedNodeGraph graphData) {
         HashMap<NodeGraph, String> subGraphs = new HashMap<>();
+        List<Item> clusters = graphData.subGraphHeads;
+        StringBuilder dotBuilder = new StringBuilder();
 
-        //main graph
-        subGraphs.put(graph, "main");
-        dotBuilder.append("digraph {\r\n").append("\tcompound=true\r\n").append("\r\n");
+        //header for .dot file
         dotBuilder
-            .append("\t")
-            .append(
-                getDot(graph, "subgraph cluster_"+subGraphs.get(graph), "}\r\n", subGraphs.get(graph) )
-                    .replace("\r\n", "\r\n\t")
-            )
+            .append("\r\n")
+            .append("digraph {\r\n")
+            .append("\tcompound=true\r\n")
             .append("\r\n")
         ;
 
@@ -138,16 +130,24 @@ public class GraphViz {
                 subGraphs.put(clusterGraph, cluster.getName() );
             }
 
-            //TODO: populate subGraphs demand-rates
-            for( NodeGraph mainGraph : subGraphs.keySet() ) {
-                if( mainGraph.equals(graph) ) {
+            //Correct "main" graph to only include its subgraph
+            NodeGraph mainGraph; {
+                Item finalItem = graph.getFinalProduct();
+                double finalRate = graph.getProduct(finalItem).getProductionRate();
+                mainGraph = new NodeGraph(finalItem, finalRate, clusters);
+            }
+            subGraphs.put(mainGraph, "main");
+
+            //TODO: populate subGraph's final-product's demand(s)
+            for( NodeGraph rateGraph : subGraphs.keySet() ) {
+                if( rateGraph.equals(mainGraph) ) {
                     continue;
                 }
 
-                ProductNode mainOutput = mainGraph.getProduct( mainGraph.getFinalProduct() );
+                ProductNode mainOutput = rateGraph.getProduct( rateGraph.getFinalProduct() );
                 double demand = mainOutput.default_demand;
                 for( NodeGraph subGraph : subGraphs.keySet() ) {
-                    if( mainGraph.equals(subGraph) ) {
+                    if( rateGraph.equals(subGraph) ) {
                         continue;
                     }
                     if( subGraph.getProduct(mainOutput.product) != null ) {
@@ -155,16 +155,11 @@ public class GraphViz {
                     }
                 }
                 //reinitialize with new demand
-                mainGraph.initialize(mainGraph.getFinalProduct(), demand);
+                rateGraph.initialize(rateGraph.getFinalProduct(), demand);
             }
 
             //append subGraphs data
             for( NodeGraph subGraph : subGraphs.keySet() ) {
-                if( subGraph.equals(graph) ) {
-                    //already printed
-                    continue;
-                }
-
                 String name = subGraphs.get(subGraph);
                 dotBuilder
                     .append("\t")
@@ -240,60 +235,61 @@ public class GraphViz {
         dotBuilder.append(prefix).append(" {\r\n");
 
         /* Nodes */ {
-            //product nodes
-            boolean isInput, isOutput;
-            for(ProductNode product : names.productIdentifiers.keySet() ) {
-                isInput = isInput(product);
-                isOutput = isOutput(product);
+            /* Product Nodes */ {
+                boolean isInput, isOutput;
+                for(ProductNode product : names.productIdentifiers.keySet() ) {
+                    isInput = isInput(product);
+                    isOutput = isOutput(product);
 
-                String color; {
-                    color = "ivory2";
-                    if(isInput) {
-                        color = "lightskyblue";
-                    }
-                    if(isOutput) {
-                        color = "lightgoldenrod1";
-                    }
+                    String color; {
+                        color = "ivory2";
+                        if(isInput) {
+                            color = "lightskyblue";
+                        }
+                        if(isOutput) {
+                            color = "lightgoldenrod1";
+                        }
 
-                    //primary output
-                    if( graph.getFinalProduct().equals(product.product) ) {
-                        color = "gold";
+                        //primary output
+                        if( graph.getFinalProduct().equals(product.product) ) {
+                            color = "gold";
+                        }
                     }
+                    dotBuilder
+                        .append("\t")
+                        .append( names.getName(product) )
+                        .append(" [")
+                            .append("shape=box, ")
+                            .append("style=\"rounded,filled\"")
+                            .append("fillcolor=\"").append(color).append("\", ")
+                            .append("label=\"").append( product.product.getName() ).append("\"")
+                        .append("]\r\n")
+                    ;
                 }
-                dotBuilder
-                    .append("\t")
-                    .append( names.getName(product) )
-                    .append(" [")
-                        .append("shape=box, ")
-                        .append("style=\"rounded,filled\"")
-                        .append("fillcolor=\"").append(color).append("\"")
-                        .append("label=\"").append( product.product.getName() ).append("\", ")
-                    .append("]\r\n")
-                ;
+                dotBuilder.append("\r\n");
             }
-            dotBuilder.append("\r\n");
-
-            //recipes nodes
-            for(RecipeNode transformation : names.transformationIdentifiers.keySet() ) {
-                String color; {
-                    color = "lavenderblush";
-                    if( isInput(transformation) ) {
-                        color = "lavenderblush2";
+            /* Recipe Nodes (Records) */ {
+                for(RecipeNode transformation : names.transformationIdentifiers.keySet() ) {
+                    String color; {
+                        color = "lavenderblush";
+                        if( isInput(transformation) ) {
+                            color = "lavenderblush2";
+                        }
                     }
+                    dotBuilder
+                        .append("\t")
+                        .append( names.getName(transformation) )
+                        .append(" [")
+                            .append("shape=record, ")
+                            .append("style=\"filled\", ")
+                            .append("fillcolor=\"").append(color).append("\", ")
+                            .append("label=\"").append( getRecipeNodeAsMachineRecord(transformation) ).append("\"")
+                        .append("]")
+                        .append("\r\n")
+                    ;
                 }
-                dotBuilder
-                    .append("\t")
-                    .append( names.getName(transformation) )
-                    .append(" [")
-                        .append("shape=record, ")
-                        .append("style=\"filled\", ")
-                        .append("fillcolor=\"").append(color).append("\", ")
-                        .append("label=\"").append( getRecipeNodeAsMachineRecord(transformation) ).append("\"")
-                    .append("]")
-                    .append("\r\n")
-                ;
+                dotBuilder.append("\r\n");
             }
-            dotBuilder.append("\r\n");
         }
 
         /* Connections */ {
@@ -389,7 +385,7 @@ public class GraphViz {
             .append("|")
                 //.append("")
             .append("|")
-                .append( StringHelper.getNumberString( 100.0*recipe.getUptime() ) ).append("%")
+                .append( StringHelper.getNumberString( 100.0*recipe.getUptime()/minimum_count ) ).append("%")
             .append("}")
         ;
 

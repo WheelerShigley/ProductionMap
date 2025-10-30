@@ -41,8 +41,12 @@ public class NodeGraphs {
             CIRCUIT_SUB_GRAPHS.add(GregTech.CIRCUIT_BOARD);
             CIRCUIT_SUB_GRAPHS.add(GregTech.RESISTOR);
             CIRCUIT_SUB_GRAPHS.add(GregTech.ONE_RED_ALLOY_WIRE);
-            CIRCUIT_SUB_GRAPHS.add(GregTech.STEEL_INGOT);
+                CIRCUIT_SUB_GRAPHS.add(Vanilla.REDSTONE_DUST);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.STEEL_ROD);
             CIRCUIT_SUB_GRAPHS.add(GregTech.VACUUM_TUBE);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_REDSTONE_ALLOY);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.GLASS_TUBE);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.OXYGEN);
             CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_LEAD);
         }
         final HashMap<Item, Recipe> CIRCUIT_LOOP_RECIPES; {
@@ -90,7 +94,7 @@ public class NodeGraphs {
             CIRCUIT_SUB_GRAPHS.add(GregTech.CIRCUIT_BOARD);
             CIRCUIT_SUB_GRAPHS.add(GregTech.INTEGRATED_LOGIC_CIRCUIT);
                 CIRCUIT_SUB_GRAPHS.add(GregTech.WAFER);
-                CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST);
+                //CIRCUIT_SUB_GRAPHS.add(GregTech.SILICON_SOLAR_GRADE_DUST);
             CIRCUIT_SUB_GRAPHS.add(GregTech.RESISTOR);
             CIRCUIT_SUB_GRAPHS.add(GregTech.DIODE);
                 CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_POLYETHYLENE);
@@ -143,5 +147,16 @@ public class NodeGraphs {
         }
 
         VACUUM_TUBE = new dividedNodeGraph(GregTech.VACUUM_TUBE, SUB_GRAPHS, RECIPES);
+    }
+    public static final dividedNodeGraph WAFER; static {
+        final List<Item> SUB_GRAPHS = new ArrayList<>();
+        final HashMap<Item, Recipe> RECIPES; {
+            RECIPES = new HashMap<>();
+
+            RECIPES.put(GregTech.RAW_SILICON_DUST, GregTechRecipes.PERFECT_RAW_SILICON_DUST);
+            RECIPES.put(GregTech.SILICON_SOLAR_GRADE_DUST, GregTechRecipes.SILICON_SOLAR_GRADE_DUST);
+        }
+
+        WAFER = new dividedNodeGraph(GregTech.WAFER, SUB_GRAPHS, RECIPES);
     }
 }

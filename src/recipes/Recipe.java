@@ -448,7 +448,7 @@ public class Recipe extends Identified {
             }
         }
 
-        production_rate /= (time_seconds / 20.0);
+        production_rate /= time_seconds;
         return production_rate;
     }
 

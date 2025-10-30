@@ -4,7 +4,6 @@ import graph.NodeGraph;
 import graph.ProductNode;
 import items.Item;
 import items.ItemStack;
-import items.minecraft.GTNH.GregTech;
 import recipes.Recipe;
 import recipes.Recipes;
 

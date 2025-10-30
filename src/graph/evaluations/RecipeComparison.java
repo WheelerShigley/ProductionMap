@@ -3,7 +3,6 @@ package graph.evaluations;
 import items.Item;
 import items.ItemStack;
 import items.Items;
-import items.minecraft.GTNH.GregTech;
 import recipes.Recipe;
 import recipes.Recipes;
 import recipes.minecraft.GTNH.GregTechRecipes;
