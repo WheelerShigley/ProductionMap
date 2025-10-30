@@ -86,7 +86,10 @@ public class ProductNode {
         //adjust uptimes to the lowest interval of 100%s first (utilizing existing machine-time)
         Recipe bestRecipe = Recipes.optimalRecipes.get(this.product);
         for(RecipeNode source : sources) {
-            if( !source.recipe.equals(bestRecipe) ) {
+            if(
+                source.recipe != null
+                && !source.recipe.equals(bestRecipe)
+            ) {
                 continue;
             }
             //calculate required uptime to meet demand

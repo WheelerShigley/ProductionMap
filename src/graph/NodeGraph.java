@@ -28,6 +28,9 @@ public class NodeGraph {
     public NodeGraph(Item finalProduct, double items_per_second) {
         initialize(finalProduct, items_per_second);
     }
+    public NodeGraph(Item finalProduct, Recipe originalSource) {
+        initialize(finalProduct, originalSource);
+    }
     public void initialize(Item finalProduct, double items_per_second) {
         this.finalProduct = finalProduct;
         this.products = new ArrayList<>();
@@ -41,6 +44,27 @@ public class NodeGraph {
         );
         ultimateSource.setUpTime(
             items_per_second/ultimateSource.recipe.getProductionRate(finalProduct)
+        );
+
+        ultimateSource.addOutput(ultimateSink);
+        ultimateSink.addSource(ultimateSource);
+        this.addProduct(ultimateSink);
+        this.addTransformer(ultimateSource);
+
+        //back-calculate production-map
+        constructNodeGraph();
+    }
+    public void initialize(Item finalProduct, Recipe originalSource) {
+        this.finalProduct = finalProduct;
+        this.products = new ArrayList<>();
+        this.transformers = new ArrayList<>();
+
+        //create original recipe-node and product-node
+        ProductNode ultimateSink = new ProductNode(finalProduct);
+
+        RecipeNode ultimateSource = new RecipeNode(originalSource);
+        ultimateSource.setUpTime(
+            1.0/ultimateSource.recipe.getProductionRate(finalProduct)
         );
 
         ultimateSource.addOutput(ultimateSink);

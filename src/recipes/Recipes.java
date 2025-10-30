@@ -73,12 +73,14 @@ public class Recipes extends Registered<Recipe> {
 
         //TODO: more options
         optimalRecipes =
-            RecipeComparison.getBestRecipes(FASTEST)
+            //RecipeComparison.getBestRecipes(FASTEST)
             //RecipeComparison.getBestRecipes(POWER_EFFICIENT)
             //RecipeComparison.getBestRecipes(RESOURCE_EFFICIENT)
+            RecipeComparison.getBestRecipes(LEAST_MANUAL)
         ;
     }
 
+    @Deprecated
     public static Recipe getFastestProducingRecipe(Item ofItem) {
         //linear search
         double fastest_production_rate = 0.0, current_production_rate;

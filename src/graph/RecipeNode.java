@@ -114,6 +114,10 @@ public class RecipeNode {
         return usage_rate;
     }
     public double getProductionRate(Item ofItem) {
+        if(this.recipe == null) {
+            return 0.0;
+        }
+
         double production_rate = 0.0;
         for(ItemStack producedItem : recipe.outputs) {
             if( producedItem.item.equals(ofItem) ) {
