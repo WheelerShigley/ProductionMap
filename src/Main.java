@@ -53,8 +53,11 @@ public class Main {
         System.out.println(output);
     }
     private static void printGraphData(NodeGraph graph, List<Item> subGraphHeads) {
+        Item finalItem = graph.getFinalProduct();
+        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, graph.getProduct(finalItem).getAvailableProductionRate() );
+
         String output = ""; {
-            output += graph.toString() + "\r\n";
+            output += GRAPH.toString() + "\r\n";
             //output += CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) + "\r\n";
             output += GraphViz.getDot(graph, subGraphHeads) + "\r\n";
         }
