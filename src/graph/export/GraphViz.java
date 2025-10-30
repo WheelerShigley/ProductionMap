@@ -105,6 +105,7 @@ public class GraphViz {
     }
     public static String getDot(NodeGraph graph, List<Item> clusters) {
         StringBuilder dotBuilder = new StringBuilder();
+            dotBuilder.append("\r\n");
         HashMap<NodeGraph, String> subGraphs = new HashMap<>();
 
         //main graph

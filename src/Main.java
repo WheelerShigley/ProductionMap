@@ -20,11 +20,11 @@ public class Main {
      * Populate Recipes (more)
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
-    private static final dividedNodeGraph GRAPH_DATA = GOOD_INTEGRATED_CIRCUIT_MV;
+    private static final dividedNodeGraph GRAPH_DATA = VACUUM_TUBE;
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
 
-        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, 2, GRAPH_DATA.subGraphHeads);
+        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, 1, GRAPH_DATA.subGraphHeads);
         printGraphData(GRAPH, GRAPH_DATA.subGraphHeads);
     }
 
@@ -44,13 +44,21 @@ public class Main {
     }
 
     private static void printGraphData(NodeGraph graph) {
-        //System.out.println( graph.toString() );
-        //System.out.println(CSAcademy.getGraphData(graph) );
-        System.out.println( GraphViz.getDot(graph) );
+        String output = ""; {
+            output += graph.toString() + "\r\n";
+            //output += CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) + "\r\n";
+            output += GraphViz.getDot(graph) + "\r\n";
+        }
+
+        System.out.println(output);
     }
     private static void printGraphData(NodeGraph graph, List<Item> subGraphHeads) {
-        //System.out.println( graph.toString() );
-        //System.out.println(CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) );
-        System.out.println( GraphViz.getDot(graph, subGraphHeads) );
+        String output = ""; {
+            output += graph.toString() + "\r\n";
+            //output += CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) + "\r\n";
+            output += GraphViz.getDot(graph, subGraphHeads) + "\r\n";
+        }
+
+        System.out.println(output);
     }
 }

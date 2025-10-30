@@ -109,6 +109,9 @@ public class NodeGraphs {
 
         INTEGRATED_LOGIC_CIRCUIT_LV = new dividedNodeGraph(GregTech.INTEGRATED_LOGIC_CIRCUIT_LV, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
     }
+    public static final dividedNodeGraph LIGHT_CONCRETE; static {
+        LIGHT_CONCRETE = new dividedNodeGraph(GregTech.LIGHT_CONCRETE);
+    }
     public static final dividedNodeGraph POLYTETRAFLUOROETHYLENE_BAR; static {
         final List<Item> ptfeSubGraphs; {
             ptfeSubGraphs = new ArrayList<>();
@@ -121,5 +124,24 @@ public class NodeGraphs {
         }
 
         POLYTETRAFLUOROETHYLENE_BAR = new dividedNodeGraph(GregTech.POLYTETRAFLUOROETHYLENE_BAR, ptfeSubGraphs);
+    }
+    public static final dividedNodeGraph VACUUM_TUBE; static {
+        final List<Item> SUB_GRAPHS; {
+            SUB_GRAPHS = new ArrayList<>();
+            SUB_GRAPHS.add(GregTech.ONE_COPPER_WIRE);
+            SUB_GRAPHS.add(GregTech.GLASS_TUBE);
+            SUB_GRAPHS.add(GregTech.MOLTEN_REDSTONE_ALLOY);
+            SUB_GRAPHS.add(GregTech.RAW_SILICON_DUST);
+            SUB_GRAPHS.add(GregTech.STEEL_ROD);
+        }
+
+        final HashMap<Item, Recipe> RECIPES; {
+            RECIPES = new HashMap<>();
+
+            RECIPES.put(GregTech.VACUUM_TUBE, GregTechRecipes.MOLTEN_REDSTONE_ALLOY_VACUUM_TUBE);
+            RECIPES.put(GregTech.RAW_SILICON_DUST, GregTechRecipes.PERFECT_RAW_SILICON_DUST);
+        }
+
+        VACUUM_TUBE = new dividedNodeGraph(GregTech.VACUUM_TUBE, SUB_GRAPHS, RECIPES);
     }
 }
