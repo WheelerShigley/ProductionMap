@@ -129,6 +129,18 @@ public class NodeGraphs {
 
         POLYTETRAFLUOROETHYLENE_BAR = new dividedNodeGraph(GregTech.POLYTETRAFLUOROETHYLENE_BAR, ptfeSubGraphs);
     }
+    public static final dividedNodeGraph TNT; static {
+        final List<Item> tntSubGraphs; {
+            tntSubGraphs = new ArrayList<>();
+
+            tntSubGraphs.add(GregTech.SULFURIC_ACID);
+                tntSubGraphs.add(GregTech.OXYGEN);
+                tntSubGraphs.add(GregTech.OXYGEN_CELL);
+            tntSubGraphs.add(GregTech.GELLED_TOLUENE);
+        }
+
+        TNT = new dividedNodeGraph(Vanilla.TNT, tntSubGraphs);
+    }
     public static final dividedNodeGraph VACUUM_TUBE; static {
         final List<Item> SUB_GRAPHS; {
             SUB_GRAPHS = new ArrayList<>();

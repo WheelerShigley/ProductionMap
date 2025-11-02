@@ -28,4 +28,5 @@ public class Vanilla {
     public static final Item STONE = getVanillaItem("stone");
     public static final Item SUGAR = getVanillaItem("sugar");
     public static final Item SUGAR_CANE = getVanillaItem("sugar_cane");
+    public static final Item TNT = getVanillaItem("tnt");
 }

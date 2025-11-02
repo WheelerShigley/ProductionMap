@@ -505,6 +505,7 @@ public class GregTechRecipes {
                 60
         );
     }
+    public static final Recipe GELLED_TOLUENE = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBall, 16.0, new ItemStack(GregTech.TOLUENE, 100.0/144.0), new ItemStack(GregTech.GELLED_TOLUENE), 5.0);
     public static final Recipe GLOWSTONE_DUST = new Recipe(MachineTypes.FLUID_EXTRACTOR, 2.0, new ItemStack(Items.GLOW_FLOWER, 2), new ItemStack(Vanilla.GLOWSTONE_DUST), 15.0);
     public static final Recipe GLASS_DUST; static {
         GLASS_DUST = new Recipe(
@@ -1008,7 +1009,69 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe STONE = new Recipe(MachineTypes.ROCK_BREAKER, 30.0, new ItemStack(Vanilla.STONE), 0.8);
+    public static final Recipe SULFUR_DIOXIDE; static {
+        SULFUR_DIOXIDE = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitThree,
+            8.0,
+            List.of(
+                new ItemStack(GregTech.OXYGEN, 2),
+                new ItemStack(GregTech.SULFUR_DUST)
+            ),
+            List.of(
+                new ItemStack(GregTech.SULFUR_DIOXIDE, 1000.0/144.0)
+            ),
+            3
+        );
+    }
+    public static final Recipe SULFUR_TRIOXIDE; static {
+        SULFUR_TRIOXIDE = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitOne,
+            8.0,
+            List.of(
+                    new ItemStack(GregTech.OXYGEN_CELL),
+                    new ItemStack(GregTech.SULFUR_DIOXIDE, 1000.0/144.0)
+            ),
+            List.of(
+                    new ItemStack(GregTech.EMPTY_CELL),
+                    new ItemStack(GregTech.SULFUR_TRIOXIDE, 1000.0/144.0)
+            ),
+            10
+        );
+    }
+    public static final Recipe SULFURIC_ACID; static {
+        SULFURIC_ACID = new Recipe(
+                MachineTypes.CHEMICAL_REACTOR,
+                MachineConfiguration.ProgrammedCircuitOne,
+                8.0,
+                List.of(
+                    new ItemStack(IndustrialCraft.WATER_CELL),
+                    new ItemStack(GregTech.SULFUR_TRIOXIDE, 1000.0/144.0)
+                ),
+                List.of(
+                    new ItemStack(GregTech.EMPTY_CELL),
+                    new ItemStack(GregTech.SULFURIC_ACID, 1000.0/144.0)
+                ),
+                16
+        );
+    }
     public static final Recipe TIN_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(GregTech.TIN_DUST), new ItemStack(GregTech.TIN_INGOT), 6.5);
+    public static final Recipe TNT; static {
+        TNT = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitOne,
+            24.0,
+            List.of(
+                new ItemStack(GregTech.GELLED_TOLUENE, 4),
+                new ItemStack(GregTech.SULFURIC_ACID, 250.0/144.0)
+            ),
+            List.of(
+                new ItemStack(Vanilla.TNT)
+            ),
+            10
+        );
+    }
     public static final Recipe WAFER; static {
         WAFER = new Recipe(
                 MachineTypes.CHEMICAL_REACTOR,
@@ -1024,6 +1087,7 @@ public class GregTechRecipes {
                 10
         );
     }
+    public static final Recipe WATER_CELL = new Recipe(MachineTypes.WATERTANK, 0.0, new ItemStack(GregTech.WATER, 1000.0/144.0), new ItemStack(IndustrialCraft.WATER_CELL), 0.1);
     public static final Recipe WOOD_PLANK; static {
         WOOD_PLANK = new Recipe(
                 MachineTypes.ASSEMBLER,
@@ -1040,6 +1104,22 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe WOOD_PULP = new Recipe(MachineTypes.MACERATOR, 2.0, new ItemStack(Items.ANY_WOOD), new ItemStack(GregTech.WOOD_PULP, 6.8), 20.0);
+    public static final Recipe WOOD_TAR; static {
+        WOOD_TAR = new Recipe(
+            MachineTypes.FLUID_EXTRACTOR,
+            MachineConfiguration.ProgrammedCircuitTwo,
+            16.0,
+            List.of(
+                new ItemStack(Vanilla.CHARCOAL)
+            ),
+            List.of(
+                new ItemStack(GregTech.ASHES),
+                new ItemStack(GregTech.WOOD_TAR, 0.1)
+            ),
+            1.5
+        );
+    }
+    public static final Recipe WOOD_TAR_TOLUENE = new Recipe(MachineTypes.DISTILLERY, MachineConfiguration.ProgrammedCircuitFour, 64.0, new ItemStack(GregTech.WOOD_TAR, 200.0/144.0), new ItemStack(GregTech.TOLUENE, 20.0/144.0), 0.8);
     public static final Recipe WROUGHT_IRON_DUST = new Recipe(MachineTypes.MACERATOR, MachineConfiguration.ProgrammedCircuitEleven, 4.0, new ItemStack(GregTech.WROUGHT_IRON_INGOT), new ItemStack(GregTech.WROUGHT_IRON_DUST), 2.8);
     public static final Recipe WROUGHT_IRON_INGOT; static {
         WROUGHT_IRON_INGOT = new Recipe(

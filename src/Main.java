@@ -17,12 +17,12 @@ public class Main {
      * Populate Recipes (more)
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
-    private static final dividedNodeGraph GRAPH_DATA = GOOD_INTEGRATED_CIRCUIT_MV;
+    private static final dividedNodeGraph GRAPH_DATA = TNT;
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
         double maximum_monomachine_final_rate = Recipes.optimalRecipes.get(GRAPH_DATA.product).getProductionRate(GRAPH_DATA.product);
 
-        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate);
+        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate/(42.0*0.992064));
         printGraphData(GRAPH, GRAPH_DATA);
     }
 

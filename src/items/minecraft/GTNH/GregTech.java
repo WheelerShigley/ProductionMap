@@ -44,6 +44,7 @@ public class GregTech {
     public static final Item GALLIUM_DUST = getGregTechItem("gallium_dust");
     public static final Item GALLIUM_ARSENIDE_CRYSTAL = getGregTechItem("gallium_arsenide_crystal");
     //public static final Item GALLIUM_ARSENIDE_DUST = getGregTechItem("gallium_arsenide_dust");
+    public static final Item GELLED_TOLUENE = getGregTechItem("gelled_toluene");
     public static final Item GLASS_DUST = getGregTechItem("glass_dust");
     public static final Item GLASS_TUBE = getGregTechItem("glass_tube");
     public static final Item GOLD_DUST = getGregTechItem("gold_dust");
@@ -122,10 +123,15 @@ public class GregTech {
     public static final Item STEEL_INGOT = getGregTechItem("steel_ingot");
     public static final Item STEEL_ROD = getGregTechItem("steel_rod");
     public static final Item STONE_DUST = getGregTechItem("stone_dust");
+    public static final Item SULFUR_DUST = getGregTechItem("sulfur_dust");
+    public static final Item SULFUR_DIOXIDE = getGregTechItem("sulfur_dioxide");
+    public static final Item SULFUR_TRIOXIDE = getGregTechItem("sulfur_trioxide");
+    public static final Item SULFURIC_ACID = getGregTechItem("sulfuric_acid");
     public static final Item TETRAFLUOROETHYLENE_CELL = getGregTechItem("tetrafluoroethylene_cell");
     public static final Item TIN_BOLT = getGregTechItem("tin_bolt");
     public static final Item TIN_DUST = getGregTechItem("tin_dust");
     public static final Item TIN_INGOT = getGregTechItem("tin_ingot");
+    public static final Item TOLUENE = getGregTechItem("toluene");
     public static final Item VACUUM_TUBE = getGregTechItem("vacuum_tube");
     public static final Item WATER = getGregTechItem("water");
     public static final Item WAFER = getGregTechItem("wafer");
@@ -133,6 +139,7 @@ public class GregTech {
     public static final Item WOOD_GAS = getGregTechItem("wood_gas");
     public static final Item WOOD_PLANK = getGregTechItem("wood_plank");
     public static final Item WOOD_PULP = getGregTechItem("wood_pulp");
+    public static final Item WOOD_TAR = getGregTechItem("wood_tar");
     public static final Item WROUGHT_IRON_DUST = getGregTechItem("wrought_iron_dust");
     public static final Item WROUGHT_IRON_INGOT = getGregTechItem("wrought_iron_ingot");
 }

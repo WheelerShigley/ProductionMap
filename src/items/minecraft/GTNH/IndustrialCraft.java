@@ -12,4 +12,5 @@ public class IndustrialCraft {
     public static final Item ELECTRONIC_CIRCUIT = getIndustrialCraftItem("electronic_circuit");
     public static final Item PLANT_BALL = getIndustrialCraftItem("plant_ball");
     public static final Item STICKY_RESIN = getIndustrialCraftItem("sticky_resin");
+    public static final Item WATER_CELL = getIndustrialCraftItem("water_cell");
 }
