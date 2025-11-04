@@ -1,14 +1,19 @@
 import graph.NodeGraph;
 import graph.export.GraphViz;
+import graph.export.Local;
 import items.Item;
 import recipes.Recipe;
 import recipes.Recipes;
 
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static graph.NodeGraphs.*;
 
 public class Main {
+    private static final Logger LOGGER = Logger.getLogger("Main");
+
     /* TODO
      * BUGFIX: ensure preferred-recipes are respected when instantiating multiple (primary) NodeGraphs
      * Refactor for "abstract" NodeGraphs (main + subgraphs)
@@ -36,19 +41,18 @@ public class Main {
         for( Item forcedSourcedItem : forcedRecipes.keySet() ) {
             Recipes.optimalRecipes.replace(forcedSourcedItem, forcedRecipes.get(forcedSourcedItem) );
         }
-
-        //HashMap<Item, Recipe> recipes = Recipes.optimalRecipes;
-        //Recipe si = Recipes.optimalRecipes.get(GregTech.RAW_SILICON_DUST);
     }
 
     private static void printGraphData(NodeGraph graph) {
         String output = ""; {
             output += graph.toString() + "\r\n";
             //output += CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) + "\r\n";
-            output += GraphViz.getDot(graph) + "\r\n";
         }
 
-        System.out.println(output);
+        String outputName = graph.getFinalProduct().getName() + ".dot";
+        Local.writeToFile( outputName, GraphViz.getDot(graph) );
+
+        LOGGER.log(Level.INFO, output);
     }
     private static void printGraphData(NodeGraph graph, dividedNodeGraph graphData) {
         Item finalItem = graph.getFinalProduct();
@@ -58,9 +62,11 @@ public class Main {
         String output = ""; {
             output += GRAPH.toString() + "\r\n";
             //output += CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) + "\r\n";
-            output += GraphViz.getDot(graph, graphData) + "\r\n";
         }
 
-        System.out.println(output);
+        String outputName = graph.getFinalProduct().getName() + ".dot";
+        Local.writeToFile( outputName, GraphViz.getDot(graph, graphData) );
+
+        LOGGER.log(Level.INFO, output);
     }
 }
