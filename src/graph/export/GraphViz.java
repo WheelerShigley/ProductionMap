@@ -229,6 +229,9 @@ public class GraphViz {
         return dotBuilder.toString();
     }
     private static String getDot(NodeGraph graph, String prefix, String postfix, String nodeNamePrefix) {
+        return getDot(graph, prefix, postfix, nodeNamePrefix, false);
+    }
+    private static String getDot(NodeGraph graph, String prefix, String postfix, String nodeNamePrefix, boolean verbose) {
         NodesNameMap names = getNodeIdentifiers(graph, nodeNamePrefix);
 
         StringBuilder dotBuilder = new StringBuilder();
@@ -293,52 +296,42 @@ public class GraphViz {
         }
 
         /* Connections */ {
-            HashMap< String, List<String> > existingConnections = new HashMap<>();
-            StringBuilder connectionsBuilder = new StringBuilder();
-
             //product -> transformer
             for(ProductNode productNode : graph.products) {
-                connectionsBuilder.setLength(0);
                 for(int index = 0; index < productNode.sinks.size(); index++) {
-                    connectionsBuilder.append(  names.getName( productNode.sinks.get(index) )  );
-                    if(index < productNode.sinks.size()-1 ) {
-                        connectionsBuilder.append(',');
+                    RecipeNode sink = productNode.sinks.get(index);
+                    String amountString = StringHelper.getNumberString(
+                        sink.recipe.getItemInputCount(productNode.product)
+                    );
+                    dotBuilder
+                        .append("\t")
+                        .append( names.getName(productNode) ).append(" -> ").append(  names.getName(sink)  )
+                    ;
+                    if(verbose) {
+                        dotBuilder.append(" [label=\"").append(amountString).append("\"]");
                     }
+                    dotBuilder.append("\r\n");
                 }
-                if( connectionsBuilder.length() <= 0 ) {
-                    continue;
-                }
-
-                dotBuilder
-                    .append("\t")
-                    .append( names.getName(productNode) )
-                    .append(" -> {")
-                    .append( connectionsBuilder.toString() )
-                    .append("}\r\n")
-                ;
             }
             dotBuilder.append("\r\n");
 
             //transformer -> product
             for(RecipeNode recipeNode : graph.transformers) {
-                connectionsBuilder.setLength(0);
                 for(int index = 0; index < recipeNode.outputs.size(); index++) {
-                    connectionsBuilder.append(  names.getName( recipeNode.outputs.get(index) )  );
-                    if(index < recipeNode.outputs.size()-1 ) {
-                        connectionsBuilder.append(',');
+                    ProductNode source = recipeNode.outputs.get(index);
+                    String amountString = StringHelper.getNumberString(
+                        recipeNode.recipe.getItemOutputCount(source.product)
+                    );
+                    dotBuilder
+                        .append("\t")
+                        .append( names.getName(recipeNode) ).append(" -> ").append( names.getName(source) )
+                    ;
+                    if(verbose) {
+                        dotBuilder.append(" [label=\"").append(amountString).append("\"]");
                     }
+                    dotBuilder.append("\r\n")
+                    ;
                 }
-                if( connectionsBuilder.length() <= 0 ) {
-                    continue;
-                }
-
-                dotBuilder
-                    .append("\t")
-                    .append( names.getName(recipeNode) )
-                    .append(" -> {")
-                    .append( connectionsBuilder.toString() )
-                    .append("}\r\n")
-                ;
             }
         }
 
@@ -401,7 +394,7 @@ public class GraphViz {
             .append("{")
                 .append( recipe.recipe.configuration.toString() )
             .append("|")
-                //.append("")
+                .append( StringHelper.getNumberString(recipe.recipe.time_seconds) ).append('s')
             .append("|")
                 .append("×").append(minimum_count)
             .append("}")

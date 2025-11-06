@@ -452,6 +452,15 @@ public class Recipe extends Identified {
         return production_rate;
     }
 
+    public double getItemInputCount(Item ofItem) {
+        double input_count = 0.0;
+        for(ItemStack input : inputs) {
+            if( input.item.equals(ofItem) ) {
+                input_count += input.quantity;
+            }
+        }
+        return input_count;
+    }
     public double getItemOutputCount(Item ofItem) {
         double output_count = 0.0;
         for(ItemStack output : outputs) {

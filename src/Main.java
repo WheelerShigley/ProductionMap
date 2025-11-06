@@ -30,7 +30,7 @@ public class Main {
             double maximum_monomachine_final_rate = Recipes.optimalRecipes.get(GRAPH_DATA.product).getProductionRate(GRAPH_DATA.product);
             GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate);
 
-            double normalized_final_rate = maximum_monomachine_final_rate/NodeGraph.getHighestUptime(GRAPH);
+            double normalized_final_rate = maximum_monomachine_final_rate/GRAPH.getHighestUptime();
             GRAPH = new NodeGraph(GRAPH_DATA.product, normalized_final_rate);
         }
 
