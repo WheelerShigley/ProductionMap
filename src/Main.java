@@ -25,9 +25,15 @@ public class Main {
     private static final dividedNodeGraph GRAPH_DATA = CETANE_BOOSTED_DIESEL;
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
-        double maximum_monomachine_final_rate = Recipes.optimalRecipes.get(GRAPH_DATA.product).getProductionRate(GRAPH_DATA.product);
 
-        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate/(30*0.9876545));
+        NodeGraph GRAPH; {
+            double maximum_monomachine_final_rate = Recipes.optimalRecipes.get(GRAPH_DATA.product).getProductionRate(GRAPH_DATA.product);
+            GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate);
+
+            double normalized_final_rate = maximum_monomachine_final_rate/NodeGraph.getHighestUptime(GRAPH);
+            GRAPH = new NodeGraph(GRAPH_DATA.product, normalized_final_rate);
+        }
+
         printGraphData(GRAPH, GRAPH_DATA);
     }
 

@@ -383,4 +383,19 @@ public class NodeGraph {
         }
         return leafProductNodes;
     }
+    public static Double getHighestUptime(NodeGraph graph) {
+        if(graph == null) {
+            return null;
+        }
+
+        double highest = Double.MIN_VALUE;
+        for(RecipeNode transformer : graph.transformers) {
+            highest = Math.max(transformer.getUptime(), highest);
+        }
+
+        if(highest == Double.MIN_VALUE) {
+            return null;
+        }
+        return highest;
+    }
 }
