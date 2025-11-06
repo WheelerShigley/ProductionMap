@@ -34,6 +34,30 @@ public class NodeGraphs {
         }
     }
 
+    public static final dividedNodeGraph CETANE_BOOSTED_DIESEL; static {
+        final List<Item> CBD_SUB_GRAPHS; {
+            CBD_SUB_GRAPHS = new ArrayList<>();
+
+            CBD_SUB_GRAPHS.add(GregTech.ACETIC_ACID_CELL);
+            CBD_SUB_GRAPHS.add(GregTech.ETHANOL);
+            CBD_SUB_GRAPHS.add(GregTech.FISH_OIL_CELL);
+            CBD_SUB_GRAPHS.add(GregTech.HYDROGEN_CELL);
+            CBD_SUB_GRAPHS.add(GregTech.NITRIC_ACID);
+            CBD_SUB_GRAPHS.add(GregTech.NITROGEN_GAS);
+            CBD_SUB_GRAPHS.add(GregTech.OXYGEN_CELL);
+            CBD_SUB_GRAPHS.add(GregTech.SULFURIC_ACID);
+            CBD_SUB_GRAPHS.add(GregTech.TINY_PILE_OF_SODIUM_HYDROXIDE_DUST);
+        }
+        final HashMap<Item, Recipe> CBD_RECIPES; {
+            CBD_RECIPES = new HashMap<>();
+
+            CBD_RECIPES.put(GregTech.ETHYLENE, GregTechRecipes.WOOD_GAS_ETHYLENE);
+            CBD_RECIPES.put(GregTech.HYDROGEN_CELL, GregTechRecipes.ELECTROLYZED_PHOSPHORIC_ACID);
+            CBD_RECIPES.put(GregTech.SALT, GregTechRecipes.BATHED_SALTY_ROOT);
+        }
+
+        CETANE_BOOSTED_DIESEL = new dividedNodeGraph(GregTech.CETANE_BOOSTED_DIESEL, CBD_SUB_GRAPHS, CBD_RECIPES);
+    }
     public static final dividedNodeGraph ELECTRONIC_CIRCUIT; static {
         final List<Item> CIRCUIT_SUB_GRAPHS; {
             CIRCUIT_SUB_GRAPHS = new ArrayList<>();

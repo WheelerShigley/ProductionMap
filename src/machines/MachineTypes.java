@@ -392,6 +392,17 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Extruder", "Shape Driver")
         ); //TODO: Industrial Extrusion Machine
     }
+    public static final MachineType FISH_TRAP; static {
+        HashMap<Voltage, List<MachineData> > trapsData = new HashMap<>(); {
+            trapsData.put(Voltage.None, List.of(new MachineData("Zhuhai - Fishing Port") )  );
+        }
+
+        FISH_TRAP = new MachineType(
+            GREGTECH,
+            "Fish Trap",
+            trapsData
+        );
+    }
     public static final MachineType FLUID_CANNER; static {
         HashMap<Voltage, List<MachineData> > cannersDatas = new HashMap<>(); {
             final String BASIC_NAME  = "Fluid Canner";
@@ -423,6 +434,13 @@ public class MachineTypes extends Registered<MachineType> {
             "Fluid Extractor",
             getCommonMachineData("Fluid Extractor", "Liquefying Sucker")
         ); //TODO: Large Fluid Extractor
+    }
+    public static final MachineType FLUID_HEATER; static {
+        FLUID_HEATER = new MachineType(
+            GREGTECH,
+            "Fluid Heater",
+            getCommonMachineData("Fluid Heater", "Heat Infuser")
+        ); //TODO: Thermic Heating Device
     }
     public static final MachineType FLUID_SOLIDIFIER; static {
         FLUID_SOLIDIFIER = new MachineType(
