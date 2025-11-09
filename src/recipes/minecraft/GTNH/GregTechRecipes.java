@@ -4,6 +4,7 @@ import items.ItemStack;
 import items.Items;
 import items.minecraft.GTNH.GregTech;
 import items.minecraft.GTNH.IndustrialCraft;
+import items.minecraft.GTNH.ThinkersConstruct;
 import items.minecraft.GTNH.Vanilla;
 import machines.MachineConfiguration;
 import machines.MachineTypes;
@@ -27,7 +28,9 @@ public class GregTechRecipes {
     /* Crops */
     public static final Recipe ANY_WOOD = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.ANY_WOOD), 1.0);
     public static final Recipe GLOW_FLOWER = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(items.Items.GLOW_FLOWER), 1.0);
+    public static final Recipe IRON_OREBERRY = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(ThinkersConstruct.IRON_OREBERRY), 1.0);
     public static final Recipe NETHERRACK_DUST = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(GregTech.NETHERRACK_DUST), 1.0);
+    public static final Recipe NETHER_WART = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Vanilla.NETHER_WART), 1.0);
     public static final Recipe STICKY_RESIN = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(IndustrialCraft.STICKY_RESIN), 1.0);
     public static final Recipe SALTY_ROOT = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.SALTY_ROOT), 1.0);
     public static final Recipe SUGAR_BEET = new Recipe(MachineTypes.CROP_MANAGER, 16.0, new ItemStack(Items.SUGAR_BEET), 1.0);
@@ -698,6 +701,8 @@ public class GregTechRecipes {
             20
         );
     }
+    public static final Recipe OREBERRY_IRON_DUST = new Recipe(MachineTypes.MACERATOR, 18, new ItemStack(ThinkersConstruct.IRON_OREBERRY, 9), new ItemStack(GregTech.IRON_DUST), 15);
+    public static final Recipe IRON_INGOT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4, new ItemStack(GregTech.IRON_DUST), new ItemStack(Vanilla.IRON_INGOT), 6.4);
     public static final Recipe INTEGRATED_ELECTRONIC_CIRCUIT_LV; static {
         INTEGRATED_ELECTRONIC_CIRCUIT_LV = new Recipe(
                 MachineTypes.CIRCUIT_ASSEMBLER,

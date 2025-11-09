@@ -3,9 +3,13 @@ package graph;
 import items.Item;
 import items.minecraft.GTNH.GregTech;
 import items.minecraft.GTNH.IndustrialCraft;
+import items.minecraft.GTNH.Thaumcraft;
 import items.minecraft.GTNH.Vanilla;
 import recipes.Recipe;
 import recipes.minecraft.GTNH.GregTechRecipes;
+import recipes.minecraft.GTNH.thaumcraft.AspectsRecipes;
+import recipes.minecraft.GTNH.thaumcraft.CauldronRecipes;
+import recipes.minecraft.GTNH.thaumcraft.ThaumcraftRecipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,6 +156,23 @@ public class NodeGraphs {
         }
 
         POLYTETRAFLUOROETHYLENE_BAR = new dividedNodeGraph(GregTech.POLYTETRAFLUOROETHYLENE_BAR, ptfeSubGraphs);
+    }
+    public static final dividedNodeGraph THAUMIUM_INGOT; static {
+        final List<Item> thaumiumSubGraphHeads; {
+            thaumiumSubGraphHeads = new ArrayList<>();
+
+            thaumiumSubGraphHeads.add(Thaumcraft.PRAECANTATIO);
+            thaumiumSubGraphHeads.add(Vanilla.IRON_INGOT);
+        }
+
+        final HashMap<Item, Recipe> THAUMIUM_RECIPES; {
+            THAUMIUM_RECIPES = new HashMap<>();
+
+            THAUMIUM_RECIPES.put(Thaumcraft.PRAECANTATIO, AspectsRecipes.NETHER_WART);
+            THAUMIUM_RECIPES.put(GregTech.IRON_DUST, GregTechRecipes.OREBERRY_IRON_DUST);
+        }
+
+        THAUMIUM_INGOT = new dividedNodeGraph(Thaumcraft.THAUMIUM_INGOT, thaumiumSubGraphHeads, THAUMIUM_RECIPES);
     }
     public static final dividedNodeGraph TNT; static {
         final List<Item> tntSubGraphs; {

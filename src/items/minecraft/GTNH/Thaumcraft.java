@@ -11,6 +11,7 @@ public class Thaumcraft {
 
     //Items
     public static final Item SALIS_MUNDUS = new Item(THAUMCRAFT,"salis_mundus");
+    public static final Item THAUMIUM_INGOT = new Item(THAUMCRAFT,"thaumium_ingot");
     //TODO
 
     //Aspects

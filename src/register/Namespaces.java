@@ -12,4 +12,5 @@ public class Namespaces {
     public static final String PAMS_NETHER = "harvest_the_nether";
     public static final String RAILCRAFT = "railcraft";
     public static final String THAUMCRAFT = "thaumcraft";
+    public static final String TINKERS_CONSTRUCT = "tinker's_construct";
 }

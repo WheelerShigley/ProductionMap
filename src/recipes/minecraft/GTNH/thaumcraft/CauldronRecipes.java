@@ -2,6 +2,7 @@ package recipes.minecraft.GTNH.thaumcraft;
 
 import items.ItemStack;
 import items.minecraft.GTNH.Thaumcraft;
+import items.minecraft.GTNH.Vanilla;
 import machines.MachineTypes;
 import recipes.Recipe;
 
@@ -24,6 +25,20 @@ public class CauldronRecipes {
             ),
             List.of(
                 new ItemStack(Thaumcraft.SALIS_MUNDUS, 2)
+            ),
+            5.0 //TODO
+        );
+    }
+    public static final Recipe THAUMIUM_INGOT; static {
+        THAUMIUM_INGOT = new Recipe(
+            MachineTypes.CAULDRON,
+            0.0,
+            List.of(
+                new ItemStack(Vanilla.IRON_INGOT),
+                new ItemStack(Thaumcraft.PRAECANTATIO, 4)
+            ),
+            List.of(
+                new ItemStack(Thaumcraft.THAUMIUM_INGOT)
             ),
             5.0 //TODO
         );

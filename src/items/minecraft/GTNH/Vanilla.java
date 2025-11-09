@@ -18,8 +18,10 @@ public class Vanilla {
     public static final Item GOLD_INGOT = getVanillaItem("gold_ingot");
     public static final Item GLOWSTONE_DUST = getVanillaItem("glowstone_dust");
     public static final Item GRAVEL = getVanillaItem("gravel");
+    public static final Item IRON_INGOT = getVanillaItem("iron_ingot");
     public static final Item LAVA = getVanillaItem("lava");
     public static final Item NETHERRACK = getVanillaItem("netherrack");
+    public static final Item NETHER_WART = getVanillaItem("nether_wart");
     public static final Item OBSIDIAN = getVanillaItem("obsidian");
     public static final Item REDSTONE_DUST = getVanillaItem("redstone_dust");
     public static final Item SAND = getVanillaItem("sand");
