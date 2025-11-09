@@ -22,19 +22,19 @@ public class Main {
      * Populate Recipes (more)
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
-    private static final dividedNodeGraph GRAPH_DATA = CETANE_BOOSTED_DIESEL;
+    private static final dividedNodeGraph GRAPH_DATA = VACUUM_TUBE;
+    public static final boolean VERBOSE_PRINTING = true;
     public static void main(String[] args) {
         initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
 
         NodeGraph GRAPH; {
             double maximum_monomachine_final_rate = Recipes.optimalRecipes.get(GRAPH_DATA.product).getProductionRate(GRAPH_DATA.product);
             GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate);
-
-            double normalized_final_rate = maximum_monomachine_final_rate/GRAPH.getHighestUptime();
-            GRAPH = new NodeGraph(GRAPH_DATA.product, normalized_final_rate);
+            GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate/GRAPH.getHighestUptime() );
         }
 
-        printGraphData(GRAPH, GRAPH_DATA);
+        //printGraphData(GRAPH, VERBOSE_PRINTING);
+        printGraphData(GRAPH, GRAPH_DATA, VERBOSE_PRINTING);
     }
 
     private static void initializeOptimalRecipes() {
@@ -49,29 +49,28 @@ public class Main {
         }
     }
 
-    private static void printGraphData(NodeGraph graph) {
+    private static void printGraphData(NodeGraph graph, boolean verbose) {
         String output = ""; {
             output += graph.toString() + "\r\n";
             //output += CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) + "\r\n";
         }
 
         String outputName = graph.getFinalProduct().getName() + ".dot";
-        Local.writeToFile( outputName, GraphViz.getDot(graph) );
+        Local.writeToFile( outputName, GraphViz.getDot(graph, verbose) );
 
         LOGGER.log(Level.INFO, output);
     }
-    private static void printGraphData(NodeGraph graph, dividedNodeGraph graphData) {
+    private static void printGraphData(NodeGraph graph, dividedNodeGraph graphData, boolean verbose) {
         Item finalItem = graph.getFinalProduct();
         double rate = graph.getProduct(finalItem).getProductionRate();
-        final NodeGraph GRAPH = new NodeGraph(GRAPH_DATA.product, rate);
 
         String output = ""; {
-            output += GRAPH.toString() + "\r\n";
+            output += graph+"\r\n";
             //output += CSAcademy.getGraphWithSubGraphs(graph, subGraphHeads) + "\r\n";
         }
 
         String outputName = graph.getFinalProduct().getName() + ".dot";
-        Local.writeToFile( outputName, GraphViz.getDot(graph, graphData) );
+        Local.writeToFile( outputName, GraphViz.getDot(graph, graphData, verbose) );
 
         LOGGER.log(Level.INFO, output);
     }

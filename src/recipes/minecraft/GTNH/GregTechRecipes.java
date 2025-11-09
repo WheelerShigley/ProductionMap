@@ -119,14 +119,16 @@ public class GregTechRecipes {
     }
     public static final Recipe CENTRIFUGED_GLOWSTONE_DUST; static {
         CENTRIFUGED_GLOWSTONE_DUST = new Recipe(
-                MachineTypes.CENTRIFUGE,
-                2.0,
-                List.of( new ItemStack(Vanilla.GLOWSTONE_DUST, 2) ),
-                List.of(
-                        new ItemStack(Vanilla.REDSTONE_DUST, 1),
-                        new ItemStack(GregTech.GOLD_DUST, 1)
-                ),
-                48.8
+            MachineTypes.CENTRIFUGE,
+            80.0,
+            List.of(
+                new ItemStack(Vanilla.GLOWSTONE_DUST, 2)
+            ),
+            List.of(
+                new ItemStack(Vanilla.REDSTONE_DUST, 1),
+                new ItemStack(GregTech.GOLD_DUST, 1)
+            ),
+            48.8
         );
     }
     public static final Recipe CENTRIFUGED_MARBLE_DUST; static {
@@ -572,18 +574,6 @@ public class GregTechRecipes {
             8.0
         );
     }
-    public static final Recipe EXTRACTED_GLOWSTONE; static {
-        EXTRACTED_GLOWSTONE = new Recipe(
-                MachineTypes.CENTRIFUGE,
-                80.0,
-                List.of( new ItemStack(Vanilla.GLOWSTONE_DUST, 2) ),
-                List.of(
-                        new ItemStack(Vanilla.REDSTONE_DUST, 1),
-                        new ItemStack(GregTech.GOLD_DUST, 1)
-                ),
-                48.8
-        );
-    }
     public static final Recipe EXTRUDED_TIN_BOLT = new Recipe(MachineTypes.EXTRUDER, MachineConfiguration.ExtrudeShapeBolt, 120.0, new ItemStack(GregTech.TIN_INGOT), new ItemStack(GregTech.TIN_BOLT, 8), 11.8);
     public static final Recipe EXTRUDED_SILVER_BOLT = new Recipe(MachineTypes.EXTRUDER, MachineConfiguration.ExtrudeShapeBolt, 120.0, new ItemStack(GregTech.SILVER_INGOT), new ItemStack(GregTech.SILVER_BOLT, 8), 10.7);
     public static final Recipe EXTRUDER_STEEL_ROD = new Recipe(MachineTypes.EXTRUDER, MachineConfiguration.ExtrudeShapeRod, 90.0, new ItemStack(GregTech.STEEL_INGOT), new ItemStack(GregTech.STEEL_ROD, 2), 5.6);
@@ -606,7 +596,7 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe GELLED_TOLUENE = new Recipe(MachineTypes.FLUID_SOLIDIFIER, MachineConfiguration.MoldBall, 16.0, new ItemStack(GregTech.TOLUENE, 100.0/144.0), new ItemStack(GregTech.GELLED_TOLUENE), 5.0);
-    public static final Recipe GLOWSTONE_DUST = new Recipe(MachineTypes.FLUID_EXTRACTOR, 2.0, new ItemStack(Items.GLOW_FLOWER, 2), new ItemStack(Vanilla.GLOWSTONE_DUST), 15.0);
+    public static final Recipe GLOWSTONE_DUST = new Recipe(MachineTypes.EXTRACTOR, 2.0, new ItemStack(Items.GLOW_FLOWER, 2), new ItemStack(Vanilla.GLOWSTONE_DUST), 15.0);
     public static final Recipe GLASS_DUST; static {
         GLASS_DUST = new Recipe(
                 MachineTypes.MIXER,
@@ -829,19 +819,19 @@ public class GregTechRecipes {
     public static final Recipe MOLTEN_REDSTONE_ALLOY = new Recipe(MachineTypes.FLUID_EXTRACTOR, 36.0, new ItemStack(GregTech.REDSTONE_ALLOY_INGOT), new ItemStack(GregTech.MOLTEN_REDSTONE_ALLOY), 1.2);
     public static final Recipe MOLTEN_REDSTONE_ALLOY_VACUUM_TUBE; static {
         MOLTEN_REDSTONE_ALLOY_VACUUM_TUBE = new Recipe(
-                MachineTypes.ASSEMBLER,
-                MachineConfiguration.ProgrammedCircuitFive,
-                8.0,
-                List.of(
-                        new ItemStack(GregTech.GLASS_TUBE, 4),
-                        new ItemStack(GregTech.ONE_COPPER_WIRE, 4),
-                        new ItemStack(GregTech.STEEL_ROD, 4),
-                        new ItemStack(GregTech.MOLTEN_REDSTONE_ALLOY, 0.5)
-                ),
-                List.of(
-                        new ItemStack(GregTech.VACUUM_TUBE, 8)
-                ),
-                8.0
+            MachineTypes.ASSEMBLER,
+            MachineConfiguration.ProgrammedCircuitFive,
+            8.0,
+            List.of(
+                new ItemStack(GregTech.GLASS_TUBE, 4),
+                new ItemStack(GregTech.ONE_ANNEALED_COPPER_WIRE, 4),
+                new ItemStack(GregTech.STEEL_ROD, 4),
+                new ItemStack(GregTech.MOLTEN_REDSTONE_ALLOY, 0.072/0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.VACUUM_TUBE, 16)
+            ),
+            8.0
         );
     }
     public static final Recipe MOLTEN_REDSTONE_VACUUM_TUBE; static {

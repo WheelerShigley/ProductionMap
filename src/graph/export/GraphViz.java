@@ -96,10 +96,10 @@ public class GraphViz {
         return new NodesNameMap(productIdentifiers, transformationIdentifiers);
     }
 
-    public static String getDot(NodeGraph graph) {
-        return getDot(graph, "digraph", "}\r\n", "");
+    public static String getDot(NodeGraph graph, boolean verbose) {
+        return getDot(graph, "digraph", "}\r\n", "", verbose);
     }
-    public static String getDot(NodeGraph graph, NodeGraphs.dividedNodeGraph graphData) {
+    public static String getDot(NodeGraph graph, NodeGraphs.dividedNodeGraph graphData, boolean verbose) {
         HashMap<NodeGraph, String> subGraphs = new HashMap<>();
         List<Item> clusters = graphData.subGraphHeads;
         StringBuilder dotBuilder = new StringBuilder();
@@ -168,7 +168,8 @@ public class GraphViz {
                             subGraph,
                             "subgraph cluster_"+name,
                             "}\r\n",
-                            name
+                            name,
+                            verbose
                         )
                         .replace("\r\n", "\r\n\t")
                     )

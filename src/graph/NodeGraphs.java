@@ -171,6 +171,7 @@ public class NodeGraphs {
             SUB_GRAPHS.add(GregTech.ONE_COPPER_WIRE);
             SUB_GRAPHS.add(GregTech.GLASS_TUBE);
             SUB_GRAPHS.add(GregTech.MOLTEN_REDSTONE_ALLOY);
+                SUB_GRAPHS.add(Vanilla.REDSTONE_DUST);
             SUB_GRAPHS.add(GregTech.RAW_SILICON_DUST);
             SUB_GRAPHS.add(GregTech.STEEL_ROD);
         }

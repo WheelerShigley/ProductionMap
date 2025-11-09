@@ -1,11 +1,14 @@
 package graph;
 
 import items.Item;
+import items.minecraft.GTNH.GregTech;
+import items.minecraft.GTNH.Vanilla;
 import machines.Machine;
 import machines.MachineTypes;
 import machines.Voltage;
 import recipes.Recipe;
 import recipes.Recipes;
+import recipes.minecraft.GTNH.GregTechRecipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -118,6 +121,9 @@ public class NodeGraph {
             && current_depth < MAXIMUM_DEPTH
         ) {
             for(ProductNode unsourcedProducedNode : unsourcedProductNodes) {
+                if(unsourcedProducedNode.product.equals(Vanilla.REDSTONE_DUST) ) {
+                    int a = 0;
+                }
                 unsourcedProducedNode.generateSource(this);
             }
             for(RecipeNode unsourcedRecipeNode : unsourcedRecipesNodes) {
@@ -190,7 +196,11 @@ public class NodeGraph {
             int counter = 0;
             nodeGraphStringBuilder.append("\tTransformers:\r\n");
             for(RecipeNode transformer : transformers) {
-                nodeGraphStringBuilder.append("\t\t").append(counter++).append(" -> ").append( transformer.toString() ).append("\r\n");
+                nodeGraphStringBuilder
+                    .append("\t\t")
+                    .append(counter++).append(" -> ").append( transformer.toString() )
+                    .append("\r\n")
+                ;
             }
             nodeGraphStringBuilder.append("\r\n");
         }
@@ -282,6 +292,15 @@ public class NodeGraph {
 
         nodeGraphStringBuilder.append("}");
         return nodeGraphStringBuilder.toString();
+    }
+
+    public void multiplyUpTimes(double multiplier) {
+        for(RecipeNode transformer : transformers) {
+            if(transformer.recipe.equals(GregTechRecipes.EXTRACTED_SUGAR_BEET) ) {
+                int a = 0;
+            }
+            transformer.setUpTime( multiplier * transformer.getUptime() );
+        }
     }
 
     public Item getFinalProduct() {
@@ -384,14 +403,11 @@ public class NodeGraph {
         return leafProductNodes;
     }
     public Double getHighestUptime() {
-        double highest = Double.MIN_VALUE;
+        double highest = 0.0;
         for(RecipeNode transformer : this.transformers) {
             highest = Math.max(transformer.getUptime(), highest);
         }
 
-        if(highest == Double.MIN_VALUE) {
-            return null;
-        }
         return highest;
     }
 }

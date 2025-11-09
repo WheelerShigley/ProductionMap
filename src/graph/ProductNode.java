@@ -28,7 +28,7 @@ public class ProductNode {
         }
 
         sources.add(source);
-        updateSourceUptimes();
+        forceUpdateSourceUptimes();
         return true;
     }
     public boolean addSink(RecipeNode sink) {
@@ -57,7 +57,7 @@ public class ProductNode {
         for(RecipeNode recipeNode : graph.transformers) {
             if( recipeNode.recipe.equals(generatedSource) ) {
                 recipeNode.addOutput(this);
-                updateSourceUptimes();
+                forceUpdateSourceUptimes();
                 return true;
             }
         }
@@ -72,42 +72,41 @@ public class ProductNode {
 
         if( graph.addTransformer(generatedSourceNode) ) {
             this.addSource(generatedSourceNode);
-            updateSourceUptimes();
+            forceUpdateSourceUptimes();
             return true;
         }
         return false;
     }
 
-    private RecipeNode updateSourceUptimes() {
+    public boolean updateSourceUptimes() {
         double unmet_demand_rate = getUnmetDemandRate();
         if(unmet_demand_rate <= 0.0) {
-            return null;
+            return true;
         }
-        //adjust uptimes to the lowest interval of 100%s first (utilizing existing machine-time)
-        Recipe bestRecipe = Recipes.optimalRecipes.get(this.product);
+
+        Recipe bestSourceRecipe = Recipes.optimalRecipes.get(this.product);
+        //check for existing source that may meet demand
         for(RecipeNode source : sources) {
-            if( !source.recipe.equals(bestRecipe) ) {
-                continue;
+            if(source.recipe.equals(bestSourceRecipe) ) {
+                source.setUpTime(
+                    source.getUptime() + unmet_demand_rate/source.getProductionRate(this.product)
+                );
+                return true;
             }
-            //calculate required uptime to meet demand
-            double required_uptime = source.getUptime() + unmet_demand_rate/getProductionRate();
-            double next_uptime_centainterval = source.getUptime();
-            if(next_uptime_centainterval%1.0 != 0.0) {
-                next_uptime_centainterval = Math.ceil(next_uptime_centainterval);
-            }
-            //if available rate needed exceeds the nearest 100%, set the uptime to the nearest 100%; adjust demand
-            if(required_uptime < next_uptime_centainterval) {
-                source.setUpTime(required_uptime);
-            } else {
-                source.setUpTime(next_uptime_centainterval);
-                unmet_demand_rate = getUnmetDemandRate();
-            }
+        }
+        return false;
+    }
+
+    public RecipeNode forceUpdateSourceUptimes() {
+        if( updateSourceUptimes() ) {
             return null;
         }
+
         //meet demand
-        RecipeNode newProducer = new RecipeNode(bestRecipe);
+        Recipe bestSourceRecipe = Recipes.optimalRecipes.get(this.product);
+        RecipeNode newProducer = new RecipeNode(bestSourceRecipe);
         newProducer.setUpTime(
-            unmet_demand_rate/newProducer.getProductionRate(this.product)
+            getUnmetDemandRate()/newProducer.getProductionRate(this.product)
         );
         this.addSource(newProducer);
         return newProducer;

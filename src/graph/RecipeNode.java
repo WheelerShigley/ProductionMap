@@ -100,6 +100,11 @@ public class RecipeNode {
 
     public void setUpTime(Double uptime) {
         this.uptime = uptime;
+
+        //update sources
+        for(ProductNode input : inputs) {
+            input.updateSourceUptimes();
+        }
     }
 
     public double getUsageRate(Item ofItem) {
