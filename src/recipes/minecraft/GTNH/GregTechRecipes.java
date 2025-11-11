@@ -62,6 +62,7 @@ public class GregTechRecipes {
                 0.1
         );
     }
+    public static final Recipe CELLED_ETHANOL = new Recipe(MachineTypes.FLUID_TANK, 0.0, new ItemStack(GregTech.ETHANOL, 1.0/0.144), new ItemStack(GregTech.ETHANOL_CELL), 0.1);
     public static final Recipe DECELLED_HYDROGEN = new Recipe(MachineTypes.FLUID_TANK, 0.0, new ItemStack(GregTech.HYDROGEN_CELL), new ItemStack(GregTech.HYDROGEN), 0.1);
     public static final Recipe ETHANOL = new Recipe(MachineTypes.FLUID_TANK, 0.0, new ItemStack(GregTech.ETHANOL_CELL), new ItemStack(GregTech.ETHANOL), 0.1);
     public static final Recipe ETHYLENE_CELL = new Recipe(MachineTypes.FLUID_TANK, 0.0, new ItemStack(GregTech.ETHYLENE, 1.0/0.144), new ItemStack(GregTech.ETHYLENE_CELL), 0.1);
@@ -379,6 +380,20 @@ public class GregTechRecipes {
             30
         );
     }
+    public static final Recipe BREWED_BIOMASS_WATER_SAPLING; static {
+        BREWED_BIOMASS_WATER_SAPLING = new Recipe(
+            MachineTypes.BREWERY,
+            3.0,
+            List.of(
+                new ItemStack(Items.ANY_SAPLING),
+                new ItemStack(GregTech.WATER, 0.100/0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.BIOMASS, 0.100/0.144)
+            ),
+            8
+        );
+    }
     public static final Recipe CALCITE_DUST; static {
         CALCITE_DUST = new Recipe(
                 MachineTypes.MIXER,
@@ -534,34 +549,7 @@ public class GregTechRecipes {
                 80.0
         );
     }
-    public static final Recipe DISTILLED_WOOD_GAS; static {
-        DISTILLED_WOOD_GAS = new Recipe(
-                MachineTypes.DISTILLATION_TOWER,
-                MachineConfiguration.ProgrammedCircuitOne,
-                256.0,
-                List.of(
-                        new ItemStack(GregTech.WOOD_GAS, 1000.0/144.0)
-                ),
-                List.of(
-                        new ItemStack(GregTech.METHANE, 130.0/144.0),
-                        new ItemStack(GregTech.CARBON_MONOXIDE, 240.0/144.0),
-                        new ItemStack(GregTech.HYDROGEN, 120.0/144.0),
-                        new ItemStack(GregTech.CARBON_DIOXIDE, 390.0/144.0),
-                        new ItemStack(GregTech.ETHYLENE, 120.0/144.0)
-                ),
-                2.0
-        );
-    }
-    public static final Recipe DISTILLED_WOOD_GAS_SINGLE; static {
-        DISTILLED_WOOD_GAS_SINGLE = new Recipe(
-                MachineTypes.DISTILLERY,
-                MachineConfiguration.ProgrammedCircuitTwo,
-                64.0,
-                new ItemStack(GregTech.WOOD_GAS, 0.2),
-                new ItemStack(GregTech.ETHYLENE, 24.0/1000.0),
-                0.8
-        );
-    }
+    public static final Recipe DISTILLED_ETHANOL = new Recipe(MachineTypes.DISTILLERY, MachineConfiguration.ProgrammedCircuitOne, 24.0, new ItemStack(GregTech.BIOMASS, 0.040/0.144), new ItemStack(GregTech.ETHANOL, 0.020/0.144), 0.8);
     public static final Recipe DRIED_DIRT = new Recipe(MachineTypes.ELECTRIC_FURNACE, 4.0, new ItemStack(DIRT), new ItemStack(items.Items.DRIED_DIRT), 6.4);
     public static final Recipe EASY_AUTOMATIC_DIODE; static {
         EASY_AUTOMATIC_DIODE = new Recipe(
@@ -606,6 +594,21 @@ public class GregTechRecipes {
             List.of(
                 new ItemStack(GregTech.ETHYLENE_CELL),
                 new ItemStack(GregTech.DILUTED_SULFURIC_ACID, 1.0/0.144)
+            ),
+            60.0
+        );
+    }public static final Recipe REACTED_ETHYLENE_CELL_2; static {
+        REACTED_ETHYLENE_CELL_2 = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitEleven,
+            120.0,
+            List.of(
+                new ItemStack(GregTech.ETHANOL_CELL),
+                new ItemStack(GregTech.SULFURIC_ACID, 1.0/0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.DILUTED_SULFURIC_ACID_CELL),
+                new ItemStack(GregTech.ETHYLENE, 1.0/0.144)
             ),
             60.0
         );

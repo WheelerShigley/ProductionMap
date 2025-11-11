@@ -40,11 +40,12 @@ public class NodeGraphs {
         final List<Item> CBD_SUB_GRAPHS; {
             CBD_SUB_GRAPHS = new ArrayList<>();
 
-            CBD_SUB_GRAPHS.add(GregTech.ACETIC_ACID_CELL);
+            CBD_SUB_GRAPHS.add(GregTech.ETHENONE_CELL);
             CBD_SUB_GRAPHS.add(GregTech.ETHANOL);
             CBD_SUB_GRAPHS.add(GregTech.FISH_OIL_CELL);
             CBD_SUB_GRAPHS.add(GregTech.HYDROGEN_CELL);
             CBD_SUB_GRAPHS.add(GregTech.NITRIC_ACID);
+                CBD_SUB_GRAPHS.add(GregTech.NITROGEN_GAS);
             CBD_SUB_GRAPHS.add(GregTech.AIR_GAS);
             CBD_SUB_GRAPHS.add(GregTech.OXYGEN_CELL);
             CBD_SUB_GRAPHS.add(GregTech.SULFURIC_ACID);
@@ -53,7 +54,9 @@ public class NodeGraphs {
         final HashMap<Item, Recipe> CBD_RECIPES; {
             CBD_RECIPES = new HashMap<>();
 
-            CBD_RECIPES.put(GregTech.ETHYLENE_CELL, GregTechRecipes.WOOD_GAS_ETHYLENE);
+            CBD_RECIPES.put(GregTech.ETHANOL, GregTechRecipes.DISTILLED_ETHANOL);
+            CBD_RECIPES.put(GregTech.ETHANOL_CELL, GregTechRecipes.CELLED_ETHANOL);
+            CBD_RECIPES.put(GregTech.ETHYLENE, GregTechRecipes.REACTED_ETHYLENE_CELL_2);
             CBD_RECIPES.put(GregTech.HYDROGEN_CELL, GregTechRecipes.ELECTROLYZED_PHOSPHORIC_ACID);
             CBD_RECIPES.put(GregTech.CHLORINE, GregTechRecipes.ELECTROLYZED_SALT);
             CBD_RECIPES.put(GregTech.SALT, GregTechRecipes.BATHED_SALTY_ROOT);

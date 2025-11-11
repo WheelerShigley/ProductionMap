@@ -33,6 +33,7 @@ public class Items extends Registered<Item> {
     public static final Item MANUAL = new Item(PLAYER,"manual");
     public static final Item NOTHING = new Item("custom","nothing");
     public static final Item ANY_FISH = new Item("custom","any_fish");
+    public static final Item ANY_SAPLING = new Item("custom","any_sapling");
     public static final Item ANY_WOOD = new Item("custom","any_log");
 
     //misc (temporary location)

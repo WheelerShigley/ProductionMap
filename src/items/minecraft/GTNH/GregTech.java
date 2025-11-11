@@ -18,6 +18,7 @@ public class GregTech {
     public static final Item ANNEALED_COPPER_INGOT = getGregTechItem("annealed_copper_ingot");
     public static final Item ARSENIC_DUST = getGregTechItem("arsonic_dust");
     public static final Item ASHES = getGregTechItem("ashes");
+    public static final Item BIOMASS = getGregTechItem("biomass");
     public static final Item BIO_DIESEL = getGregTechItem("bio_diesel");
     public static final Item BIO_DIESEL_CELL = getGregTechItem("bio_diesel_cell");
     public static final Item BIOTITE_DUST = getGregTechItem("biotite_dust");
@@ -40,6 +41,7 @@ public class GregTech {
     public static final Item COPPER_DUST = getGregTechItem("copper_dust");
     public static final Item COPPER_INGOT = getGregTechItem("copper_ingot");
     public static final Item DILUTED_SULFURIC_ACID = getGregTechItem("diluted_sulfuric_acid");
+    public static final Item DILUTED_SULFURIC_ACID_CELL = getGregTechItem("diluted_sulfuric_acid_cell");
     public static final Item DIODE = getGregTechItem("diode");
     public static final Item ELECTRUM = getGregTechItem("electrum");
     public static final Item EMPTY_CELL = getGregTechItem("empty_cell");

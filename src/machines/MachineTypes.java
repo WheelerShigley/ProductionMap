@@ -215,6 +215,13 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Bending Machine", "Bending Unit")
         ); //TODO: Industrial Material Press
     }
+    public static final MachineType BREWERY; static {
+        BREWERY = new MachineType(
+            GREGTECH,
+            "Brewery",
+            getCommonMachineData("Brewery", "Brew Rusher")
+        ); //TODO: Big Barrel Brewery
+    }
     public static final MachineType BLAST_FURNACE; static {
         HashMap<Voltage, List<MachineData> > blastFurnaceDatas = new HashMap<>();
         for(Voltage voltage : Voltage.getVoltagesBetweenInclusive(Voltage.Low, Voltage.Maximum) ) {
