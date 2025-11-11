@@ -2,6 +2,7 @@ package graph.export;
 
 import graph.*;
 import items.Item;
+import items.minecraft.GTNH.GregTech;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,8 +125,7 @@ public class GraphViz {
                         exclusions = new ArrayList<>(clusters);
                         exclusions.remove(cluster);
                     }
-
-                    clusterGraph = new NodeGraph(cluster, default_demand, exclusions);
+                    clusterGraph = new NodeGraph(cluster, default_demand, graph.transformerOverrides, exclusions);
                 }
                 subGraphs.put(clusterGraph, cluster.getName() );
             }
@@ -134,7 +134,7 @@ public class GraphViz {
             NodeGraph mainGraph; {
                 Item finalItem = graph.getFinalProduct();
                 double finalRate = graph.getProduct(finalItem).getProductionRate();
-                mainGraph = new NodeGraph(finalItem, finalRate, clusters);
+                mainGraph = new NodeGraph(finalItem, finalRate, graph.transformerOverrides, clusters);
             }
             subGraphs.put(mainGraph, "main");
 

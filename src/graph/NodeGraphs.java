@@ -8,8 +8,6 @@ import items.minecraft.GTNH.Vanilla;
 import recipes.Recipe;
 import recipes.minecraft.GTNH.GregTechRecipes;
 import recipes.minecraft.GTNH.thaumcraft.AspectsRecipes;
-import recipes.minecraft.GTNH.thaumcraft.CauldronRecipes;
-import recipes.minecraft.GTNH.thaumcraft.ThaumcraftRecipes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +45,7 @@ public class NodeGraphs {
             CBD_SUB_GRAPHS.add(GregTech.FISH_OIL_CELL);
             CBD_SUB_GRAPHS.add(GregTech.HYDROGEN_CELL);
             CBD_SUB_GRAPHS.add(GregTech.NITRIC_ACID);
-            CBD_SUB_GRAPHS.add(GregTech.NITROGEN_GAS);
+            CBD_SUB_GRAPHS.add(GregTech.AIR_GAS);
             CBD_SUB_GRAPHS.add(GregTech.OXYGEN_CELL);
             CBD_SUB_GRAPHS.add(GregTech.SULFURIC_ACID);
             CBD_SUB_GRAPHS.add(GregTech.TINY_PILE_OF_SODIUM_HYDROXIDE_DUST);
@@ -55,9 +53,11 @@ public class NodeGraphs {
         final HashMap<Item, Recipe> CBD_RECIPES; {
             CBD_RECIPES = new HashMap<>();
 
-            CBD_RECIPES.put(GregTech.ETHYLENE, GregTechRecipes.WOOD_GAS_ETHYLENE);
+            CBD_RECIPES.put(GregTech.ETHYLENE_CELL, GregTechRecipes.WOOD_GAS_ETHYLENE);
             CBD_RECIPES.put(GregTech.HYDROGEN_CELL, GregTechRecipes.ELECTROLYZED_PHOSPHORIC_ACID);
+            CBD_RECIPES.put(GregTech.CHLORINE, GregTechRecipes.ELECTROLYZED_SALT);
             CBD_RECIPES.put(GregTech.SALT, GregTechRecipes.BATHED_SALTY_ROOT);
+            CBD_RECIPES.put(GregTech.SODIUM_DUST, GregTechRecipes.ELECTROLYZED_SALT);
         }
 
         CETANE_BOOSTED_DIESEL = new dividedNodeGraph(GregTech.CETANE_BOOSTED_DIESEL, CBD_SUB_GRAPHS, CBD_RECIPES);
@@ -137,9 +137,36 @@ public class NodeGraphs {
             CIRCUIT_LOOP_RECIPES.put(GregTech.SILICON_SOLAR_GRADE_DUST, GregTechRecipes.SILICON_SOLAR_GRADE_DUST);
             CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, GregTechRecipes.PERFECT_RAW_SILICON_DUST);
             CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, GregTechRecipes.ELECTROLYZED_MAGNESIA);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.ETHYLENE, GregTechRecipes.WOOD_GAS_ETHYLENE);
         }
 
         INTEGRATED_LOGIC_CIRCUIT_LV = new dividedNodeGraph(GregTech.INTEGRATED_LOGIC_CIRCUIT_LV, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
+    }
+    public static final dividedNodeGraph INTEGRATED_PROCESSOR_MV; static {
+        final List<Item> CIRCUIT_SUB_GRAPHS; {
+            CIRCUIT_SUB_GRAPHS = new ArrayList<>();
+
+            CIRCUIT_SUB_GRAPHS.add(GregTech.PLASTIC_CIRCUIT_BOARD_BOARD);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.CENTRAL_PROCESSING_UNIT);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.RESISTOR);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.TRANSISTOR);
+                CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_POLYETHYLENE);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.FINE_RED_ALLOY_WIRE);
+            CIRCUIT_SUB_GRAPHS.add(GregTech.MOLTEN_TIN);
+        }
+        final HashMap<Item, Recipe> CIRCUIT_LOOP_RECIPES; {
+            CIRCUIT_LOOP_RECIPES = new HashMap<>();
+
+            /*
+            CIRCUIT_LOOP_RECIPES.put(Vanilla.SAND, GregTechRecipes.SAND);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.SILICON_SOLAR_GRADE_DUST, GregTechRecipes.SILICON_SOLAR_GRADE_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.RAW_SILICON_DUST, GregTechRecipes.PERFECT_RAW_SILICON_DUST);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.MAGNESIUM_DUST, GregTechRecipes.ELECTROLYZED_MAGNESIA);
+            CIRCUIT_LOOP_RECIPES.put(GregTech.ETHYLENE, GregTechRecipes.WOOD_GAS_ETHYLENE);
+             */
+        }
+
+        INTEGRATED_PROCESSOR_MV = new dividedNodeGraph(GregTech.INTEGRATED_PROCESSOR_MV, CIRCUIT_SUB_GRAPHS, CIRCUIT_LOOP_RECIPES);
     }
     public static final dividedNodeGraph LIGHT_CONCRETE; static {
         LIGHT_CONCRETE = new dividedNodeGraph(GregTech.LIGHT_CONCRETE);

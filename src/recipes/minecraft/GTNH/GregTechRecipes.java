@@ -21,7 +21,6 @@ public class GregTechRecipes {
     //If there's a need for more cells, it's almost certain that there simply needs to be more cells in the system;
     //this should always be the best choice for a deficit of empty_cells
     public static final Recipe CYCLED_CELLS = new Recipe(MachineTypes.DUMMY, 0.0, new ItemStack(GregTech.EMPTY_CELL), Double.MIN_VALUE);
-    public static final Recipe DUMMY = new Recipe(MachineTypes.PLAYER, 0.0, new ArrayList<>(), Double.MIN_VALUE);
     @Deprecated
     public static final Recipe EMPTY_CELL_CYCLED = new Recipe(MachineTypes.CELL_CYCLING, 0.0, new ItemStack(GregTech.COMPRESSED_AIR), new ItemStack(GregTech.EMPTY_CELL), 1.0);
 
@@ -90,6 +89,8 @@ public class GregTechRecipes {
     public static final Recipe ONE_RED_ALLOY_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitOne, 4.0, new ItemStack(GregTech.RED_ALLOY_INGOT), new ItemStack(GregTech.ONE_RED_ALLOY_WIRE, 2), 5.0);
     public static final Recipe FINE_ANNEALED_COPPER_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GregTech.ANNEALED_COPPER_INGOT), new ItemStack(GregTech.FINE_ANNEALED_COPPER_WIRE, 8), 5.0);
     public static final Recipe FINE_GOLD_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GOLD_INGOT), new ItemStack(GregTech.FINE_GOLD_WIRE, 8), 5.0);
+    public static final Recipe FINE_RED_ALLOY_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GregTech.RED_ALLOY_INGOT), new ItemStack(GregTech.FINE_RED_ALLOY_WIRE, 8), 5.0);
+    public static final Recipe FINE_TIN_WIRE = new Recipe(MachineTypes.WIREMILL, MachineConfiguration.ProgrammedCircuitThree, 4.0, new ItemStack(GregTech.TIN_INGOT), new ItemStack(GregTech.FINE_TIN_WIRE, 8), 5.0);
 
     /* Centrifuge */
     public static final Recipe CENTRIFUGED_AIR; static {
@@ -396,6 +397,38 @@ public class GregTechRecipes {
                 5.0
         );
     }
+    public static final Recipe CAPACITOR; static {
+        CAPACITOR = new Recipe(
+            MachineTypes.ASSEMBLER,
+            MachineConfiguration.ProgrammedCircuitThree,
+            120.0,
+            List.of(
+                new ItemStack(GregTech.THIN_POLYETHYLENE_SHEET),
+                new ItemStack(GregTech.ALUMINUM_FOIL, 2),
+                new ItemStack(GregTech.MOLTEN_POLYETHYLENE, 0.144/0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.CAPACITOR, 8)
+            ),
+            16.0
+        );
+    }
+    public static final Recipe CENTRAL_PROCESSING_UNIT; static {
+        CENTRAL_PROCESSING_UNIT = new Recipe(
+            MachineTypes.CUTTING_MACHINE,
+            MachineConfiguration.GlassLens,
+            120.0,
+            List.of(
+                new ItemStack(GregTech.CENTRAL_PROCESSING_UNIT_WAFER),
+                new ItemStack(GregTech.WATER, 0.337)
+            ),
+            List.of(
+                new ItemStack(GregTech.CENTRAL_PROCESSING_UNIT, 8)
+            ),
+            45.0
+        );
+    }
+    public static final Recipe CENTRAL_PROCESSING_UNIT_WAFER = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.GlassLens, 120.0, new ItemStack(GregTech.WAFER), new ItemStack(GregTech.CENTRAL_PROCESSING_UNIT_WAFER), 60.0);
     public static final Recipe CETANE_BOOSTED_DIESEL; static {
         CETANE_BOOSTED_DIESEL = new Recipe(
             MachineTypes.MIXER,
@@ -559,6 +592,22 @@ public class GregTechRecipes {
                 new ItemStack(GregTech.ETHANOL_CELL)
             ),
             20.0
+        );
+    }
+    public static final Recipe REACTED_ETHYLENE_CELL; static {
+        REACTED_ETHYLENE_CELL = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitOne,
+            120.0,
+            List.of(
+                new ItemStack(GregTech.ETHANOL_CELL),
+                new ItemStack(GregTech.SULFURIC_ACID, 1.0/0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.ETHYLENE_CELL),
+                new ItemStack(GregTech.DILUTED_SULFURIC_ACID, 1.0/0.144)
+            ),
+            60.0
         );
     }
     public static final Recipe ETHENONE_CELL; static {
@@ -737,6 +786,25 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe INTEGRATED_LOGIC_CIRCUIT_WAFER = new Recipe(MachineTypes.LASER_ENGRAVER, MachineConfiguration.RubyLens, 120.0, new ItemStack(GregTech.WAFER), new ItemStack(GregTech.INTEGRATED_LOGIC_CIRCUIT_WAFER), 60.0);
+    public static final Recipe INTEGRATED_PROCESSOR_MV; static {
+        INTEGRATED_PROCESSOR_MV = new Recipe(
+            MachineTypes.CUTTING_MACHINE,
+            64.0,
+            List.of(
+                new ItemStack(GregTech.PLASTIC_CIRCUIT_BOARD_BOARD),
+                new ItemStack(GregTech.CENTRAL_PROCESSING_UNIT),
+                new ItemStack(GregTech.RESISTOR, 4),
+                new ItemStack(GregTech.CAPACITOR, 4),
+                new ItemStack(GregTech.TRANSISTOR, 4),
+                new ItemStack(GregTech.FINE_RED_ALLOY_WIRE, 4),
+                new ItemStack(GregTech.MOLTEN_TIN, 0.144/0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.INTEGRATED_PROCESSOR_MV)
+            ),
+            45
+        );
+    }
     public static final Recipe IRON_STEEL_INGOT; static {
         IRON_STEEL_INGOT = new Recipe(
                 MachineTypes.ELECTRIC_BLAST_FURNACE,
@@ -1002,6 +1070,37 @@ public class GregTechRecipes {
                 2
         );
     }
+    public static final Recipe PLASTIC_CIRCUIT_BOARD; static {
+        PLASTIC_CIRCUIT_BOARD = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            10.0,
+            List.of(
+                new ItemStack(GregTech.POLYETHYLENE_SHEET),
+                new ItemStack(GregTech.COPPER_FOIL, 4),
+                new ItemStack(GregTech.SULFURIC_ACID, 0.500)
+            ),
+            List.of(
+                new ItemStack(GregTech.PLASTIC_CIRCUIT_BOARD)
+            ),
+            25
+        );
+    }
+    public static final Recipe PLASTIC_CIRCUIT_BOARD_BOARD; static {
+        PLASTIC_CIRCUIT_BOARD_BOARD = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            30.0,
+            List.of(
+                new ItemStack(GregTech.PLASTIC_CIRCUIT_BOARD),
+                new ItemStack(GregTech.COPPER_FOIL, 6),
+                new ItemStack(GregTech.IRON_III_CHLORIDE, 0.250)
+            ),
+            List.of(
+                new ItemStack(GregTech.PLASTIC_CIRCUIT_BOARD_BOARD)
+            ),
+            40
+        );
+    }
+    public static final Recipe POLYETHYLENE_SHEET = new Recipe(MachineTypes.BENDING_MACHINE, MachineConfiguration.ProgrammedCircuitOne, 24, new ItemStack(GregTech.POLYETHYLENE_BAR), new ItemStack(GregTech.POLYETHYLENE_SHEET), 0.2);
     public static final Recipe REDSTONE_ALLOY_DUST; static {
         REDSTONE_ALLOY_DUST = new Recipe(
                 MachineTypes.MIXER,
@@ -1149,6 +1248,8 @@ public class GregTechRecipes {
         );
     }
     public static final Recipe REDSTONE_DUST_OBSIDIAN = new Recipe(MachineTypes.ROCK_BREAKER, MachineConfiguration.ProgrammedCircuitOne, 30.0, new ItemStack(Vanilla.REDSTONE_DUST), new ItemStack(Vanilla.OBSIDIAN), 6.4);
+    public static final Recipe SILICON_SOLAR_GRADE_INGOT = new Recipe(MachineTypes.VACUUM_FREEZER, 120.0, new ItemStack(GregTech.HOT_SI_SOLAR_GRADE_SILICON_INGOT), new ItemStack(GregTech.SILICON_SOLAR_GRADE_INGOT), 14.7);
+    public static final Recipe SILICON_SOLAR_GRADE_DUST_PLATE = new Recipe(MachineTypes.BENDING_MACHINE, MachineConfiguration.ProgrammedCircuitOne, 24.0, new ItemStack(GregTech.SILICON_SOLAR_GRADE_INGOT), new ItemStack(GregTech.SILICON_SOLAR_GRADE_PLATE), 4.9);
     public static final Recipe SIMPLE_METHANE; static {
         SIMPLE_METHANE = new Recipe(
                 MachineTypes.CHEMICAL_REACTOR,
@@ -1246,6 +1347,22 @@ public class GregTechRecipes {
                 new ItemStack(Vanilla.TNT)
             ),
             10
+        );
+    }
+    public static final Recipe TRANSISTOR; static {
+        TRANSISTOR = new Recipe(
+            MachineTypes.CHEMICAL_REACTOR,
+            MachineConfiguration.ProgrammedCircuitTwo,
+            30.0,
+            List.of(
+                new ItemStack(GregTech.SILICON_SOLAR_GRADE_PLATE),
+                new ItemStack(GregTech.FINE_TIN_WIRE, 8),
+                new ItemStack(GregTech.MOLTEN_POLYETHYLENE, 0.144/0.144)
+            ),
+            List.of(
+                new ItemStack(GregTech.TRANSISTOR, 6)
+            ),
+            16
         );
     }
     public static final Recipe WAFER; static {

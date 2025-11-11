@@ -1,12 +1,17 @@
 package graph;
 
 import items.Item;
+import items.Items;
+import items.minecraft.GTNH.GregTech;
+import items.minecraft.GTNH.IndustrialCraft;
 import machines.MachineTypes;
 import recipes.Recipe;
 import recipes.Recipes;
 import recipes.minecraft.GTNH.GregTechRecipes;
 
+import java.lang.reflect.GenericSignatureFormatError;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ProductNode {
@@ -19,7 +24,7 @@ public class ProductNode {
         this.product = product;
     }
 
-    public boolean addSource(RecipeNode source) {
+    public boolean addSource(RecipeNode source, HashMap<Item, Recipe> overrides) {
         //ensure it's not already in the sources (by reference)
         for(RecipeNode existingSource : sources) {
             if(existingSource == source) {
@@ -28,7 +33,7 @@ public class ProductNode {
         }
 
         sources.add(source);
-        forceUpdateSourceUptimes();
+        forceUpdateSourceUptimes(overrides);
         return true;
     }
     public boolean addSink(RecipeNode sink) {
@@ -43,72 +48,84 @@ public class ProductNode {
         return true;
     }
 
-    public boolean generateSource(NodeGraph graph) {
-        Recipe generatedSource = Recipes.optimalRecipes.get(this.product);
+    public boolean generateSource(NodeGraph graph, HashMap<Item, Recipe> overrides) {
+        Recipe bestSourceRecipe = Recipes.getOptimalRecipe(this.product, overrides);
+
         if(
-            generatedSource == null
-            || generatedSource.equals(GregTechRecipes.DUMMY)
-            || generatedSource.machineType.equals(MachineTypes.DUMMY)
+            bestSourceRecipe == null
+            || bestSourceRecipe.equals(Recipes.DUMMY)
+            || bestSourceRecipe.machineType.equals(MachineTypes.DUMMY)
         ) {
             return false;
         }
 
         //Check if RecipeNode already exists
         for(RecipeNode recipeNode : graph.transformers) {
-            if( recipeNode.recipe.equals(generatedSource) ) {
-                recipeNode.addOutput(this);
-                forceUpdateSourceUptimes();
+            if( recipeNode.recipe.equals(bestSourceRecipe) ) {
+                recipeNode.addOutput(this, overrides);
+                forceUpdateSourceUptimes(overrides);
                 return true;
             }
         }
 
         RecipeNode generatedSourceNode; {
-            generatedSourceNode = new RecipeNode(generatedSource);
-            generatedSourceNode.addOutput(this);
-            generatedSourceNode.setUpTime(
-                this.getUnmetDemandRate()/generatedSource.getProductionRate(this.product)
-            );
+            double unmet_demand_rate = this.getUnmetDemandRate();
+            double production_rate = bestSourceRecipe.getProductionRate(this.product);
+            if(0.0 < production_rate) {
+                unmet_demand_rate /= production_rate;
+            } else {
+                unmet_demand_rate = 0.0;
+            }
+
+            generatedSourceNode = new RecipeNode(bestSourceRecipe);
+            generatedSourceNode.addOutput(this, overrides);
+            generatedSourceNode.setUpTime(unmet_demand_rate, overrides);
         }
 
         if( graph.addTransformer(generatedSourceNode) ) {
-            this.addSource(generatedSourceNode);
-            forceUpdateSourceUptimes();
+            this.addSource(generatedSourceNode, overrides);
+            forceUpdateSourceUptimes(overrides);
             return true;
         }
         return false;
     }
 
-    public boolean updateSourceUptimes() {
-        double unmet_demand_rate = getUnmetDemandRate();
-        if(unmet_demand_rate <= 0.0) {
+    public boolean updateSourceUptimes(HashMap<Item, Recipe> overrides) {
+        if( getUnmetDemandRate() <= 0.0) {
             return true;
         }
 
-        Recipe bestSourceRecipe = Recipes.optimalRecipes.get(this.product);
+        double demand_rate = getDemandRate();
+        Recipe bestSourceRecipe = Recipes.getOptimalRecipe(this.product, overrides);
+        double production_rate;
         //check for existing source that may meet demand
         for(RecipeNode source : sources) {
-            if(source.recipe.equals(bestSourceRecipe) ) {
-                source.setUpTime(
-                    source.getUptime() + unmet_demand_rate/source.getProductionRate(this.product)
-                );
+            production_rate = source.getProductionRate(this.product);
+            if(0.0 < production_rate) {
+                demand_rate /= production_rate;
+            } else {
+                demand_rate = 0.0;
+            }
+            if( source.recipe.equals(bestSourceRecipe) ) {
+                source.setUpTime(demand_rate, overrides);
                 return true;
             }
         }
         return false;
     }
 
-    public RecipeNode forceUpdateSourceUptimes() {
-        if( updateSourceUptimes() ) {
+    public RecipeNode forceUpdateSourceUptimes(HashMap<Item, Recipe> overrides) {
+        if( updateSourceUptimes(overrides) ) {
             return null;
         }
 
         //meet demand
-        Recipe bestSourceRecipe = Recipes.optimalRecipes.get(this.product);
-        RecipeNode newProducer = new RecipeNode(bestSourceRecipe);
+        RecipeNode newProducer = new RecipeNode( Recipes.getOptimalRecipe(this.product, overrides) );
         newProducer.setUpTime(
-            getUnmetDemandRate()/newProducer.getProductionRate(this.product)
+            getUnmetDemandRate()/newProducer.getProductionRate(this.product),
+            overrides
         );
-        this.addSource(newProducer);
+        this.addSource(newProducer, overrides);
         return newProducer;
     }
 
@@ -130,7 +147,16 @@ public class ProductNode {
         return demand_rate;
     }
     public double getUnmetDemandRate() {
-        return ( default_demand + getDemandRate() ) - getProductionRate();
+        double unmet_demand_rate = getDemandRate();
+        if(unmet_demand_rate <= 0.0) {
+            unmet_demand_rate += default_demand;
+        }
+        unmet_demand_rate -= getProductionRate();
+
+        if(unmet_demand_rate < 0.0) {
+            unmet_demand_rate = 0.0;
+        }
+        return unmet_demand_rate;
     }
     public int getSourceCount() {
         return sources.size();
@@ -145,19 +171,24 @@ public class ProductNode {
         } else {
             productNodeStringBuilder.append(" @ ");
             double rate = this.getProductionRate();
+            if(rate == 0.0) {
+                rate = default_demand;
+            }
             productNodeStringBuilder
                 .append( StringHelper.getNumberString(rate) )
                 .append("/second")
             ;
         }
 
+        /*
         if(
             MachineTypes.isLeafMachine(
-                Recipes.optimalRecipes.get(this.product).machineType
+                Recipes.getOptimalRecipe(this.product).machineType
             )
         ) {
             productNodeStringBuilder.append(" (unautomated)");
         }
+         */
 
         return productNodeStringBuilder.toString();
     }

@@ -2,7 +2,6 @@ package graph;
 
 import items.Item;
 import items.minecraft.GTNH.GregTech;
-import items.minecraft.GTNH.Vanilla;
 import machines.Machine;
 import machines.MachineTypes;
 import machines.Voltage;
@@ -19,16 +18,20 @@ public class NodeGraph {
     public List<ProductNode> products = new ArrayList<>();
     public List<RecipeNode> transformers = new ArrayList<>();
     private final List<Item> exclusions = new ArrayList<>();
+    public final HashMap<Item, Recipe> transformerOverrides;
 
-    public NodeGraph(Item finalProduct, double items_per_second, Item exclusion) {
+    public NodeGraph(Item finalProduct, double items_per_second, HashMap<Item, Recipe> transformerOverrides, Item exclusion) {
+        this.transformerOverrides = transformerOverrides;
         this.exclusions.add(exclusion);
         initialize(finalProduct, items_per_second);
     }
-    public NodeGraph(Item finalProduct, double items_per_second, List<Item> exclusions) {
+    public NodeGraph(Item finalProduct, double items_per_second, HashMap<Item, Recipe> transformerOverrides, List<Item> exclusions) {
+        this.transformerOverrides = transformerOverrides;
         this.exclusions.addAll(exclusions);
         initialize(finalProduct, items_per_second);
     }
-    public NodeGraph(Item finalProduct, double items_per_second) {
+    public NodeGraph(Item finalProduct, double items_per_second, HashMap<Item, Recipe> transformerOverrides) {
+        this.transformerOverrides = transformerOverrides;
         initialize(finalProduct, items_per_second);
     }
     public void initialize(Item finalProduct, double items_per_second) {
@@ -38,36 +41,21 @@ public class NodeGraph {
 
         //create original recipe-node and product-node
         ProductNode ultimateSink = new ProductNode(finalProduct);
+        ultimateSink.default_demand = items_per_second;
 
         RecipeNode ultimateSource = new RecipeNode(
-            Recipes.optimalRecipes.get(finalProduct)
+            Recipes.getOptimalRecipe(finalProduct, transformerOverrides)
         );
-        ultimateSource.setUpTime(
-            items_per_second/ultimateSource.recipe.getProductionRate(finalProduct)
-        );
+        double production_rate = ultimateSource.recipe.getProductionRate(finalProduct);
+        if(0.0 < production_rate) {
+            production_rate = items_per_second/ultimateSource.recipe.getProductionRate(finalProduct);
+        } else {
+            production_rate = 0.0;
+        }
+        ultimateSource.setUpTime(production_rate, transformerOverrides);
 
-        ultimateSource.addOutput(ultimateSink);
-        ultimateSink.addSource(ultimateSource);
-        this.addProduct(ultimateSink);
-        this.addTransformer(ultimateSource);
-
-        //back-calculate production-map
-        constructNodeGraph();
-    }
-    @Deprecated
-    public NodeGraph(Item finalProduct, Recipe finalRecipe, double items_per_second) {
-        this.finalProduct = finalProduct;
-
-        //create original recipe-node and product-node
-        ProductNode ultimateSink = new ProductNode(finalProduct);
-        RecipeNode ultimateSource = new RecipeNode(finalRecipe);
-
-        ultimateSource.setUpTime(
-            items_per_second/ultimateSource.recipe.getProductionRate(finalProduct)
-        );
-
-        ultimateSource.addOutput(ultimateSink);
-        ultimateSink.addSource(ultimateSource);
+        ultimateSource.addOutput(ultimateSink, transformerOverrides);
+        ultimateSink.addSource(ultimateSource, transformerOverrides);
         this.addProduct(ultimateSink);
         this.addTransformer(ultimateSource);
 
@@ -93,7 +81,11 @@ public class NodeGraph {
             if(
                 0.0 < potentiallyUnsourcedProductNode.getUnmetDemandRate()
                 //potentiallyUnsourcedProductNode.getSourceCount() < 1
-                && Recipes.optimalRecipes.containsKey(potentiallyUnsourcedProductNode.product)
+                && (
+                    Recipes.getOptimalRecipe(potentiallyUnsourcedProductNode.product) != Recipes.DUMMY
+                    || Recipes.getOptimalRecipe(potentiallyUnsourcedProductNode.product).machineType.equals(MachineTypes.DUMMY)
+                    || Recipes.getOptimalRecipe(potentiallyUnsourcedProductNode.product).machineType.equals(MachineTypes.PLAYER)
+                )
                 /*&& !MachineTypes.isLeafMachine(
                     Recipes.optimalRecipes.get(potentiallyUnsourcedProductNode.product).machineType
                 )*/
@@ -105,12 +97,6 @@ public class NodeGraph {
         return unsourcedProductNode;
     }
     private void constructNodeGraph() {
-        //temporary, for testing
-        /*
-        for(RecipeNode transformer : transformers) {
-            transformer.generateSurroundings(this);
-        }
-         */
         final int MAXIMUM_DEPTH = 50;
         int current_depth = 0;
 
@@ -121,13 +107,10 @@ public class NodeGraph {
             && current_depth < MAXIMUM_DEPTH
         ) {
             for(ProductNode unsourcedProducedNode : unsourcedProductNodes) {
-                if(unsourcedProducedNode.product.equals(Vanilla.REDSTONE_DUST) ) {
-                    int a = 0;
-                }
-                unsourcedProducedNode.generateSource(this);
+                unsourcedProducedNode.generateSource(this, transformerOverrides);
             }
             for(RecipeNode unsourcedRecipeNode : unsourcedRecipesNodes) {
-                unsourcedRecipeNode.generateSurroundings(this);
+                unsourcedRecipeNode.generateSurroundings(this, transformerOverrides);
             }
 
             unsourcedProductNodes = getUnsourcedProductNodes();
@@ -296,9 +279,6 @@ public class NodeGraph {
 
     public void multiplyUpTimes(double multiplier) {
         for(RecipeNode transformer : transformers) {
-            if(transformer.recipe.equals(GregTechRecipes.EXTRACTED_SUGAR_BEET) ) {
-                int a = 0;
-            }
             transformer.setUpTime( multiplier * transformer.getUptime() );
         }
     }

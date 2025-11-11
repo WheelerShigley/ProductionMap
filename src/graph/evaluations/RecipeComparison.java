@@ -34,8 +34,8 @@ public abstract class RecipeComparison implements Comparator<Recipe> {
     }
 
     static Recipe getBestRecipe(RecipeComparison comparator, Item ofItem) {
-        if( Recipes.optimalRecipes.containsKey(ofItem) ) {
-            return Recipes.optimalRecipes.get(ofItem);
+        if( Recipes.getOptimalRecipe(ofItem) != Recipes.DUMMY ) {
+            return Recipes.getOptimalRecipe(ofItem);
         }
 
         List<Recipe> recipes; {
@@ -47,7 +47,7 @@ public abstract class RecipeComparison implements Comparator<Recipe> {
             }
         }
 
-        Recipe bestRecipe = GregTechRecipes.DUMMY;
+        Recipe bestRecipe = Recipes.DUMMY;
         for(Recipe recipe : recipes) {
             int comparison = comparator.compare(bestRecipe, recipe, ofItem);
             if(comparator.compare(bestRecipe, recipe, ofItem) < 0) {

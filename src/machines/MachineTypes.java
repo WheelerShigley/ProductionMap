@@ -560,6 +560,21 @@ public class MachineTypes extends Registered<MachineType> {
             getCommonMachineData("Wiremill", "Transfigurator")
         ); //TODO: Industrial Wire Factory
     }
+    public static final MachineType VACUUM_FREEZER; static {
+        HashMap< Voltage, List<MachineData> > freezerDatasMap = new HashMap<>(); {
+            List<MachineData> freezersData = new ArrayList<>();
+            freezersData.add(
+                    new MachineData("Vacuum Freezer")
+            );
+            freezerDatasMap.put(Voltage.None, freezersData);
+        }
+
+        VACUUM_FREEZER = new MachineType(
+            GREGTECH,
+            "Vacuum Freezer",
+            freezerDatasMap
+        ); //TODO: Mega Vacuum Freezer
+    }
 
     //TODO: Add missing Machine-Types
     //TODO: Check for new machines in 2.8.x

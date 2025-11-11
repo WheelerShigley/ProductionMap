@@ -22,15 +22,15 @@ public class Main {
      * Populate Recipes (more)
      * Alternate "best" evaluation criteria/criterion: Infrastructure-cost, building-time, production-time
      */
-    private static final dividedNodeGraph GRAPH_DATA = VACUUM_TUBE;
+    private static final dividedNodeGraph GRAPH_DATA = CETANE_BOOSTED_DIESEL;
     public static final boolean VERBOSE_PRINTING = true;
     public static void main(String[] args) {
-        initializeOptimalRecipes(GRAPH_DATA.forcedRecipes);
+        initializeOptimalRecipes();
 
         NodeGraph GRAPH; {
-            double maximum_monomachine_final_rate = Recipes.optimalRecipes.get(GRAPH_DATA.product).getProductionRate(GRAPH_DATA.product);
-            GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate);
-            GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate/GRAPH.getHighestUptime() );
+            double maximum_monomachine_final_rate = Recipes.getOptimalRecipe(GRAPH_DATA.product).getProductionRate(GRAPH_DATA.product);
+            GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate, GRAPH_DATA.forcedRecipes);
+            GRAPH = new NodeGraph(GRAPH_DATA.product, maximum_monomachine_final_rate/GRAPH.getHighestUptime(), GRAPH_DATA.forcedRecipes);
         }
 
         //printGraphData(GRAPH, VERBOSE_PRINTING);
@@ -38,15 +38,7 @@ public class Main {
     }
 
     private static void initializeOptimalRecipes() {
-        initializeOptimalRecipes( new HashMap<Item, Recipe>() );
-    }
-    private static void initializeOptimalRecipes(HashMap<Item, Recipe> forcedRecipes) {
         Recipes.calculateOptimalRecipes();
-
-        //custom changes
-        for( Item forcedSourcedItem : forcedRecipes.keySet() ) {
-            Recipes.optimalRecipes.replace(forcedSourcedItem, forcedRecipes.get(forcedSourcedItem) );
-        }
     }
 
     private static void printGraphData(NodeGraph graph, boolean verbose) {

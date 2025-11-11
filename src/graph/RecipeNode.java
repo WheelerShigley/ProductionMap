@@ -2,11 +2,13 @@ package graph;
 
 import items.Item;
 import items.ItemStack;
+import items.minecraft.GTNH.GregTech;
 import machines.MachineTypes;
 import power.PowerType;
 import recipes.Recipe;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RecipeNode {
@@ -21,7 +23,7 @@ public class RecipeNode {
         this.recipe = recipe;
     }
 
-    public boolean addInput(ProductNode input) {
+    public boolean addInput(ProductNode input, HashMap<Item, Recipe> overrides) {
         //ensure output is not already present
         for(ProductNode potentialInput : inputs) {
             if(potentialInput == input) {
@@ -30,10 +32,10 @@ public class RecipeNode {
         }
 
         inputs.add(input);
-        updateUpTime();
+        updateUpTime(overrides);
         return true;
     }
-    public boolean addOutput(ProductNode output) {
+    public boolean addOutput(ProductNode output, HashMap<Item, Recipe> overrides) {
         //ensure output is not already present
         for(ProductNode potentialOutput : outputs) {
             if(potentialOutput == output) {
@@ -42,11 +44,11 @@ public class RecipeNode {
         }
 
         outputs.add(output);
-        updateUpTime();
+        updateUpTime(overrides);
         return true;
     }
 
-    public void generateSurroundings(NodeGraph graph) {
+    public void generateSurroundings(NodeGraph graph, HashMap<Item, Recipe> overrides) {
         //for non-existing I/O, create new nodes for them (via recipe)
         this.inputs = new ArrayList<>();
         for(ItemStack missingProduct : recipe.inputs) {
@@ -60,8 +62,8 @@ public class RecipeNode {
             ProductNode createdProductNode = new ProductNode(missingProduct.item);
             if( graph.addProduct(createdProductNode) ) {
                 createdProductNode.addSink(this);
-                this.addInput(createdProductNode);
-                updateUpTime();
+                this.addInput(createdProductNode, overrides);
+                updateUpTime(overrides);
             } else {
                 //TODO: Warn
             }
@@ -71,31 +73,32 @@ public class RecipeNode {
             ProductNode foundConnection = graph.getProduct(missingProduct.item);
             if(foundConnection != null) {
                 outputs.add(foundConnection);
-                foundConnection.addSource(this);
+                foundConnection.addSource(this, overrides);
                 continue;
             }
 
             ProductNode createdProductNode = new ProductNode(missingProduct.item);
-            if( graph.addProduct(createdProductNode) ) {
-                createdProductNode.addSource(this);
-                this.addOutput(createdProductNode);
-                updateUpTime();
-            } else {
-                //TODO: Warn
-            }
+            createdProductNode.addSource(this, overrides);
+            this.addOutput(createdProductNode, overrides);
+            graph.addProduct(createdProductNode);
+            updateUpTime(overrides);
         }
     }
 
     //TODO
-    private void updateUpTime() {
+    private void updateUpTime(HashMap<Item, Recipe> overrides) {
         //TODO: flags for which outputs are the primary one(s)
         //for each output, check for the highest-demanding product; set speed for the highest demand-speed
-        double maximum_unmet_demand = 0.0, unmet_demand_rate;
+        double maximum_demand = 0.0, current_rate, production_rate;
         for(ProductNode output : outputs) {
-            unmet_demand_rate = output.getUnmetDemandRate()/this.getProductionRate(output.product);
-            maximum_unmet_demand = Math.max(maximum_unmet_demand, unmet_demand_rate);
+            production_rate = this.getProductionRate(output.product);
+            if(production_rate <= 0.0) {
+                continue;
+            }
+            current_rate = output.getDemandRate() / production_rate;
+            maximum_demand = Math.max(maximum_demand, current_rate);
         }
-        setUpTime(getUptime() + maximum_unmet_demand);
+        setUpTime(maximum_demand, overrides);
     }
 
     public void setUpTime(Double uptime) {
@@ -103,7 +106,15 @@ public class RecipeNode {
 
         //update sources
         for(ProductNode input : inputs) {
-            input.updateSourceUptimes();
+            input.updateSourceUptimes( new HashMap<>() );
+        }
+    }
+    public void setUpTime(Double uptime, HashMap<Item, Recipe> overrides) {
+        this.uptime = uptime;
+
+        //update sources
+        for(ProductNode input : inputs) {
+            input.updateSourceUptimes(overrides);
         }
     }
 
@@ -157,19 +168,22 @@ public class RecipeNode {
         }
 
         recipeNodeStringBuilder.append(") = ");
-        for(int index = 0; index < outputs.size(); index++) {
+        ItemStack currentItemStack;
+        for(int index = 0; index < outputs.size()-1; index++) {
+            currentItemStack = recipe.outputs.get(index);
             double quantity = recipe.outputs.get(index).quantity;
-            if(quantity != 1.0) {
+            {
                 if(quantity%1.0 == 0.0) {
-                    recipeNodeStringBuilder.append( (int)recipe.outputs.get(index).quantity ).append("×");
+                    recipeNodeStringBuilder.append( (int)quantity );
                 } else {
                     recipeNodeStringBuilder.append(
-                        Math.round(recipe.outputs.get(index).quantity*10000.0)/10000.0
-                    ).append("×");
+                        Math.round(quantity*10000.0)/10000.0
+                    );
                 }
+                recipeNodeStringBuilder.append("×");
             }
-            recipeNodeStringBuilder.append( recipe.outputs.get(index).item );
-            ;
+            recipeNodeStringBuilder.append(currentItemStack.item);
+
             if(index < recipe.outputs.size()-1) {
                 recipeNodeStringBuilder.append(" + ");
             }

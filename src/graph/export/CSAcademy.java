@@ -61,7 +61,8 @@ public class CSAcademy {
             }
             NodeGraph subGraph = new NodeGraph(
                 subGraphHead,
-                    subGraphHeadNode.getDemandRate(),
+                subGraphHeadNode.getDemandRate(),
+                graph.transformerOverrides,
                 exclusionsWithoutCurrentHead
             );
 

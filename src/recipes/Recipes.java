@@ -3,8 +3,11 @@ package recipes;
 import graph.evaluations.RecipeComparison;
 import items.Item;
 import items.ItemStack;
+import items.minecraft.GTNH.GregTech;
+import machines.MachineTypes;
 import recipes.minecraft.GTNH.GTNH;
 import recipes.minecraft.GTNH.GregTechRecipes;
+import recipes.minecraft.GTNH.thaumcraft.ThaumcraftRecipes;
 import register.Registered;
 
 import java.util.ArrayList;
@@ -20,7 +23,9 @@ public class Recipes extends Registered<Recipe> {
     private static Recipes instance;
     public static final List<Recipe> registry = new ArrayList<>();
     private static final Logger LOGGER = Logger.getLogger("Recipes");
-    public static HashMap<Item, Recipe> optimalRecipes = new HashMap<>();
+    private static HashMap<Item, Recipe> optimalRecipes = new HashMap<>();
+
+    public static final Recipe DUMMY = new Recipe(MachineTypes.PLAYER, 0.0, new ArrayList<>(), Double.MIN_VALUE);
 
     public Recipes() {
         super("Recipes", registry);
@@ -43,7 +48,9 @@ public class Recipes extends Registered<Recipe> {
     }
     public static boolean isLeafRecipe(Recipe recipe) {
         return
-            recipe.equals(COBBLESTONE)
+            recipe.equals(GregTechRecipes.COBBLESTONE)
+            || recipe.equals(GregTechRecipes.STONE)
+            || recipe.equals(ThaumcraftRecipes.THIRSTYTANK_WATER)
         ;
     }
 
@@ -59,15 +66,6 @@ public class Recipes extends Registered<Recipe> {
         LOGGER.log(Level.INFO, complexitiesMapListBuilder.toString() );
     }
 
-    private static ItemStack getItemStackOfSpecificItem(List<ItemStack> itemStacks, Item itemType) {
-        ItemStack result = new ItemStack(itemType, 0);
-        for(ItemStack itemStack : itemStacks) {
-            if( itemStack.item.equals(itemType) ) {
-                result = new ItemStack(itemType, result.quantity+itemStack.quantity);
-            }
-        }
-        return result;
-    }
     public static void calculateOptimalRecipes() {
         //Calculate optimal-recipes for sources first
 
@@ -78,11 +76,21 @@ public class Recipes extends Registered<Recipe> {
             //RecipeComparison.getBestRecipes(RESOURCE_EFFICIENT)
         ;
     }
+    public static Recipe getOptimalRecipe(Item ofItem) {
+        return optimalRecipes.getOrDefault(ofItem, Recipes.DUMMY);
+    }
+    public static Recipe getOptimalRecipe(Item ofItem, HashMap<Item, Recipe> overrides) {
+        if( overrides.containsKey(ofItem) ) {
+            return overrides.get(ofItem);
+        }
+        return getOptimalRecipe(ofItem);
+    }
 
+    @Deprecated
     public static Recipe getFastestProducingRecipe(Item ofItem) {
         //linear search
         double fastest_production_rate = 0.0, current_production_rate;
-        Recipe fastestProducingRecipes = GregTechRecipes.DUMMY;
+        Recipe fastestProducingRecipes = Recipes.DUMMY;
         for(Recipe potentiallyFastestProducingRecipe : Recipes.registry) {
             current_production_rate = potentiallyFastestProducingRecipe.getProductionRate(ofItem);
             if(fastest_production_rate < current_production_rate) {
