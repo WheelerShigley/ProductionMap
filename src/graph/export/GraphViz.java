@@ -2,7 +2,9 @@ package graph.export;
 
 import graph.*;
 import items.Item;
+import items.Items;
 import items.minecraft.GTNH.GregTech;
+import machines.MachineTypes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -151,7 +153,7 @@ public class GraphViz {
                         continue;
                     }
                     if( subGraph.getProduct(mainOutput.product) != null ) {
-                        demand += subGraph.getProduct(mainOutput.product).getDemandRate();
+                        demand = subGraph.getProduct(mainOutput.product).getDemandRate();
                     }
                 }
                 //reinitialize with new demand
